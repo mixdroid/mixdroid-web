@@ -24,11 +24,11 @@ export default defineNuxtConfig({
       pages.push({
         name: 'features',
         path: '/features/',
-        file: '~/pages/features.vue'
+        file: '~/pages/Features.vue'
       },{
         name: 'about',
         path: '/about/',
-        file: '~/pages/about.vue'
+        file: '~/pages/About.vue'
       })
     }
   }
