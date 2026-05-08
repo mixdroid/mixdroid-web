@@ -8,6 +8,9 @@
 .codex
 dist
 
+DESIGN_SYSTEM.md
+PRODUCT.md
+PRODUCT_CONTEXT.md
 # Node dependencies
 node_modules
 
