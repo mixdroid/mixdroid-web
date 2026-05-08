@@ -22,29 +22,23 @@ async function addToBrevo(email: string): Promise<{ duplicate: boolean }> {
       email,
       listIds: [listId],
       updateEnabled: true,
-      attributes: {
-        SOURCE: 'mixdroid-waitlist',
-      },
     }),
   })
 
-  // 204 = created, 400 with code "duplicate_parameter" = already exists
-  if (res.status === 204 || res.status === 201) {
+  // Brevo returns 201 on create, 204 on update (updateEnabled)
+  if (res.status === 201 || res.status === 204) {
     return { duplicate: false }
   }
 
-  if (res.status === 400) {
-    const data = await res.json().catch(() => ({}))
-    if (data?.code === 'duplicate_parameter') {
-      return { duplicate: true }
-    }
-    console.error('[waitlist] Brevo 400:', JSON.stringify(data))
-    throw new Error(`Brevo error: ${data?.message ?? 'Bad request'}`)
+  const data = await res.json().catch(() => ({}))
+  console.error(`[waitlist] Brevo ${res.status}:`, JSON.stringify(data))
+
+  // duplicate_parameter means contact exists but updateEnabled handled it
+  if (res.status === 400 && data?.code === 'duplicate_parameter') {
+    return { duplicate: true }
   }
 
-  const body = await res.text().catch(() => '(no body)')
-  console.error(`[waitlist] Brevo unexpected ${res.status}: ${body}`)
-  throw new Error(`Brevo error ${res.status}`)
+  throw new Error(`Brevo ${res.status}: ${data?.message ?? 'unknown error'}`)
 }
 
 export default defineEventHandler(async (event) => {
