@@ -26,7 +26,7 @@ async function addToBrevo(email: string): Promise<void> {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'api-key': apiKey //"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",
+      'api-key': apiKey
     },
     body: JSON.stringify({
       email,
