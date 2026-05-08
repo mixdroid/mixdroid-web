@@ -1,48 +1,50 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises'
-import { resolve } from 'node:path'
-
 interface WaitlistEntry {
   email: string
   createdAt: string
 }
 
-// Add your Brevo list ID here (find it in Brevo → Contacts → Lists)
-const BREVO_LIST_ID = Number(process.env.BREVO_LIST_ID ?? 0)
-
-async function addToBrevo(email: string): Promise<void> {
+async function addToBrevo(email: string): Promise<{ duplicate: boolean }> {
   const apiKey = process.env.BREVO_API_KEY
-  if (!apiKey) {
-    console.warn('[waitlist] BREVO_API_KEY not set — skipping Brevo sync.')
-    return
+  const listId = Number(process.env.BREVO_LIST_ID ?? 0)
+
+  if (!apiKey || !listId) {
+    console.warn('[waitlist] BREVO_API_KEY or BREVO_LIST_ID not set.')
+    return { duplicate: false }
   }
 
-  if (!BREVO_LIST_ID) {
-    console.warn('[waitlist] BREVO_LIST_ID not set — skipping Brevo sync.')
-    return
-  }
-
-  // Try to create the contact (Brevo returns 204 on success, 400 if duplicate)
   const res = await fetch('https://api.brevo.com/v3/contacts', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'api-key': apiKey
+      'api-key': apiKey,
     },
     body: JSON.stringify({
       email,
-      listIds: [BREVO_LIST_ID],
-      updateEnabled: true, // adds to the list even if the contact already exists
+      listIds: [listId],
+      updateEnabled: true,
       attributes: {
         SOURCE: 'mixdroid-waitlist',
       },
     }),
   })
 
-  if (!res.ok && res.status !== 204) {
-    const body = await res.text().catch(() => '(no body)')
-    // Log but don't throw — local JSON save should still succeed
-    console.error(`[waitlist] Brevo API error ${res.status}: ${body}`)
+  // 204 = created, 400 with code "duplicate_parameter" = already exists
+  if (res.status === 204 || res.status === 201) {
+    return { duplicate: false }
   }
+
+  if (res.status === 400) {
+    const data = await res.json().catch(() => ({}))
+    if (data?.code === 'duplicate_parameter') {
+      return { duplicate: true }
+    }
+    console.error('[waitlist] Brevo 400:', JSON.stringify(data))
+    throw new Error(`Brevo error: ${data?.message ?? 'Bad request'}`)
+  }
+
+  const body = await res.text().catch(() => '(no body)')
+  console.error(`[waitlist] Brevo unexpected ${res.status}: ${body}`)
+  throw new Error(`Brevo error ${res.status}`)
 }
 
 export default defineEventHandler(async (event) => {
@@ -56,38 +58,14 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // ── Local JSON persistence ──────────────────────────────────────────────
-  const directory = resolve(process.cwd(), 'server/data')
-  const filePath = resolve(directory, 'waitlist.json')
-
-  await mkdir(directory, { recursive: true })
-
-  let entries: WaitlistEntry[] = []
-
   try {
-    const existing = await readFile(filePath, 'utf8')
-    entries = JSON.parse(existing) as WaitlistEntry[]
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
-      throw error
-    }
-  }
-
-  const isDuplicate = entries.some((entry) => entry.email === email)
-
-  if (!isDuplicate) {
-    entries.push({ email, createdAt: new Date().toISOString() })
-    await writeFile(filePath, JSON.stringify(entries, null, 2) + '\n', 'utf8')
-  }
-
-  // ── Brevo sync (non-blocking — failure won't break the response) ────────
-  // updateEnabled: true means Brevo handles duplicates gracefully too
-  await addToBrevo(email).catch((err) => {
-    console.error('[waitlist] Unexpected Brevo error:', err)
-  })
-
-  return {
-    ok: true,
-    duplicate: isDuplicate,
+    const { duplicate } = await addToBrevo(email)
+    return { ok: true, duplicate }
+  } catch (err) {
+    console.error('[waitlist] Failed to save contact:', err)
+    throw createError({
+      statusCode: 500,
+      statusMessage: 'Could not save your email. Please try again.',
+    })
   }
 })
