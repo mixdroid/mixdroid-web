@@ -4,11 +4,17 @@ interface ShowcaseImage {
   alt: string;
   caption: string;
 }
-
+ 
 const email = ref("");
 const loading = ref(false);
 const submitted = ref(false);
 const errorMessage = ref("");
+ 
+// Hero form — independent state so both forms work simultaneously
+const heroEmail = ref("");
+const heroLoading = ref(false);
+const heroSubmitted = ref(false);
+const heroError = ref("");
 const selectedImage = ref<ShowcaseImage | null>(null);
 const isImageModalOpen = ref(false);
 const modalZoomed = ref(false);
