@@ -154,7 +154,7 @@ useSeoMeta({
                 </h1>
 
                 <p class="max-w-2xl text-lg leading-8 text-[var(--text-muted)]">
-                  MixDroid gives podcasters, streamers, and content creators a
+                  MixDroid gives podcasters, streamers, musicians and content creators a
                   full-featured mixer in their pocket — real-time DSP effects,
                   live streaming, recording, and internet radio, all running
                   standalone on Android. Built solo from Lebanon over 7 years.
