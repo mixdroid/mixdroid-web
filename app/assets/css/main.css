@@ -1,0 +1,140 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+:root {
+  --ui-primary: #00e5ff;
+  --ui-secondary: #00e5ff;
+  --ui-success: #00e5ff;
+  --ui-info: #00e5ff;
+  --ui-warning: #ff2a6d;
+  --ui-error: #ff2a6d;
+  --page-bg: #0b0b0f;
+  --panel-bg: #14141b;
+  --panel-bg-strong: #1a1a22;
+  --panel-line: rgba(255, 255, 255, 0.08);
+  --accent-cyan: #00e5ff;
+  --warning-pink: #ff2a6d;
+  --text-primary: #f3f7fb;
+  --text-secondary: #d6dbe4;
+  --text-muted: #9aa4b2;
+  --text-dim: #6b7280;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(circle at top, rgba(0, 229, 255, 0.08), transparent 24%),
+    linear-gradient(180deg, #0b0b0f 0%, #08080c 100%);
+  color: var(--text-primary);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.console-shell {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.console-panel {
+  border: 1px solid var(--panel-line);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0)),
+    var(--panel-bg);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 14px 40px rgba(0, 0, 0, 0.24);
+}
+
+.panel-chip {
+  border: 1px solid var(--panel-line);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 0.45rem;
+  padding: 0.45rem 0.7rem;
+}
+
+.console-stat {
+  border: 1px solid var(--panel-line);
+  background: var(--panel-bg);
+  border-radius: 0.8rem;
+  padding: 1rem;
+}
+
+.console-stat__label {
+  color: var(--text-dim);
+  font-family: "Consolas", "Liberation Mono", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.console-stat__value {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-top: 0.6rem;
+}
+
+.meter-stack {
+  display: grid;
+  gap: 0.3rem;
+  width: 5rem;
+}
+
+.meter-stack span {
+  display: block;
+  height: 0.35rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent-cyan), rgba(255, 42, 109, 0.75));
+}
+
+.meter-stack span:nth-child(1) {
+  width: 100%;
+}
+
+.meter-stack span:nth-child(2) {
+  width: 82%;
+}
+
+.meter-stack span:nth-child(3) {
+  width: 66%;
+}
+
+.meter-stack span:nth-child(4) {
+  width: 48%;
+}
+
+.eq-line {
+  width: 7rem;
+  height: 2rem;
+  background:
+    radial-gradient(circle at 10% 75%, transparent 0.55rem, rgba(0, 229, 255, 0.4) 0.56rem, transparent 0.65rem),
+    linear-gradient(135deg, transparent 0%, transparent 18%, rgba(0, 229, 255, 0.2) 18%, rgba(0, 229, 255, 0.75) 52%, rgba(255, 42, 109, 0.85) 76%, transparent 76%);
+  border-radius: 999px;
+  opacity: 0.95;
+}
+
+.mini-panel {
+  border: 1px solid var(--panel-line);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 0.75rem;
+  padding: 0.85rem 0.95rem;
+}
+
+.mini-panel__title {
+  color: var(--text-dim);
+  font-family: "Consolas", "Liberation Mono", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.mini-panel__value {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-top: 0.55rem;
+}

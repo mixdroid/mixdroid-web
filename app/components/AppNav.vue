@@ -1,0 +1,112 @@
+<script setup lang="ts">
+const route = useRoute();
+const menuOpen = ref(false);
+
+watch(() => route.path, () => { menuOpen.value = false; });
+
+const links = [
+  { label: "Home", to: "/" },
+  { label: "Features", to: "/features" },
+  { label: "About", to: "/about" },
+];
+</script>
+
+<template>
+  <header class="sticky top-0 z-40 border-b border-white/8 bg-[var(--page-bg)]/90 backdrop-blur-md">
+    <div class="mx-auto max-w-7xl px-6 py-4 sm:px-8 lg:px-10">
+      <nav class="flex items-center justify-between gap-4">
+
+        <!-- Logo -->
+        <NuxtLink to="/" class="group flex items-center gap-3">
+          <div
+            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-[var(--panel-line)] bg-[var(--panel-bg-strong)] text-xs font-semibold text-[var(--accent-cyan)] shadow-[0_0_24px_rgba(0,229,255,0.08)] transition group-hover:shadow-[0_0_28px_rgba(0,229,255,0.18)]"
+          >
+            MX
+          </div>
+          <span class="font-mono text-[11px] uppercase tracking-[0.35em] text-[var(--accent-cyan)]">
+            MixDroid
+          </span>
+        </NuxtLink>
+
+        <!-- Desktop links -->
+        <div class="hidden items-center gap-1 sm:flex">
+          <NuxtLink
+            v-for="link in links"
+            :key="link.to"
+            :to="link.to"
+            class="rounded-md px-3 py-2 font-mono text-[11px] uppercase tracking-[0.28em] transition"
+            :class="
+              route.path === link.to
+                ? 'bg-[var(--panel-bg-strong)] text-[var(--accent-cyan)]'
+                : 'text-[var(--text-dim)] hover:bg-[var(--panel-bg)] hover:text-[var(--text-secondary)]'
+            "
+          >
+            {{ link.label }}
+          </NuxtLink>
+          <UBadge
+            color="neutral"
+            variant="outline"
+            class="ml-3 rounded-md border-[var(--panel-line)] bg-[var(--panel-bg)] px-3 py-1 text-[var(--accent-cyan)]"
+          >
+            Early access
+          </UBadge>
+        </div>
+
+        <!-- Mobile hamburger -->
+        <button
+          type="button"
+          class="flex h-9 w-9 items-center justify-center rounded-md border border-[var(--panel-line)] bg-[var(--panel-bg)] text-[var(--text-secondary)] sm:hidden"
+          :aria-expanded="menuOpen"
+          aria-label="Toggle menu"
+          @click="menuOpen = !menuOpen"
+        >
+          <svg v-if="!menuOpen" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <rect y="2" width="16" height="1.5" rx="1"/>
+            <rect y="7.25" width="16" height="1.5" rx="1"/>
+            <rect y="12.5" width="16" height="1.5" rx="1"/>
+          </svg>
+          <svg v-else width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <path d="M2 2l12 12M14 2L2 14"/>
+          </svg>
+        </button>
+
+      </nav>
+
+      <!-- Mobile dropdown -->
+      <Transition
+        enter-active-class="transition duration-150 ease-out"
+        enter-from-class="opacity-0 -translate-y-1"
+        enter-to-class="opacity-100 translate-y-0"
+        leave-active-class="transition duration-100 ease-in"
+        leave-from-class="opacity-100 translate-y-0"
+        leave-to-class="opacity-0 -translate-y-1"
+      >
+        <div v-if="menuOpen" class="mt-3 space-y-1 pb-3 sm:hidden">
+          <NuxtLink
+            v-for="link in links"
+            :key="link.to"
+            :to="link.to"
+            class="block rounded-md px-3 py-2.5 font-mono text-[11px] uppercase tracking-[0.28em] transition"
+            :class="
+              route.path === link.to
+                ? 'bg-[var(--panel-bg-strong)] text-[var(--accent-cyan)]'
+                : 'text-[var(--text-dim)] hover:bg-[var(--panel-bg)] hover:text-[var(--text-secondary)]'
+            "
+          >
+            {{ link.label }}
+          </NuxtLink>
+          <div class="px-3 pt-1">
+            <UBadge
+              color="neutral"
+              variant="outline"
+              class="rounded-md border-[var(--panel-line)] bg-[var(--panel-bg)] px-3 py-1 text-[var(--accent-cyan)]"
+            >
+              Early access
+            </UBadge>
+          </div>
+        </div>
+      </Transition>
+
+    </div>
+  </header>
+</template>
