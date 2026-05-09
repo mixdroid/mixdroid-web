@@ -210,7 +210,7 @@ useSeoMeta({
                     type="email"
                     size="xl"
                     variant="outline"
-                    placeholder="you@yourshow.com"
+                    placeholder="you@yourmail.com"
                     class="w-full"
                     :ui="{
                       base: 'rounded-md bg-black/30 border-white/12 text-white placeholder:text-slate-500',
@@ -578,7 +578,7 @@ useSeoMeta({
                     type="email"
                     size="xl"
                     variant="outline"
-                    placeholder="you@yourshow.com"
+                    placeholder="you@yourmail.com"
                     class="w-full"
                     :ui="{
                       base: 'rounded-md bg-black/30 border-white/12 text-white placeholder:text-slate-500',
