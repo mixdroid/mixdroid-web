@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// Timeline entries — edit freely
 const timeline = [
   {
     year: "2018",
@@ -40,21 +39,20 @@ useSeoMeta({
     <AppNav />
 
     <main>
-
       <!-- ── Hero / identity ─────────────────────────────────────────────── -->
       <section class="border-b border-white/8">
         <div class="mx-auto max-w-7xl px-6 py-16 sm:px-8 lg:px-10 lg:py-24">
-          <div class="grid gap-12 lg:grid-cols-[auto_minmax(0,1fr)] lg:items-start">
-
+          <div
+            class="grid gap-12 lg:grid-cols-[auto_minmax(0,1fr)] lg:items-start"
+          >
             <!-- Avatar -->
             <div class="flex flex-col items-center gap-4 lg:items-start">
               <div class="relative">
                 <!-- Glow ring -->
-                <div
+                <!-- <div
                   class="absolute -inset-1 rounded-full opacity-40"
                   style="background: conic-gradient(from 180deg, var(--accent-cyan), transparent 60%, var(--warning-pink), transparent 80%, var(--accent-cyan));"
-                />
-                <!-- Avatar image — swap /images/avatar.jpg for your photo -->
+                /> -->
                 <img
                   src="/images/joe.jpg"
                   alt="MixDroid developer"
@@ -66,7 +64,7 @@ useSeoMeta({
                 <!-- Fallback monogram if image is missing -->
                 <div
                   class="relative hidden h-40 w-40 items-center justify-center rounded-full border-2 border-[var(--panel-line)] bg-[var(--panel-bg-strong)] text-4xl font-semibold text-[var(--accent-cyan)]"
-                  style="display: none;"
+                  style="display: none"
                 >
                   MX
                 </div>
@@ -74,10 +72,10 @@ useSeoMeta({
 
               <!-- Chips below avatar -->
               <div class="flex flex-col items-center gap-2 lg:items-start">
-                <p class="text-base font-semibold text-white">
-                  Joe Kaikaty
-                </p>
-                <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">
+                <p class="text-base font-semibold text-white">Joe Kaikaty</p>
+                <p
+                  class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+                >
                   Solo developer
                 </p>
                 <p class="text-sm text-[var(--text-muted)]">Lebanon</p>
@@ -87,21 +85,28 @@ useSeoMeta({
             <!-- Bio -->
             <div class="space-y-6">
               <div class="space-y-3">
-                <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">
+                <p
+                  class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+                >
                   About me
                 </p>
-                <h1 class="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-                  7 years. One developer.<br class="hidden sm:block" /> Built from Lebanon.
+                <h1
+                  class="text-4xl font-semibold tracking-tight text-white sm:text-5xl"
+                >
+                  7 years. One developer.<br class="hidden sm:block" />
+                  Built from Lebanon.
                 </h1>
               </div>
 
-              <div class="space-y-4 text-base leading-8 text-[var(--text-muted)]">
+              <div
+                class="space-y-4 text-base leading-8 text-[var(--text-muted)]"
+              >
                 <p>
-                  I'm a solo developer based in Lebanon. MixDroid started from
-                  a simple frustration — I wanted to mix audio for live
-                  recordings and streams without lugging a laptop around. Every
-                  Android app I found was either a toy or required a computer
-                  somewhere in the signal chain.
+                  I'm a solo developer based in Lebanon. MixDroid started from a
+                  simple frustration — I wanted to mix audio for live recordings
+                  and streams without lugging a laptop around. Every Android app
+                  I found was either a toy or required a computer somewhere in
+                  the signal chain.
                 </p>
                 <p>
                   So I built what I needed. What started as a personal project
@@ -113,8 +118,8 @@ useSeoMeta({
                 <p>
                   No VC funding, no team, no shortcuts. Every algorithm, every
                   screen, every edge case is something I hit personally and
-                  fixed myself. MixDroid is the tool I use — which means it
-                  gets better every time I use it.
+                  fixed myself. MixDroid is the tool I use — which means it gets
+                  better every time I use it.
                 </p>
               </div>
 
@@ -138,7 +143,6 @@ useSeoMeta({
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </section>
@@ -147,43 +151,66 @@ useSeoMeta({
       <section class="border-b border-white/8">
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div class="grid gap-10 lg:grid-cols-2 lg:items-start">
-
             <div class="space-y-4">
-              <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">
+              <p
+                class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+              >
                 The motivation
               </p>
-              <h2 class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+              <h2
+                class="text-3xl font-semibold tracking-tight text-white sm:text-4xl"
+              >
                 Why does a mixer need a laptop?
               </h2>
-              <div class="space-y-4 text-base leading-8 text-[var(--text-muted)]">
+              <div
+                class="space-y-4 text-base leading-8 text-[var(--text-muted)]"
+              >
                 <p>
                   Professional audio tools have always assumed you have a
                   desktop or laptop in the room. That assumption made sense in
-                  2005. It doesn't in 2025 — Android devices have the
-                  processing power, the audio interfaces exist, and the
-                  workflows for podcasters and streamers are simple enough that
-                  a laptop is pure overhead.
+                  2005. It doesn't in 2025 — Android devices have the processing
+                  power, the audio interfaces exist, and the workflows for
+                  podcasters and streamers are simple enough that a laptop is
+                  pure overhead.
                 </p>
                 <p>
-                  MixDroid's design goal is that you should be able to walk
-                  into a room with your phone and a USB interface and have a
-                  complete mixing and streaming setup in under two minutes. No
-                  drivers, no configuration files, no laptop bag.
+                  MixDroid's design goal is that you should be able to walk into
+                  a room with your phone and a USB interface and have a complete
+                  mixing and streaming setup in under two minutes. No drivers,
+                  no configuration files, no laptop bag.
                 </p>
               </div>
             </div>
 
             <div class="space-y-3">
-              <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">
+              <p
+                class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+              >
                 What makes it different
               </p>
               <div class="space-y-3">
                 <div
                   v-for="point in [
-                    { label: 'No Google account required', detail: 'Distributed outside the Play Store. You own the install.' },
-                    { label: 'Third-party apps via open-source store', detail: 'Extend your setup with community-built tools, or request a pre-built app for your workflow.' },
-                    { label: 'Works completely offline', detail: 'DSP, mixing, and recording need zero internet. Radio and streaming are opt-in.' },
-                    { label: 'Built by someone who uses it', detail: 'Every feature exists because I needed it personally — not because a product roadmap said so.' },
+                    {
+                      label: 'No Google account required',
+                      detail:
+                        'Distributed outside the Play Store. You own the install.',
+                    },
+                    {
+                      label: 'Third-party apps via open-source store',
+                      detail:
+                        'Extend your setup with community-built tools, or request a pre-built app for your workflow.',
+                    },
+                    {
+                      label: 'Works completely offline',
+                      detail:
+                        'DSP, mixing, and recording need zero internet. Radio and streaming are opt-in.',
+                    },
+                    {
+                      label: 'Built by someone who uses it',
+                      detail:
+                        'Every feature exists because I needed it personally — not because a product roadmap said so.',
+                    },
                   ]"
                   :key="point.label"
                   class="mini-panel"
@@ -192,13 +219,14 @@ useSeoMeta({
                     <span class="text-[var(--accent-cyan)]">→</span>
                     {{ point.label }}
                   </p>
-                  <p class="mini-panel__value text-sm font-normal text-[var(--text-muted)]">
+                  <p
+                    class="mini-panel__value text-sm font-normal text-[var(--text-muted)]"
+                  >
                     {{ point.detail }}
                   </p>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </section>
@@ -207,10 +235,14 @@ useSeoMeta({
       <section class="border-b border-white/8">
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div class="mb-10 space-y-3">
-            <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">
+            <p
+              class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+            >
               Development history
             </p>
-            <h2 class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+            <h2
+              class="text-3xl font-semibold tracking-tight text-white sm:text-4xl"
+            >
               How MixDroid got here.
             </h2>
           </div>
@@ -242,10 +274,16 @@ useSeoMeta({
               <!-- Content -->
               <div
                 class="console-panel rounded-xl p-4"
-                :class="i === timeline.length - 1 ? 'border-[var(--accent-cyan)]/30' : ''"
+                :class="
+                  i === timeline.length - 1
+                    ? 'border-[var(--accent-cyan)]/30'
+                    : ''
+                "
               >
                 <p class="font-semibold text-white">{{ entry.title }}</p>
-                <p class="mt-2 text-sm leading-7 text-[var(--text-muted)]">{{ entry.body }}</p>
+                <p class="mt-2 text-sm leading-7 text-[var(--text-muted)]">
+                  {{ entry.body }}
+                </p>
               </div>
             </div>
           </div>
@@ -256,12 +294,18 @@ useSeoMeta({
       <section>
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div class="console-panel rounded-xl p-6 sm:p-8">
-            <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+            <div
+              class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center"
+            >
               <div class="space-y-3">
-                <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">
+                <p
+                  class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+                >
                   Early access
                 </p>
-                <h2 class="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                <h2
+                  class="text-2xl font-semibold tracking-tight text-white sm:text-3xl"
+                >
                   Follow the journey — get early access.
                 </h2>
                 <p class="max-w-xl text-base text-[var(--text-muted)]">
@@ -280,7 +324,6 @@ useSeoMeta({
           </div>
         </div>
       </section>
-
     </main>
 
     <AppFooter />

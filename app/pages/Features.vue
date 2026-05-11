@@ -163,11 +163,35 @@ const modules: Module[] = [
     description:
       "Real-time 8192-bin FFT spectrum visualisation with multiple display modes. See exactly what your signal is doing — from sub-bass rumble to air frequencies — before it leaves the mixer.",
     screens: [
-      { src: "/images/spec1.png", alt: "Spectrum — Bar mode", caption: "Classic bar graph display. Each bin rendered individually at full 8192-bin resolution." },
-      { src: "/images/spec2.png", alt: "Spectrum — Line mode", caption: "Smooth line overlay. Useful for comparing two signals or spotting narrow resonances." },
-      { src: "/images/spec3.png", alt: "Spectrum — Filled mode", caption: "Filled area under the curve — easier to read loudness distribution at a glance." },
-      { src: "/images/spec4.png", alt: "Spectrum — Spectrogram", caption: "Time-vs-frequency waterfall. Reveals how your mix evolves over time." },
-      { src: "/images/spec5.png", alt: "Spectrum — Vectorscope", caption: "TReal-time Lissajous display of L vs R phase relationship." },
+      {
+        src: "/images/spec1.png",
+        alt: "Spectrum — Bar mode",
+        caption:
+          "Classic bar graph display. Each bin rendered individually at full 8192-bin resolution.",
+      },
+      {
+        src: "/images/spec2.png",
+        alt: "Spectrum — Line mode",
+        caption:
+          "Smooth line overlay. Useful for comparing two signals or spotting narrow resonances.",
+      },
+      {
+        src: "/images/spec3.png",
+        alt: "Spectrum — Filled mode",
+        caption:
+          "Filled area under the curve — easier to read loudness distribution at a glance.",
+      },
+      {
+        src: "/images/spec4.png",
+        alt: "Spectrum — Spectrogram",
+        caption:
+          "Time-vs-frequency waterfall. Reveals how your mix evolves over time.",
+      },
+      {
+        src: "/images/spec5.png",
+        alt: "Spectrum — Vectorscope",
+        caption: "TReal-time Lissajous display of L vs R phase relationship.",
+      },
     ],
   },
   {
@@ -224,7 +248,9 @@ onMounted(() => {
 });
 
 function scrollTo(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  document
+    .getElementById(id)
+    ?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 useSeoMeta({
@@ -239,27 +265,31 @@ useSeoMeta({
     <AppNav />
 
     <main>
-
       <!-- ── Page header -->
-      <section class="border-b border-white/8">
+      <!-- <section class="border-b border-white/8">
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-20">
-          <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
-
+          <div
+            class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end"
+          >
             <div class="space-y-4">
-              <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">
+              <p
+                class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+              >
                 All features
               </p>
-              <h1 class="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+              <h1
+                class="text-4xl font-semibold tracking-tight text-white sm:text-5xl"
+              >
                 Every screen. Every module.
               </h1>
               <p class="max-w-2xl text-base leading-8 text-[var(--text-muted)]">
                 MixDroid is built screen by screen, module by module. Click any
                 screenshot to inspect it in full detail.
               </p>
-            </div>
+            </div> -->
 
             <!-- Jump-links -->
-            <nav class="flex flex-wrap gap-2 lg:flex-col lg:items-end">
+            <!-- <nav class="flex flex-wrap gap-2 lg:flex-col lg:items-end">
               <button
                 v-for="mod in modules"
                 :key="mod.id"
@@ -272,24 +302,24 @@ useSeoMeta({
             </nav>
           </div>
         </div>
-      </section>
+      </section> -->
 
       <!-- ── Module sections -->
       <template v-for="(mod, modIndex) in modules" :key="mod.id">
         <section :id="mod.id" class="scroll-mt-24 border-b border-white/8">
           <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
-
             <!-- Module header -->
             <div class="mb-8 space-y-3">
               <div class="flex items-center gap-3">
-                <span class="panel-chip font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--warning-pink)]">
+                <span
+                  class="panel-chip font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--warning-pink)]"
+                >
                   {{ mod.label }}
                 </span>
-                <span class="font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]">
-                  {{ String(modIndex + 1).padStart(2, "0") }}
-                </span>
               </div>
-              <h2 class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+              <h2
+                class="text-3xl font-semibold tracking-tight text-white sm:text-4xl"
+              >
                 {{ mod.title }}
               </h2>
               <p class="max-w-2xl text-base leading-7 text-[var(--text-muted)]">
@@ -336,23 +366,28 @@ useSeoMeta({
 
                   <!-- Caption -->
                   <div class="w-full space-y-3 lg:w-80 lg:shrink-0">
-                    <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]">
+                    <p
+                      class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]"
+                    >
                       {{ mod.title }}
                     </p>
                     <p class="text-lg font-medium text-white">
                       {{ screen.alt }}
                     </p>
-                    <p class="whitespace-pre-line text-sm leading-7 text-[var(--text-muted)]">
+                    <p
+                      class="whitespace-pre-line text-sm leading-7 text-[var(--text-muted)]"
+                    >
                       {{ screen.caption }}
                     </p>
-                    <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--text-dim)]">
+                    <p
+                      class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--text-dim)]"
+                    >
                       Click to expand ↗
                     </p>
                   </div>
                 </div>
               </button>
             </div>
-
           </div>
         </section>
       </template>
@@ -361,15 +396,23 @@ useSeoMeta({
       <section class="border-b border-white/8">
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div class="console-panel rounded-xl p-6 sm:p-8">
-            <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+            <div
+              class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center"
+            >
               <div class="space-y-3">
-                <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">
+                <p
+                  class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+                >
                   The pipeline
                 </p>
-                <h2 class="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                <h2
+                  class="text-2xl font-semibold tracking-tight text-white sm:text-3xl"
+                >
                   This is just what's been photographed.
                 </h2>
-                <p class="max-w-xl text-base leading-7 text-[var(--text-muted)]">
+                <p
+                  class="max-w-xl text-base leading-7 text-[var(--text-muted)]"
+                >
                   Chorus, Flanger, and Distortion are already implemented —
                   screenshots are on the way. More DSP modules are in active
                   development. If there's a specific effect you need, join the
@@ -377,10 +420,22 @@ useSeoMeta({
                 </p>
               </div>
               <div class="flex flex-wrap gap-2 lg:flex-col lg:items-end">
-                <span class="panel-chip font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]">Chorus ✓</span>
-                <span class="panel-chip font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]">Flanger ✓</span>
-                <span class="panel-chip font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]">Distortion ✓</span>
-                <span class="panel-chip font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--accent-cyan)]/60">More in dev…</span>
+                <span
+                  class="panel-chip font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]"
+                  >Chorus ✓</span
+                >
+                <span
+                  class="panel-chip font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]"
+                  >Flanger ✓</span
+                >
+                <span
+                  class="panel-chip font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]"
+                  >Distortion ✓</span
+                >
+                <span
+                  class="panel-chip font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--accent-cyan)]/60"
+                  >More in dev…</span
+                >
               </div>
             </div>
           </div>
@@ -391,12 +446,18 @@ useSeoMeta({
       <section>
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div class="console-panel rounded-xl p-6 sm:p-8">
-            <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+            <div
+              class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center"
+            >
               <div class="space-y-3">
-                <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">
+                <p
+                  class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+                >
                   Early access
                 </p>
-                <h2 class="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                <h2
+                  class="text-2xl font-semibold tracking-tight text-white sm:text-3xl"
+                >
                   Want to be first to use it?
                 </h2>
                 <p class="max-w-xl text-base text-[var(--text-muted)]">
@@ -414,7 +475,6 @@ useSeoMeta({
           </div>
         </div>
       </section>
-
     </main>
 
     <AppFooter />
@@ -432,7 +492,7 @@ useSeoMeta({
         <div
           v-if="isModalOpen"
           class="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 sm:items-center sm:p-8"
-          style="background: rgba(8, 8, 12, 0.96); backdrop-filter: blur(6px);"
+          style="background: rgba(8, 8, 12, 0.96); backdrop-filter: blur(6px)"
           @click.self="isModalOpen = false"
         >
           <div
@@ -442,7 +502,7 @@ useSeoMeta({
             <!-- Image -->
             <div
               class="overflow-auto rounded-t-xl"
-              style="max-height: 70vh;"
+              style="max-height: 70vh"
               @click="isZoomed = !isZoomed"
             >
               <img
@@ -464,12 +524,18 @@ useSeoMeta({
               class="flex flex-col gap-3 border-t border-[var(--panel-line)] px-4 py-4 sm:flex-row sm:items-start sm:justify-between sm:gap-4 sm:px-5"
             >
               <div class="min-w-0">
-                <p class="text-sm font-semibold text-white">{{ selectedImage.alt }}</p>
-                <p class="mt-1 whitespace-pre-line text-sm leading-6 text-[var(--text-muted)]">
+                <p class="text-sm font-semibold text-white">
+                  {{ selectedImage.alt }}
+                </p>
+                <p
+                  class="mt-1 whitespace-pre-line text-sm leading-6 text-[var(--text-muted)]"
+                >
                   {{ selectedImage.caption }}
                 </p>
               </div>
-              <p class="shrink-0 font-mono text-[10px] uppercase tracking-[0.28em] text-[var(--text-dim)]">
+              <p
+                class="shrink-0 font-mono text-[10px] uppercase tracking-[0.28em] text-[var(--text-dim)]"
+              >
                 {{ isZoomed ? "Click to fit" : "Click to zoom" }}
               </p>
             </div>
@@ -477,6 +543,5 @@ useSeoMeta({
         </div>
       </Transition>
     </Teleport>
-
   </div>
 </template>
