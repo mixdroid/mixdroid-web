@@ -1,2 +1,4 @@
 User-Agent: *
 Disallow:
+
+Sitemap: https://mixdroid-web.vercel.app/sitemap.xml

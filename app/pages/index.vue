@@ -10,7 +10,6 @@ const loading = ref(false);
 const submitted = ref(false);
 const errorMessage = ref("");
 
-// Hero form — independent state so both forms work simultaneously
 const heroEmail = ref("");
 const heroLoading = ref(false);
 const heroSubmitted = ref(false);
@@ -19,11 +18,11 @@ const selectedImage = ref<ShowcaseImage | null>(null);
 const isImageModalOpen = ref(false);
 const modalZoomed = ref(false);
 
+// Hero image — Blender render moved out of hero, used in DSP showcase only
 const heroImage: ShowcaseImage = {
   src: "/images/Mixer.jpg",
-  alt: "MixDroid mixer — initial concept render",
-  caption:
-    "Early concept render modelled in Blender — not the final hardware. The production design is in progress.",
+  alt: "MixDroid hardware concept render",
+  caption: "Early concept render — not the final hardware design.",
 };
 
 const features = [
@@ -56,7 +55,7 @@ const features = [
 const showcaseImages: ShowcaseImage[] = [
   {
     src: "/images/eq.png",
-    alt: "Parametric EQ",
+    alt: "Parametric EQ screen",
     caption: `• 5 bands with full parametric control.
 • Pre-gain and per-band solo.
 • ±24 dB gain, Q-factor 0.707–1.8.
@@ -66,7 +65,7 @@ const showcaseImages: ShowcaseImage[] = [
   },
   {
     src: "/images/compressor.png",
-    alt: "Stereo Compressor",
+    alt: "Stereo Compressor screen",
     caption: `• Stereo-linked feed-forward compressor.
 • Threshold, ratio (up to 20:1), attack (1–100 ms), release (1–10,000 ms).
 • Sidechain input support.
@@ -90,14 +89,11 @@ onMounted(() => {
 
 async function joinWaitlist() {
   errorMessage.value = "";
-
   if (!email.value.trim()) {
     errorMessage.value = "Please enter your email address.";
     return;
   }
-
   loading.value = true;
-
   try {
     await $fetch("/api/waitlist", {
       method: "POST",
@@ -117,14 +113,11 @@ async function joinWaitlist() {
 
 async function heroJoinWaitlist() {
   heroError.value = "";
-
   if (!heroEmail.value.trim()) {
     heroError.value = "Please enter your email address.";
     return;
   }
-
   heroLoading.value = true;
-
   try {
     await $fetch("/api/waitlist", {
       method: "POST",
@@ -142,169 +135,171 @@ async function heroJoinWaitlist() {
   }
 }
 
-useSeoMeta({
-  title: "MixDroid — Android Mixer for Podcasters, Streamers & Musicians",
+// JSON-LD structured data
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "MixDroid",
+  operatingSystem: "Android",
+  applicationCategory: "MultimediaApplication",
   description:
-    "MixDroid is a standalone Android mixer with real-time DSP effects, live streaming, recording, and internet radio. No laptop. No subscriptions. Built for podcasters, streamers, musicians, and content creators.",
-  ogTitle: "MixDroid — Android Mixer for Podcasters, Streamers & Musicians",
+    "Standalone Android mixer with real-time DSP effects, live streaming, recording, and internet radio. No laptop required.",
+  url: "https://mixdroid-web.vercel.app",
+  author: {
+    "@type": "Person",
+    name: "Joe Kaikaty",
+    url: "https://mixdroid-web.vercel.app/about",
+  },
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+    description: "Free to join the waitlist. No payment required.",
+  },
+};
+
+useSeoMeta({
+  title: "MixDroid | Android Mixer for Podcasters & Streamers",
+  description:
+    "MixDroid is a standalone Android mixer with real-time DSP, live streaming, and recording. No laptop. No subscriptions.",
+  ogTitle: "MixDroid | Android Mixer for Podcasters & Streamers",
   ogDescription:
     "Real-time DSP, streaming, recording, and radio — all on Android. No laptop required. Built solo over 7 years.",
   twitterCard: "summary_large_image",
+});
+
+useHead({
+  link: [
+    { rel: "canonical", href: "https://mixdroid-web.vercel.app/" },
+    {
+      rel: "preload",
+      as: "image",
+      href: "/images/Screenshot_20260402_091916.png",
+    },
+  ],
+  script: [
+    {
+      type: "application/ld+json",
+      innerHTML: JSON.stringify(jsonLd),
+    },
+  ],
 });
 </script>
 
 <template>
   <div class="min-h-screen bg-[var(--page-bg)] text-[var(--text-primary)]">
     <AppNav />
-    <main>
-      <!-- ── Social proof bar -->
-      <!-- <section class="border-b border-white/8 bg-[var(--panel-bg)]">
-        <div class="mx-auto max-w-7xl px-6 py-3 sm:px-8 lg:px-10">
-          <div class="flex flex-wrap items-center justify-between gap-3">
-
-            <div class="flex flex-wrap items-center gap-x-5 gap-y-2"> -->
-
-      <!-- Reddit logo (shared) -->
-      <!-- <svg class="hidden" width="0" height="0">
-                <symbol id="reddit-icon" viewBox="0 0 20 20">
-                  <circle cx="10" cy="10" r="10" fill="#FF4500"/>
-                  <path d="M16.67 10a1.46 1.46 0 0 0-2.47-1 7.12 7.12 0 0 0-3.85-1.23l.65-3.07 2.13.45a1 1 0 1 0 .07-.93l-2.38-.5a.25.25 0 0 0-.29.19l-.73 3.43a7.14 7.14 0 0 0-3.89 1.24 1.46 1.46 0 1 0-1.61 2.39 2.87 2.87 0 0 0 0 .44c0 2.24 2.61 4.06 5.83 4.06s5.83-1.82 5.83-4.06a2.87 2.87 0 0 0 0-.44 1.46 1.46 0 0 0 .61-1.97zM7.27 11a1 1 0 1 1 1 1 1 1 0 0 1-1-1zm5.59 2.71a3.58 3.58 0 0 1-2.86.8 3.58 3.58 0 0 1-2.86-.8.25.25 0 0 1 .35-.35 3.13 3.13 0 0 0 2.51.65 3.13 3.13 0 0 0 2.51-.65.25.25 0 0 1 .35.35zm-.22-1.71a1 1 0 1 1 1-1 1 1 0 0 1-1 1z" fill="white"/>
-                </symbol>
-              </svg> -->
-
-      <!--
-                ── Reddit posts — update stats manually after each post ──────
-                Duplicate the <a> block below to add more posts.
-                fields: subreddit, url, stat (views / upvotes), label
-              -->
-
-      <!-- Post 1: r/buildinpublic -->
-      <!-- <a
-                href="https://www.reddit.com/r/buildinpublic/comments/1t7b01l/7_years_ago_i_started_building_a_mixer_in_my/"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="flex items-center gap-2 transition hover:opacity-80"
-              >
-                <svg width="15" height="15"><use href="#reddit-icon"/></svg>
-                <span class="font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]">r/buildinpublic</span>
-                <span class="font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-secondary)]">1.5k views · 7 upvotes</span>
-              </a>
-
-              <div class="h-3 w-px bg-white/10" /> -->
-
-      <!-- Post 2: add your r/SideProject post here once live -->
-      <!-- <a
-                href="https://reddit.com/r/SideProject/..."
-                target="_blank"
-                rel="noopener noreferrer"
-                class="flex items-center gap-2 transition hover:opacity-80"
-              >
-                <svg width="15" height="15"><use href="#reddit-icon"/></svg>
-                <span class="font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]">r/SideProject</span>
-                <span class="font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-secondary)]">— views · — upvotes</span>
-              </a>
-              <div class="h-3 w-px bg-white/10" /> -->
-
-      <!-- <span class="font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)] italic">
-                "7 years ago I started building a mixer in my bedroom"
-              </span>
-
-            </div> -->
-
-      <!-- Pulsing live badge -->
-      <!-- <div class="flex items-center gap-2">
-              <span class="relative flex h-2 w-2">
-                <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--accent-cyan)] opacity-60" />
-                <span class="relative inline-flex h-2 w-2 rounded-full bg-[var(--accent-cyan)]" />
-              </span>
-              <span class="font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]">
-                Early access open
-              </span>
-            </div>
-
-          </div>
-        </div>
-      </section> -->
-
+    <main id="main-content">
       <!-- ── Hero -->
-      <section class="border-b border-white/8">
+      <!-- Mobile: stacked so H1 + form are above the fold (no image pushed up) -->
+      <section class="border-b border-white/8" aria-labelledby="hero-heading">
         <div
-          class="mx-auto max-w-7xl grid gap-12 px-6 py-14 sm:px-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:px-10 lg:py-20"
+          class="mx-auto max-w-7xl grid gap-10 px-6 py-10 sm:px-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:px-10 lg:py-20"
         >
-          <div class="space-y-8">
-            <div class="space-y-5">
+          <!-- Left: headline + form — always on top on mobile -->
+          <div class="flex flex-col gap-6">
+            <!-- Headline block -->
+            <div class="space-y-4">
+              <h1
+                id="hero-heading"
+                class="text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl"
+              >
+                Professional mixing on Android.<br class="hidden sm:block" />
+                No laptop required.
+              </h1>
+
+              <p
+                class="max-w-prose text-base leading-7 text-[var(--text-muted)] sm:text-lg sm:leading-8"
+              >
+                Studio-grade DSP, live streaming, and recording — on your
+                existing Android device. Zero latency, zero subscriptions, zero
+                Google dependencies.
+              </p>
+
+              <!-- Audience chips — below H1 so it's not the first fixation -->
               <div
-                class="flex flex-wrap gap-3 font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]"
+                class="flex flex-wrap gap-2 font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]"
               >
                 <span class="panel-chip">Podcasters</span>
                 <span class="panel-chip">Streamers</span>
-                <span class="panel-chip">Content creators</span>
                 <span class="panel-chip">Musicians</span>
-              </div>
-
-              <div class="space-y-4">
-                <h1
-                  class="max-w-2xl text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl"
-                >
-                  Professional mixing on Android. No laptop required.
-                </h1>
-
-                <p class="max-w-xl text-lg leading-8 text-[var(--text-muted)]">
-                  A full mixer, DSP chain, and streaming setup — running
-                  standalone on Android. No laptop, no Google account, no
-                  subscriptions. Built solo over 7 years.
-                </p>
+                <span class="panel-chip">Content creators</span>
               </div>
             </div>
 
-            <!-- Hero email capture -->
+            <!-- Hero email capture — visible above fold on mobile -->
             <div class="space-y-3">
-              <form
-                class="flex flex-col gap-3 sm:flex-row sm:items-start"
-                @submit.prevent="heroJoinWaitlist"
-              >
-                <div class="flex-1">
-                  <UInput
-                    v-model="heroEmail"
-                    type="email"
-                    size="xl"
-                    variant="outline"
-                    placeholder="enter your email"
-                    class="w-full"
-                    :ui="{
-                      base: 'rounded-md bg-black/30 border-white/12 text-white placeholder:text-slate-500',
-                    }"
-                  />
-                </div>
-                <UButton
-                  type="submit"
-                  size="xl"
-                  color="primary"
-                  class="shrink-0 rounded-md px-6"
-                  :loading="heroLoading"
+              <!-- Credibility line adjacent to form -->
+              <p class="text-sm text-[var(--text-muted)]">
+                <span class="font-medium text-[var(--text-secondary)]"
+                  >7 years in development.</span
                 >
-                  Get early access
-                </UButton>
-              </form>
+                Built solo in Lebanon. Beta coming soon.
+              </p>
+
+              <div role="group" aria-labelledby="hero-form-label">
+                <p id="hero-form-label" class="sr-only">
+                  Join the MixDroid early access waitlist
+                </p>
+                <form
+                  class="flex flex-col gap-3 sm:flex-row sm:items-end"
+                  @submit.prevent="heroJoinWaitlist"
+                >
+                  <div class="flex-1">
+                    <label
+                      for="hero-email"
+                      class="mb-1.5 block font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]"
+                    >
+                      Email address
+                    </label>
+                    <UInput
+                      id="hero-email"
+                      v-model="heroEmail"
+                      type="email"
+                      autocomplete="email"
+                      size="xl"
+                      variant="outline"
+                      placeholder="you@example.com"
+                      class="w-full"
+                      :ui="{
+                        base: 'rounded-md bg-black/30 border-white/12 text-white placeholder:text-slate-500 min-h-[44px]',
+                      }"
+                    />
+                  </div>
+                  <UButton
+                    type="submit"
+                    size="xl"
+                    color="primary"
+                    class="min-h-[44px] shrink-0 rounded-md px-6 font-semibold"
+                    :loading="heroLoading"
+                  >
+                    Get early access
+                  </UButton>
+                </form>
+              </div>
 
               <p
                 v-if="heroSubmitted"
                 class="text-sm font-medium text-[var(--accent-cyan)]"
+                role="status"
               >
                 ✓ You're on the list. We'll be in touch before launch.
               </p>
               <p
                 v-else-if="heroError"
                 class="text-sm font-medium text-[var(--warning-pink)]"
+                role="alert"
               >
                 {{ heroError }}
               </p>
               <p v-else class="text-sm text-[var(--text-dim)]">
-                No spam. Launch updates only.
+                Free to join. No payment required. No spam — launch updates
+                only.
               </p>
             </div>
 
-            <div class="grid gap-3 sm:grid-cols-3">
+            <!-- Stats -->
+            <div class="grid grid-cols-3 gap-3">
               <div class="console-stat">
                 <p class="console-stat__label">Latency</p>
                 <p class="console-stat__value">Ultra-low DSP</p>
@@ -315,62 +310,98 @@ useSeoMeta({
               </div>
               <div class="console-stat">
                 <p class="console-stat__label">Platform</p>
-                <p class="console-stat__value">Android standalone</p>
+                <p class="console-stat__value">Android</p>
               </div>
             </div>
           </div>
 
-          <!-- Hero image -->
-          <button
-            type="button"
-            class="group rounded-xl border border-[var(--panel-line)] bg-[var(--panel-bg)] p-4 text-left transition hover:border-[var(--accent-cyan)]/45 hover:shadow-[0_0_32px_rgba(0,229,255,0.08)]"
-            @click="openImage(heroImage)"
-          >
-            <div class="mb-4 flex items-center justify-between gap-4">
-              <div>
+          <!-- Right: app screenshot (hidden on mobile so form stays above fold) -->
+          <div class="hidden lg:block">
+            <button
+              type="button"
+              aria-label="Open full-size EQ screenshot"
+              class="group w-full rounded-xl border border-[var(--panel-line)] bg-[var(--panel-bg)] p-4 text-left transition hover:border-[var(--accent-cyan)]/45 hover:shadow-[0_0_32px_rgba(0,229,255,0.08)]"
+              @click="openImage(heroImage)"
+            >
+              <div class="mb-3 flex items-center justify-between gap-4">
                 <p
                   class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]"
                 >
-                  Interface
+                  {{ heroImage.alt }}
                 </p>
-                <p class="mt-2 text-sm text-[var(--text-muted)]">
-                  Main mixer view
-                </p>
+                <div class="meter-stack" aria-hidden="true">
+                  <span /><span /><span /><span />
+                </div>
               </div>
-            </div>
-
-            <img
-              :src="heroImage.src"
-              :alt="heroImage.alt"
-              width="800"
-              height="480"
-              class="aspect-[1024/480] w-full rounded-lg border border-white/10 bg-black object-cover transition group-hover:scale-[1.01]"
-            />
-
-            <div class="mt-4 flex items-center justify-between gap-4">
-              <p class="text-sm text-[var(--text-secondary)]">
-                {{ heroImage.caption }}
-              </p>
+              <img
+                src="/images/Mixer.jpg"
+                alt="Early concept render — not the final hardware design."
+                width="1024"
+                height="600"
+                fetchpriority="high"
+                class="aspect-[1024/600] w-full rounded-lg border border-white/10 bg-black object-cover transition group-hover:scale-[1.01]"
+              />
               <p
-                class="shrink-0 font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--text-dim)]"
+                class="mt-2 text-right font-mono text-[10px] uppercase tracking-[0.28em] text-[var(--text-dim)]"
               >
-                Click to expand
+                Tap to expand ↗
               </p>
-            </div>
-          </button>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Video -->
+      <section class="border-b border-white/8" aria-labelledby="video-heading">
+        <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
+          <div class="mb-8 space-y-3">
+            <p
+              class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+            >
+              See it in action
+            </p>
+            <h2
+              id="video-heading"
+              class="text-3xl font-semibold tracking-tight text-white sm:text-4xl"
+            >
+              Watch the mixer run.
+            </h2>
+            <p class="max-w-prose text-base leading-7 text-[var(--text-muted)]">
+              Real-time EQ, compression, and streaming — running standalone on
+              Android. No laptop anywhere in the signal chain.
+            </p>
+          </div>
+
+          <div
+            class="aspect-video w-full overflow-hidden rounded-xl border border-[var(--panel-line)]"
+          >
+            <iframe
+              class="h-full w-full"
+              src="https://www.youtube.com/embed/QNN6lykvKOQ"
+              title="MixDroid demo — standalone Android mixer"
+              frameborder="0"
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            />
+          </div>
         </div>
       </section>
 
       <!-- ── Explainer -->
-      <section class="border-b border-white/8">
+      <section
+        class="border-b border-white/8"
+        aria-labelledby="explainer-heading"
+      >
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
-          <!-- Three-column cards -->
+          <h2 id="explainer-heading" class="sr-only">What is MixDroid</h2>
           <div class="grid gap-5 md:grid-cols-3">
             <!-- What is it -->
             <div class="console-panel rounded-xl p-6 space-y-4">
               <div class="flex items-center gap-3">
                 <div
                   class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-[var(--panel-line)] bg-[var(--panel-bg-strong)]"
+                  aria-hidden="true"
                 >
                   <svg
                     width="14"
@@ -394,13 +425,12 @@ useSeoMeta({
               <h3 class="text-xl font-semibold text-white">
                 A professional audio mixer — running on Android.
               </h3>
-              <p class="text-sm leading-7 text-[var(--text-muted)]">
+              <p class="max-w-prose text-sm leading-7 text-[var(--text-muted)]">
                 MixDroid is a full digital mixing console on a standalone
-                Android device. Think of every knob, fader, and effect you'd
-                find in a studio — EQ, compression, reverb, delay — running
-                natively on hardware you can hold in your hands. No laptop, no
-                audio interface driver hell, no subscription unlocking the
-                features you actually need.
+                Android device. Every knob, fader, and effect you'd find in a
+                studio — EQ, compression, reverb, delay — running natively. No
+                laptop, no audio interface driver hell, no subscription
+                unlocking features you need.
               </p>
             </div>
 
@@ -409,6 +439,7 @@ useSeoMeta({
               <div class="flex items-center gap-3">
                 <div
                   class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-[var(--panel-line)] bg-[var(--panel-bg-strong)]"
+                  aria-hidden="true"
                 >
                   <svg
                     width="14"
@@ -431,13 +462,12 @@ useSeoMeta({
               <h3 class="text-xl font-semibold text-white">
                 Your whole studio in one device.
               </h3>
-              <p class="text-sm leading-7 text-[var(--text-muted)]">
-                Podcasters can walk into any room and be live in under two
-                minutes. Streamers get a hardware mixer without the hardware
-                price tag. Musicians get real DSP — not a mobile app pretending
-                to be one. And because it runs Android, you can install apps,
-                browse the web, and manage your content workflow all from the
-                same screen you're mixing on.
+              <p class="max-w-prose text-sm leading-7 text-[var(--text-muted)]">
+                Podcasters can walk into any room and be live in two minutes.
+                Streamers get a hardware mixer without the hardware price tag.
+                Musicians get real DSP — not a mobile app pretending to be one.
+                Because it runs Android, you can install apps and manage your
+                content workflow from the same screen you're mixing on.
               </p>
             </div>
 
@@ -446,6 +476,7 @@ useSeoMeta({
               <div class="flex items-center gap-3">
                 <div
                   class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-[var(--panel-line)] bg-[var(--panel-bg-strong)]"
+                  aria-hidden="true"
                 >
                   <svg
                     width="14"
@@ -470,62 +501,80 @@ useSeoMeta({
               <h3 class="text-xl font-semibold text-white">
                 Not a port. Not a companion app. The whole thing.
               </h3>
-              <ul class="space-y-3">
+              <ul class="space-y-3" role="list">
                 <li
                   class="flex items-start gap-3 text-sm leading-6 text-[var(--text-muted)]"
                 >
-                  <span class="mt-1 shrink-0 text-[var(--accent-cyan)]">→</span>
+                  <span
+                    class="mt-1 shrink-0 text-[var(--accent-cyan)]"
+                    aria-hidden="true"
+                    >→</span
+                  >
                   <span
                     ><span class="font-medium text-[var(--text-secondary)]"
                       >Android ecosystem inside the mixer.</span
                     >
-                    Install F-Droid, NewPipe, Kodi, or any open-source app.
-                    Request custom tools built for your workflow.</span
+                    Install F-Droid, NewPipe, Kodi, or request custom tools
+                    built for your workflow.</span
                   >
                 </li>
                 <li
                   class="flex items-start gap-3 text-sm leading-6 text-[var(--text-muted)]"
                 >
-                  <span class="mt-1 shrink-0 text-[var(--accent-cyan)]">→</span>
+                  <span
+                    class="mt-1 shrink-0 text-[var(--accent-cyan)]"
+                    aria-hidden="true"
+                    >→</span
+                  >
                   <span
                     ><span class="font-medium text-[var(--text-secondary)]"
                       >Truly standalone.</span
                     >
-                    No laptop in the chain. No cloud round-trips. DSP runs
-                    on-device with near-zero latency whether you're online or
-                    not.</span
+                    No laptop, no cloud round-trips. DSP runs on-device whether
+                    you're online or not.</span
                   >
                 </li>
                 <li
                   class="flex items-start gap-3 text-sm leading-6 text-[var(--text-muted)]"
                 >
-                  <span class="mt-1 shrink-0 text-[var(--accent-cyan)]">→</span>
+                  <span
+                    class="mt-1 shrink-0 text-[var(--accent-cyan)]"
+                    aria-hidden="true"
+                    >→</span
+                  >
                   <span
                     ><span class="font-medium text-[var(--text-secondary)]"
                       >Flexible routing + professional DSP.</span
                     >
                     Per-channel effects chain, sidechain compression,
-                    multi-interface routing — the controls you'd expect from a
-                    desktop DAW, not a mobile app.</span
+                    multi-interface routing — desktop DAW controls, not a mobile
+                    app.</span
                   >
                 </li>
                 <li
                   class="flex items-start gap-3 text-sm leading-6 text-[var(--text-muted)]"
                 >
-                  <span class="mt-1 shrink-0 text-[var(--accent-cyan)]">→</span>
+                  <span
+                    class="mt-1 shrink-0 text-[var(--accent-cyan)]"
+                    aria-hidden="true"
+                    >→</span
+                  >
                   <span
                     ><span class="font-medium text-[var(--text-secondary)]"
                       >No Google, anywhere.</span
                     >
-                    No Google account, no Play Store, no Firebase, no telemetry.
-                    MixDroid is distributed outside Google's ecosystem entirely
-                    — you own the install, and nothing phones home.</span
+                    No account, no Play Store, no Firebase, no telemetry.
+                    Distributed outside Google's ecosystem entirely.</span
                   >
                 </li>
                 <li
                   class="flex items-start gap-3 text-sm leading-6 text-[var(--text-muted)]"
                 >
-                  <span class="mt-1 shrink-0 text-[var(--accent-cyan)]">→</span>
+                  <span
+                    class="mt-1 shrink-0 text-[var(--accent-cyan)]"
+                    aria-hidden="true"
+                    >→</span
+                  >
                   <span
                     ><span class="font-medium text-[var(--text-secondary)]"
                       >No subscriptions, ever.</span
@@ -539,74 +588,11 @@ useSeoMeta({
           </div>
         </div>
       </section>
-
-      <!-- ── Video -->
-      <section class="border-b border-white/8">
-        <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
-          <div class="mb-8 space-y-3">
-            <p
-              class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
-            >
-              See it in action
-            </p>
-            <h2
-              class="text-3xl font-semibold tracking-tight text-white sm:text-4xl"
-            >
-              Watch the mixer run.
-            </h2>
-            <p class="max-w-2xl text-base leading-7 text-[var(--text-muted)]">
-              Real-time EQ, compression, and streaming — running standalone on
-              Android. No laptop anywhere in the signal chain.
-            </p>
-          </div>
-          <div
-            class="aspect-video w-full overflow-hidden rounded-xl border border-[var(--panel-line)]"
-          >
-            <iframe
-              class="h-full w-full"
-              src="https://www.youtube.com/embed/QNN6lykvKOQ"
-              title="MixDroid demo"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            />
-          </div>
-          <!--
-            ── Video slot ───────────────────────────────────────────────────
-            Option A — YouTube embed (recommended):
-              Replace the placeholder div below with:
-             
-
-            Option B — self-hosted video file (e.g. /videos/demo.mp4):
-             -->
-          <!-- <video
-                class="w-full rounded-xl border border-[var(--panel-line)]"
-                controls
-                preload="none"
-                poster="/images/poster.png"
-              >
-                <source src="/videos/demo.mp4" type="video/mp4" />
-              </video> -->
-
-          <!-- Placeholder — remove this block once video is ready -->
-          <!-- <div
-            class="console-panel flex aspect-video w-full flex-col items-center justify-center gap-4 rounded-xl border-dashed"
-          >
-            <div class="flex h-14 w-14 items-center justify-center rounded-full border border-[var(--panel-line)] bg-[var(--panel-bg-strong)]">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                <polygon points="6,3 20,12 6,21" fill="var(--accent-cyan)" opacity="0.85"/>
-              </svg>
-            </div>
-            <div class="text-center">
-              <p class="text-sm font-medium text-[var(--text-secondary)]">Demo video coming soon</p>
-            
-            </div>
-          </div> -->
-        </div>
-      </section>
-
-      <!-- ── Features ───────────────────────────────────────────────────── -->
-      <section class="border-b border-white/8">
+      <!-- ── Features -->
+      <section
+        class="border-b border-white/8"
+        aria-labelledby="features-heading"
+      >
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div class="mb-10 space-y-3">
             <p
@@ -615,14 +601,14 @@ useSeoMeta({
               What's inside
             </p>
             <h2
+              id="features-heading"
               class="max-w-3xl text-3xl font-semibold tracking-tight text-white sm:text-4xl"
             >
               Everything a content creator needs. Nothing they don't.
             </h2>
-            <p class="max-w-2xl text-base leading-7 text-[var(--text-muted)]">
+            <p class="max-w-prose text-base leading-7 text-[var(--text-muted)]">
               MixDroid ships with the tools that matter for real shows — built
-              tight, with no bloat and no upsells hiding features behind a
-              paywall.
+              tight, no bloat, no upsells hiding features behind a paywall.
             </p>
           </div>
 
@@ -634,6 +620,7 @@ useSeoMeta({
             >
               <p
                 class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--warning-pink)]"
+                aria-hidden="true"
               >
                 {{ feature.id }}
               </p>
@@ -668,16 +655,16 @@ useSeoMeta({
                   More.
                 </h2>
                 <p
-                  class="max-w-xl text-base leading-7 text-[var(--text-muted)]"
+                  class="max-w-prose text-base leading-7 text-[var(--text-muted)]"
                 >
                   Every screen, every control, every parameter — documented with
                   real screenshots from the app. See exactly what you're getting
-                  before the app ships.
+                  before it ships.
                 </p>
               </div>
               <NuxtLink
                 to="/features"
-                class="shrink-0 rounded-md bg-[var(--accent-cyan)] px-6 py-3 text-sm font-semibold text-black transition hover:opacity-90"
+                class="inline-flex min-h-[44px] shrink-0 items-center justify-center rounded-md bg-[var(--accent-cyan)] px-6 text-sm font-semibold text-black transition hover:opacity-90"
               >
                 See all features →
               </NuxtLink>
@@ -686,8 +673,11 @@ useSeoMeta({
         </div>
       </section>
 
-      <!-- ── Screens / DSP showcase ─────────────────────────────────────── -->
-      <section class="border-b border-white/8">
+      <!-- ── DSP screens -->
+      <section
+        class="border-b border-white/8"
+        aria-labelledby="screens-heading"
+      >
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div class="mb-8 max-w-3xl space-y-4">
             <p
@@ -696,11 +686,12 @@ useSeoMeta({
               DSP screens
             </p>
             <h2
+              id="screens-heading"
               class="text-3xl font-semibold tracking-tight text-white sm:text-4xl"
             >
               Professional-grade processing, built for Android.
             </h2>
-            <p class="text-base leading-8 text-[var(--text-muted)]">
+            <p class="max-w-prose text-base leading-8 text-[var(--text-muted)]">
               Every DSP module is purpose-built — not ported, not approximated.
               The same parametric EQ and compression you'd expect from desktop
               production tools, running natively on your device.
@@ -712,52 +703,40 @@ useSeoMeta({
               v-for="(image, index) in showcaseImages"
               :key="image.src"
               type="button"
+              :aria-label="`Open full-size screenshot: ${image.alt}`"
               class="console-panel group w-full rounded-xl p-4 text-left transition hover:border-[var(--accent-cyan)]/45 hover:shadow-[0_0_26px_rgba(0,229,255,0.07)]"
               @click="openImage(image)"
             >
               <div
-                :class="
-                  index % 2 === 0
-                    ? 'lg:grid-cols-[minmax(0,1fr)_22rem]'
-                    : 'lg:grid-cols-[22rem_minmax(0,1fr)]'
-                "
-                class="grid gap-5 lg:items-center"
+                class="flex flex-col gap-5 lg:items-center"
+                :class="index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'"
               >
-                <div :class="index % 2 === 0 ? 'order-1' : 'order-2'">
+                <div class="w-full lg:flex-1">
                   <img
                     :src="image.src"
                     :alt="image.alt"
                     width="1024"
                     height="600"
+                    loading="lazy"
                     class="aspect-[1024/600] w-full rounded-lg border border-white/10 bg-black object-cover transition group-hover:scale-[1.01]"
                   />
                 </div>
-
-                <div
-                  :class="
-                    index % 2 === 0
-                      ? 'order-2 justify-self-start'
-                      : 'order-1 justify-self-start'
-                  "
-                  class="w-full max-w-none space-y-3 lg:max-w-[22rem]"
-                >
+                <div class="w-full space-y-3 lg:w-80 lg:shrink-0">
                   <p
                     class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]"
                   >
                     Screen {{ index + 1 }}
                   </p>
-                  <p class="text-lg font-medium text-white">
-                    {{ image.alt }}
-                  </p>
+                  <p class="text-lg font-medium text-white">{{ image.alt }}</p>
                   <p
                     class="whitespace-pre-line text-sm leading-7 text-[var(--text-muted)]"
                   >
                     {{ image.caption }}
                   </p>
                   <p
-                    class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--text-dim)]"
+                    class="font-mono text-[10px] uppercase tracking-[0.3em] text-[var(--text-dim)]"
                   >
-                    Click to expand
+                    Tap to expand ↗
                   </p>
                 </div>
               </div>
@@ -766,8 +745,8 @@ useSeoMeta({
         </div>
       </section>
 
-      <!-- ── Story / solo builder ───────────────────────────────────────── -->
-      <section class="border-b border-white/8">
+      <!-- ── Story -->
+      <section class="border-b border-white/8" aria-labelledby="story-heading">
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
             <div class="space-y-4">
@@ -777,24 +756,28 @@ useSeoMeta({
                 The backstory
               </p>
               <h2
+                id="story-heading"
                 class="text-3xl font-semibold tracking-tight text-white sm:text-4xl"
               >
                 7 years. One developer. Built from Lebanon.
               </h2>
-              <p class="text-base leading-8 text-[var(--text-muted)]">
+              <p
+                class="max-w-prose text-base leading-8 text-[var(--text-muted)]"
+              >
                 MixDroid started as a personal frustration — why does
                 professional audio mixing still need a laptop? After 7 years of
                 solo development, the answer is an Android-native mixer that
                 covers the full workflow: DSP processing, live streaming,
                 recording, and internet radio, completely offline if needed.
               </p>
-              <p class="text-base leading-8 text-[var(--text-muted)]">
+              <p
+                class="max-w-prose text-base leading-8 text-[var(--text-muted)]"
+              >
                 No VC money, no team, no shortcuts. Every DSP algorithm, every
                 screen, every edge case — built and tested by one person who
                 uses the tool themselves.
               </p>
             </div>
-
             <div class="grid grid-cols-2 gap-4">
               <div class="console-stat col-span-2">
                 <p class="console-stat__label">Development time</p>
@@ -813,8 +796,8 @@ useSeoMeta({
         </div>
       </section>
 
-      <!-- ── Waitlist ────────────────────────────────────────────────────── -->
-      <section>
+      <!-- ── Waitlist -->
+      <section aria-labelledby="waitlist-heading">
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div
             class="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]"
@@ -826,26 +809,38 @@ useSeoMeta({
                 Early access
               </p>
               <h2
+                id="waitlist-heading"
                 class="text-3xl font-semibold tracking-tight text-white sm:text-4xl"
               >
                 Be first to know when MixDroid ships.
               </h2>
-              <p class="max-w-2xl text-base leading-8 text-[var(--text-muted)]">
-                Drop your email and we'll reach out when the app is ready for
-                release — including beta access, technical previews, and launch
-                pricing for early supporters.
+              <p
+                class="max-w-prose text-base leading-8 text-[var(--text-muted)]"
+              >
+                Drop your email and we'll reach out when the app is ready —
+                including beta access, technical previews, and launch pricing
+                for early supporters.
               </p>
-              <ul class="space-y-2 text-sm text-[var(--text-muted)]">
+              <ul
+                class="space-y-2 text-sm text-[var(--text-muted)]"
+                role="list"
+              >
                 <li class="flex items-center gap-2">
-                  <span class="text-[var(--accent-cyan)]">→</span>
+                  <span class="text-[var(--accent-cyan)]" aria-hidden="true"
+                    >→</span
+                  >
                   Beta access before public launch
                 </li>
                 <li class="flex items-center gap-2">
-                  <span class="text-[var(--accent-cyan)]">→</span>
+                  <span class="text-[var(--accent-cyan)]" aria-hidden="true"
+                    >→</span
+                  >
                   Technical previews and DSP deep-dives
                 </li>
                 <li class="flex items-center gap-2">
-                  <span class="text-[var(--accent-cyan)]">→</span>
+                  <span class="text-[var(--accent-cyan)]" aria-hidden="true"
+                    >→</span
+                  >
                   Early supporter pricing
                 </li>
               </ul>
@@ -853,51 +848,54 @@ useSeoMeta({
 
             <div class="console-panel rounded-xl p-5 sm:p-6">
               <form class="space-y-4" @submit.prevent="joinWaitlist">
-                <label class="block">
-                  <span
+                <div>
+                  <label
+                    for="waitlist-email"
                     class="mb-2 block font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]"
                   >
-                    Your email
-                  </span>
+                    Email address
+                  </label>
                   <UInput
+                    id="waitlist-email"
                     v-model="email"
                     type="email"
+                    autocomplete="email"
                     size="xl"
                     variant="outline"
-                    placeholder="enter your email"
+                    placeholder="you@example.com"
                     class="w-full"
                     :ui="{
-                      base: 'rounded-md bg-black/30 border-white/12 text-white placeholder:text-slate-500',
+                      base: 'rounded-md bg-black/30 border-white/12 text-white placeholder:text-slate-500 min-h-[44px]',
                     }"
                   />
-                </label>
+                </div>
 
                 <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
                   <UButton
                     type="submit"
                     size="lg"
                     color="primary"
-                    class="rounded-md px-5"
+                    class="min-h-[44px] rounded-md px-5 font-semibold"
                     :loading="loading"
                   >
                     Get early access
                   </UButton>
-
                   <p class="text-sm text-[var(--text-dim)]">
-                    No spam. Launch updates only.
+                    Free to join. No payment required.
                   </p>
                 </div>
 
                 <p
                   v-if="submitted"
                   class="text-sm font-medium text-[var(--accent-cyan)]"
+                  role="status"
                 >
                   ✓ You're on the list. We'll be in touch before launch.
                 </p>
-
                 <p
                   v-else-if="errorMessage"
                   class="text-sm font-medium text-[var(--warning-pink)]"
+                  role="alert"
                 >
                   {{ errorMessage }}
                 </p>
@@ -910,7 +908,7 @@ useSeoMeta({
 
     <AppFooter />
 
-    <!-- ── Image modal ────────────────────────────────────────────────────── -->
+    <!-- ── Image modal -->
     <Teleport to="body">
       <Transition
         enter-active-class="transition duration-200 ease-out"
@@ -922,19 +920,20 @@ useSeoMeta({
       >
         <div
           v-if="isImageModalOpen"
-          class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8"
+          class="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 sm:items-center sm:p-8"
           style="background: rgba(8, 8, 12, 0.96); backdrop-filter: blur(6px)"
+          role="dialog"
+          aria-modal="true"
+          :aria-label="selectedImage?.alt"
           @click.self="isImageModalOpen = false"
         >
-          <!-- modal card — clicks here don't propagate to the backdrop -->
           <div
-            class="relative w-full max-w-6xl rounded-xl border border-[var(--panel-line)] bg-[var(--panel-bg)] shadow-[0_0_60px_rgba(0,0,0,0.6)]"
+            class="relative my-auto w-full max-w-4xl rounded-xl border border-[var(--panel-line)] bg-[var(--panel-bg)] shadow-[0_0_60px_rgba(0,0,0,0.6)]"
             @click.stop
           >
-            <!-- zoomable image wrapper -->
             <div
               class="overflow-auto rounded-t-xl"
-              style="max-height: 78vh; cursor: zoom-in"
+              style="max-height: 70vh"
               @click="modalZoomed = !modalZoomed"
             >
               <img
@@ -944,18 +943,16 @@ useSeoMeta({
                 :class="[
                   'block rounded-t-xl transition-all duration-300 ease-in-out',
                   modalZoomed
-                    ? 'w-[180%] max-w-none cursor-zoom-out'
+                    ? 'w-[200%] max-w-none cursor-zoom-out'
                     : 'w-full cursor-zoom-in object-contain',
                 ]"
               />
             </div>
-
-            <!-- caption -->
             <div
               v-if="selectedImage"
-              class="flex items-start justify-between gap-4 border-t border-[var(--panel-line)] px-5 py-4"
+              class="flex flex-col gap-3 border-t border-[var(--panel-line)] px-4 py-4 sm:flex-row sm:items-start sm:justify-between sm:gap-4 sm:px-5"
             >
-              <div>
+              <div class="min-w-0">
                 <p class="text-sm font-semibold text-white">
                   {{ selectedImage.alt }}
                 </p>
