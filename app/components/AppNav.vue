@@ -8,6 +8,7 @@ const links = [
   { label: "Home", to: "/" },
   { label: "Features", to: "/features" },
   { label: "About", to: "/about" },
+  { label: "Privacy", to: "/privacy" },
 ];
 
 // ── Update these URLs when your accounts are live ──────────────────────────
