@@ -10,18 +10,14 @@ const loading = ref(false);
 const submitted = ref(false);
 const errorMessage = ref("");
 
-const heroEmail = ref("");
-const heroLoading = ref(false);
-const heroSubmitted = ref(false);
-const heroError = ref("");
 const selectedImage = ref<ShowcaseImage | null>(null);
 const isImageModalOpen = ref(false);
 const modalZoomed = ref(false);
 
 const heroImage: ShowcaseImage = {
   src: "/images/Mixer.jpg",
-  alt: "MixDroid hardware concept render — early prototype, not final design",
-  caption: "Early concept render — not the final hardware design.",
+  alt: "MixDroid — hardware concept render, production design in progress",
+  caption: "",
 };
 
 const features = [
@@ -54,7 +50,7 @@ const features = [
 const showcaseImages: ShowcaseImage[] = [
   {
     src: "/images/eq.png",
-    alt: "MixDroid parametric EQ interface on Android",
+    alt: "MixDroid parametric EQ interface on Android — 5-band controls with FFT analyser",
     caption: `• 5 bands with full parametric control.
 • Pre-gain and per-band solo.
 • ±24 dB gain, Q-factor 0.707–1.8.
@@ -64,7 +60,7 @@ const showcaseImages: ShowcaseImage[] = [
   },
   {
     src: "/images/compressor.png",
-    alt: "MixDroid stereo compressor interface on Android",
+    alt: "MixDroid stereo compressor interface on Android — threshold, ratio, attack, release controls",
     caption: `• Stereo-linked feed-forward compressor.
 • Threshold, ratio up to 20:1, attack 1–100 ms, release 1–10,000 ms.
 • Sidechain input support.
@@ -106,33 +102,12 @@ async function joinWaitlist() {
   }
 }
 
-async function heroJoinWaitlist() {
-  heroError.value = "";
-  if (!heroEmail.value.trim()) {
-    heroError.value = "Please enter your email address.";
-    return;
-  }
-  heroLoading.value = true;
-  try {
-    await $fetch("/api/waitlist", { method: "POST", body: { email: heroEmail.value } });
-    heroSubmitted.value = true;
-    heroEmail.value = "";
-  } catch (error: unknown) {
-    const fetchError = error as { data?: { statusMessage?: string } };
-    heroError.value =
-      fetchError?.data?.statusMessage ?? "Something went wrong. Please try again.";
-  } finally {
-    heroLoading.value = false;
-  }
-}
-
-// ── Structured data ────────────────────────────────────────────────────────
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   name: "MixDroid",
   operatingSystem: "Android",
-  applicationCategory: "MultimediaApplication",
+  applicationCategory: "MusicApplication",
   featureList: [
     "Real-time parametric EQ with FFT spectrum analyser",
     "Stereo compressor with sidechain support",
@@ -144,7 +119,7 @@ const jsonLd = {
     "No Google dependencies",
   ],
   description:
-    "Standalone Android mixer with real-time DSP effects, live streaming, recording, and internet radio. No laptop required.",
+    "Standalone Android mixer with real-time DSP, streaming, and recording. No laptop required. USB audio interface required.",
   url: "https://mixdroid-web.vercel.app",
   author: {
     "@type": "Person",
@@ -164,9 +139,9 @@ const jsonLd = {
 };
 
 useSeoMeta({
-  title: "MixDroid | Android Mixer for Podcasters & Streamers",
+  title: "MixDroid | Android Mixer for Podcasters & Streamers [Beta]",
   description:
-    "Standalone Android mixer with real-time DSP, live streaming, and recording. No laptop. No subscriptions. Requires USB audio interface.",
+    "Join the MixDroid beta: a standalone Android mixer with real-time DSP, streaming, and recording. No laptop or subscriptions. USB audio interface required.",
   ogTitle: "MixDroid | Android Mixer for Podcasters & Streamers",
   ogDescription:
     "Real-time DSP, streaming, recording, and radio — all on Android. No laptop required. Built solo over 7 years.",
@@ -177,7 +152,7 @@ useSeoMeta({
 useHead({
   link: [
     { rel: "canonical", href: "https://mixdroid-web.vercel.app/" },
-    { rel: "preload", as: "image", href: "/images/eq.png" },
+    { rel: "preload", as: "image", href: "/images/Mixer.jpg" },
   ],
   script: [
     { type: "application/ld+json", innerHTML: JSON.stringify(jsonLd) },
@@ -191,11 +166,10 @@ useHead({
     <main id="main-content">
 
       <!-- ── Hero -->
-      <!-- Right column hidden on mobile — form stays above fold -->
       <section class="border-b border-white/8" aria-labelledby="hero-heading">
         <div class="mx-auto max-w-7xl grid gap-10 px-6 py-10 sm:px-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:px-10 lg:py-20">
 
-          <!-- Left: H1 + form — always first on mobile -->
+          <!-- Left: H1 + single form -->
           <div class="flex flex-col gap-6">
 
             <div class="space-y-4">
@@ -203,19 +177,12 @@ useHead({
                 id="hero-heading"
                 class="text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl"
               >
-                Go live from anywhere.<br class="hidden sm:block" />
-                Studio mixer in your pocket.
+                The Android mixer for podcasters and streamers.
               </h1>
 
               <p class="max-w-prose text-base leading-7 text-[var(--text-muted)] sm:text-lg sm:leading-8">
-                Walk into any room and be live in two minutes. Near-zero latency
-                DSP, streaming, and recording — running standalone on Android.
-                No laptop, no audio interface driver hell, no subscriptions.
-              </p>
-
-              <!-- Hardware requirement — stated up front to reduce anxiety -->
-              <p class="text-sm text-[var(--text-dim)]">
-                Requires a USB audio interface. Works completely offline.
+                Go live without a laptop. Near-zero latency DSP and recording
+                that runs entirely offline on Android.
               </p>
 
               <div class="flex flex-wrap gap-2 font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]">
@@ -226,90 +193,117 @@ useHead({
               </div>
             </div>
 
-            <!-- Hero form — visible above fold, no image above it on mobile -->
+            <!-- What you're signing up for — objection handling before the form -->
+            <div class="console-panel rounded-xl p-4 space-y-2">
+              <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">
+                What you're signing up for
+              </p>
+              <ul class="space-y-1.5 text-sm text-[var(--text-muted)]" role="list">
+                <li class="flex items-start gap-2">
+                  <span class="mt-0.5 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
+                  <span>Works on <span class="text-[var(--text-secondary)]">Android 13+</span> with any USB OTG audio interface</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="mt-0.5 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
+                  <span>Beta ships <span class="text-[var(--text-secondary)]">[actual quarter/year]</span> — waitlist gets first access</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="mt-0.5 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
+                  <span>Joining is free — pricing details sent to the list before public launch</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Single waitlist form -->
             <div class="space-y-3">
               <p class="text-sm text-[var(--text-muted)]">
                 <span class="font-medium text-[var(--text-secondary)]">Built by
-                  <a
-                    href="/about"
-                    class="underline underline-offset-2 hover:text-[var(--accent-cyan)] transition"
-                  >Joe Kaikaty</a>
+                  <NuxtLink
+                    to="/about"
+                    class="underline underline-offset-2 transition hover:text-[var(--accent-cyan)]"
+                  >Joe Kaikaty</NuxtLink>
                 </span>
-                — 7 years solo in Lebanon. Beta coming soon.
+                — 7 years solo in Lebanon.
               </p>
 
-              <div role="group" aria-labelledby="hero-form-label">
-                <p id="hero-form-label" class="sr-only">Join the MixDroid early access waitlist</p>
-                <form
-                  class="flex flex-col gap-3 sm:flex-row sm:items-end"
-                  @submit.prevent="heroJoinWaitlist"
-                >
-                  <div class="flex-1">
-                    <label
-                      for="hero-email"
-                      class="mb-1.5 block font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]"
-                    >
-                      Email address
-                    </label>
-                    <UInput
-                      id="hero-email"
-                      v-model="heroEmail"
-                      type="email"
-                      autocomplete="email"
-                      size="xl"
-                      variant="outline"
-                      placeholder="you@example.com"
-                      class="w-full"
-                      :ui="{
-                        base: 'rounded-md bg-black/30 border-white/12 text-white placeholder:text-slate-500 min-h-[44px] text-base',
-                      }"
-                    />
-                  </div>
-                  <UButton
-                    type="submit"
-                    size="xl"
-                    color="primary"
-                    class="min-h-[44px] shrink-0 rounded-md px-6 font-semibold text-black"
-                    :loading="heroLoading"
+              <form
+                class="flex flex-col gap-3 sm:flex-row sm:items-end"
+                @submit.prevent="joinWaitlist"
+              >
+                <div class="flex-1">
+                  <label
+                    for="hero-email"
+                    class="mb-1.5 block font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]"
                   >
-                    Get early access
-                  </UButton>
-                </form>
-              </div>
+                    Email address
+                  </label>
+                  <UInput
+                    id="hero-email"
+                    v-model="email"
+                    type="email"
+                    autocomplete="email"
+                    size="xl"
+                    variant="outline"
+                    placeholder="you@example.com"
+                    class="w-full"
+                    :ui="{
+                      base: 'rounded-md bg-black/30 border-white/12 text-white placeholder:text-slate-500 min-h-[44px] text-base',
+                    }"
+                  />
+                </div>
+                <UButton
+                  type="submit"
+                  size="xl"
+                  color="primary"
+                  class="min-h-[44px] shrink-0 rounded-md px-6 font-semibold text-black"
+                  :loading="loading"
+                >
+                  Join the beta waitlist
+                </UButton>
+              </form>
 
               <p
-                v-if="heroSubmitted"
+                v-if="submitted"
                 class="text-sm font-medium text-[var(--accent-cyan)]"
                 role="status"
               >
                 ✓ You're on the list. We'll be in touch before launch.
               </p>
               <p
-                v-else-if="heroError"
+                v-else-if="errorMessage"
                 class="text-sm font-medium text-[var(--warning-pink)]"
                 role="alert"
               >
-                {{ heroError }}
+                {{ errorMessage }}
               </p>
-              <p v-else class="text-sm text-[var(--text-dim)]">
-                Free to join. No payment required. No spam.
-                <NuxtLink to="/privacy" class="underline underline-offset-2 hover:text-[var(--text-muted)] transition">Privacy policy</NuxtLink>.
-              </p>
+              <div v-else class="flex flex-wrap items-center gap-x-4 gap-y-1">
+                <p class="text-sm text-[var(--text-dim)]">
+                  Free to join. No payment required.
+                  <NuxtLink to="/privacy" class="underline underline-offset-2 transition hover:text-[var(--text-muted)]">Privacy policy</NuxtLink>.
+                </p>
+                <!-- Secondary anchor CTA for visitors who need more proof first -->
+                <a
+                  href="#video"
+                  class="flex min-h-[44px] items-center font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--accent-cyan)] transition hover:opacity-80"
+                >
+                  Watch the demo ↓
+                </a>
+              </div>
             </div>
 
           </div>
 
-          <!-- Right: hardware render — desktop only -->
+          <!-- Right: hardware render — desktop only, no anxiety-inducing caption -->
           <div class="hidden lg:block">
             <button
               type="button"
-              aria-label="Open full-size hardware concept render"
+              aria-label="Open full-size MixDroid concept render"
               class="group w-full rounded-xl border border-[var(--panel-line)] bg-[var(--panel-bg)] p-4 text-left transition hover:border-[var(--accent-cyan)]/45 hover:shadow-[0_0_32px_rgba(0,229,255,0.08)]"
               @click="openImage(heroImage)"
             >
               <div class="mb-3 flex items-center justify-between gap-4">
                 <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]">
-                  Hardware concept render
+                  MixDroid
                 </p>
                 <div class="meter-stack" aria-hidden="true">
                   <span /><span /><span /><span />
@@ -317,15 +311,12 @@ useHead({
               </div>
               <img
                 src="/images/Mixer.jpg"
-                alt="MixDroid hardware concept render — early prototype, not final design"
+                alt="MixDroid — hardware concept render, production design in progress"
                 width="1024"
                 height="600"
                 fetchpriority="high"
                 class="aspect-[1024/600] w-full rounded-lg border border-white/10 bg-black object-cover transition group-hover:scale-[1.01]"
               />
-              <p class="mt-2 text-right font-mono text-[10px] uppercase tracking-[0.28em] text-[var(--text-dim)]">
-                Early concept — production design in progress
-              </p>
             </button>
           </div>
 
@@ -333,7 +324,7 @@ useHead({
       </section>
 
       <!-- ── Video -->
-      <section class="border-b border-white/8" aria-labelledby="video-heading">
+      <section id="video" class="border-b border-white/8" aria-labelledby="video-heading">
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div class="mb-8 space-y-3">
             <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">See it in action</p>
@@ -350,7 +341,7 @@ useHead({
             <iframe
               class="h-full w-full"
               src="https://www.youtube.com/embed/QNN6lykvKOQ"
-              title="MixDroid demo — standalone Android mixer with real-time DSP"
+              title="MixDroid Demo #1 — Standalone Android Mixer with Real-Time DSP"
               frameborder="0"
               loading="lazy"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -376,9 +367,7 @@ useHead({
                 </div>
                 <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">What is it?</p>
               </div>
-              <h3 class="text-xl font-semibold text-white">
-                A real mixer. On Android.
-              </h3>
+              <h3 class="text-xl font-semibold text-white">A real mixer. On Android.</h3>
               <p class="max-w-prose text-sm leading-7 text-[var(--text-muted)]">
                 Not an app that approximates mixing. Not a companion controller.
                 MixDroid is a full digital mixing console — EQ, compression,
@@ -397,15 +386,13 @@ useHead({
                 </div>
                 <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">Why it's interesting</p>
               </div>
-              <h3 class="text-xl font-semibold text-white">
-                Your whole studio in one device.
-              </h3>
+              <h3 class="text-xl font-semibold text-white">Your whole studio in one device.</h3>
               <p class="max-w-prose text-sm leading-7 text-[var(--text-muted)]">
                 Podcasters can walk into any room and be live in two minutes.
                 Streamers get a hardware mixer without the hardware price tag.
                 Musicians get real DSP — not a mobile app pretending to be one.
-                And because it runs Android, you can install apps and manage
-                your content workflow from the same screen you're mixing on.
+                Because it runs Android, you can install apps and manage your
+                content workflow from the same screen you're mixing on.
               </p>
             </div>
 
@@ -419,9 +406,7 @@ useHead({
                 </div>
                 <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">Why it's different</p>
               </div>
-              <h3 class="text-xl font-semibold text-white">
-                The only mixer that runs entirely offline.
-              </h3>
+              <h3 class="text-xl font-semibold text-white">Built to run without the internet.</h3>
               <ul class="space-y-3" role="list">
                 <li class="flex items-start gap-3 text-sm leading-6 text-[var(--text-muted)]">
                   <span class="mt-1 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
@@ -452,12 +437,11 @@ useHead({
           <div class="mb-10 space-y-3">
             <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">What's inside</p>
             <h2 id="features-heading" class="max-w-3xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-              The only mixer that runs entirely offline.
+              No companion app. No cloud processing. No driver setup.
             </h2>
             <p class="max-w-prose text-base leading-7 text-[var(--text-muted)]">
-              No companion app, no cloud processing, no driver setup.
-              Everything runs on the device — including the DSP engine,
-              streaming stack, and recorder.
+              Everything runs on the device — DSP engine, streaming stack, and
+              recorder. Plug in, mix, go live.
             </p>
           </div>
 
@@ -485,8 +469,7 @@ useHead({
                 </h2>
                 <p class="max-w-prose text-base leading-7 text-[var(--text-muted)]">
                   Every screen, every control, every parameter — documented with
-                  real screenshots from the app. See exactly what you're getting
-                  before it ships.
+                  real screenshots from the app.
                 </p>
               </div>
               <NuxtLink
@@ -572,34 +555,31 @@ useHead({
                 No VC money, no team, no shortcuts. Every DSP algorithm, every
                 screen, every edge case — built by one person who uses it themselves.
               </p>
-              <!-- Named founder + verifiable links -->
-              <div class="flex items-center gap-4 pt-2">
-                <div>
-                  <p class="text-sm font-medium text-white">Joe Kaikaty</p>
-                  <div class="mt-1 flex items-center gap-3">
-                    <a
-                      href="https://linkedin.com/in/joekaikaty"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--accent-cyan)] transition hover:opacity-80"
-                    >
-                      LinkedIn ↗
-                    </a>
-                    <a
-                      href="https://github.com/joek85"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--accent-cyan)] transition hover:opacity-80"
-                    >
-                      GitHub ↗
-                    </a>
-                    <NuxtLink
-                      to="/about"
-                      class="font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)] transition hover:text-[var(--text-secondary)]"
-                    >
-                      Full story →
-                    </NuxtLink>
-                  </div>
+              <div class="pt-2">
+                <p class="text-sm font-medium text-white">Joe Kaikaty</p>
+                <div class="mt-1 flex items-center gap-3">
+                  <a
+                    href="https://linkedin.com/in/joekaikaty"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="min-h-[44px] flex items-center font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--accent-cyan)] transition hover:opacity-80"
+                  >
+                    LinkedIn ↗
+                  </a>
+                  <a
+                    href="https://github.com/joek85"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="min-h-[44px] flex items-center font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--accent-cyan)] transition hover:opacity-80"
+                  >
+                    GitHub ↗
+                  </a>
+                  <NuxtLink
+                    to="/about"
+                    class="min-h-[44px] flex items-center font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)] transition hover:text-[var(--text-secondary)]"
+                  >
+                    Full story →
+                  </NuxtLink>
                 </div>
               </div>
             </div>
@@ -617,99 +597,6 @@ useHead({
                 <p class="console-stat__label">Cost to use</p>
                 <p class="console-stat__value">No subscription</p>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ── Waitlist -->
-      <section aria-labelledby="waitlist-heading">
-        <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
-          <div class="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
-            <div class="space-y-4">
-              <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">Early access</p>
-              <h2 id="waitlist-heading" class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                Be first to know when MixDroid ships.
-              </h2>
-              <p class="max-w-prose text-base leading-8 text-[var(--text-muted)]">
-                Drop your email and we'll reach out when the app is ready —
-                beta access, technical previews, and launch pricing for early
-                supporters.
-              </p>
-              <ul class="space-y-2 text-sm text-[var(--text-muted)]" role="list">
-                <li class="flex items-center gap-2">
-                  <span class="text-[var(--accent-cyan)]" aria-hidden="true">→</span>
-                  Beta access before public launch
-                </li>
-                <li class="flex items-center gap-2">
-                  <span class="text-[var(--accent-cyan)]" aria-hidden="true">→</span>
-                  Technical previews and DSP deep-dives
-                </li>
-                <li class="flex items-center gap-2">
-                  <span class="text-[var(--accent-cyan)]" aria-hidden="true">→</span>
-                  Early supporter pricing
-                </li>
-              </ul>
-            </div>
-
-            <div class="console-panel rounded-xl p-5 sm:p-6">
-              <form class="space-y-4" @submit.prevent="joinWaitlist">
-                <div>
-                  <label
-                    for="waitlist-email"
-                    class="mb-2 block font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]"
-                  >
-                    Email address
-                  </label>
-                  <UInput
-                    id="waitlist-email"
-                    v-model="email"
-                    type="email"
-                    autocomplete="email"
-                    size="xl"
-                    variant="outline"
-                    placeholder="you@example.com"
-                    class="w-full"
-                    :ui="{
-                      base: 'rounded-md bg-black/30 border-white/12 text-white placeholder:text-slate-500 min-h-[44px] text-base',
-                    }"
-                  />
-                </div>
-
-                <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
-                  <UButton
-                    type="submit"
-                    size="lg"
-                    color="primary"
-                    class="min-h-[44px] rounded-md px-5 font-semibold text-black"
-                    :loading="loading"
-                  >
-                    Get early access
-                  </UButton>
-                  <p class="text-sm text-[var(--text-dim)]">
-                    Free to join. No payment required.
-                  </p>
-                </div>
-
-                <p
-                  v-if="submitted"
-                  class="text-sm font-medium text-[var(--accent-cyan)]"
-                  role="status"
-                >
-                  ✓ You're on the list. We'll be in touch before launch.
-                </p>
-                <p
-                  v-else-if="errorMessage"
-                  class="text-sm font-medium text-[var(--warning-pink)]"
-                  role="alert"
-                >
-                  {{ errorMessage }}
-                </p>
-                <p v-else class="text-xs text-[var(--text-dim)]">
-                  No spam — launch updates only.
-                  <NuxtLink to="/privacy" class="underline underline-offset-2 hover:text-[var(--text-muted)] transition">Privacy policy</NuxtLink>.
-                </p>
-              </form>
             </div>
           </div>
         </div>
@@ -765,7 +652,10 @@ useHead({
             >
               <div class="min-w-0">
                 <p class="text-sm font-semibold text-white">{{ selectedImage.alt }}</p>
-                <p class="mt-1 whitespace-pre-line text-sm leading-6 text-[var(--text-muted)]">
+                <p
+                  v-if="selectedImage.caption"
+                  class="mt-1 whitespace-pre-line text-sm leading-6 text-[var(--text-muted)]"
+                >
                   {{ selectedImage.caption }}
                 </p>
               </div>
