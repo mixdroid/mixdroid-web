@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { track } from "@vercel/analytics";
+
 interface ShowcaseImage {
   src: string;
   alt: string;
@@ -13,6 +15,9 @@ const errorMessage = ref("");
 const selectedImage = ref<ShowcaseImage | null>(null);
 const isImageModalOpen = ref(false);
 const modalZoomed = ref(false);
+
+// TODO: replace with your real invite link
+const DISCORD_URL = "https://discord.gg/3HFtyBgRv";
 
 const heroImage: ShowcaseImage = {
   src: "/images/Mixer.jpg",
@@ -41,16 +46,16 @@ const features = [
   },
   {
     id: "04",
-    title: "Standalone Android — no laptop",
+    title: "Dedicated hardware — no laptop",
     description:
-      "Runs entirely on Android. No MacBook, no Windows rig, no subscription. Requires a USB audio interface. Works completely offline.",
+      "A standalone device running a custom Android 13 build. No MacBook, no Windows rig, no subscription. Requires a USB audio interface. Works completely offline.",
   },
 ];
 
 const showcaseImages: ShowcaseImage[] = [
   {
     src: "/images/eq.png",
-    alt: "MixDroid parametric EQ interface on Android — 5-band controls with FFT analyser",
+    alt: "MixDroid parametric EQ interface — 5-band controls with FFT analyser",
     caption: `• 5 bands with full parametric control.
 • Pre-gain and per-band solo.
 • ±24 dB gain, Q-factor 0.707–1.8.
@@ -60,7 +65,7 @@ const showcaseImages: ShowcaseImage[] = [
   },
   {
     src: "/images/compressor.png",
-    alt: "MixDroid stereo compressor interface on Android — threshold, ratio, attack, release controls",
+    alt: "MixDroid stereo compressor interface — threshold, ratio, attack, release controls",
     caption: `• Stereo-linked feed-forward compressor.
 • Threshold, ratio up to 20:1, attack 1–100 ms, release 1–10,000 ms.
 • Sidechain input support.
@@ -93,6 +98,18 @@ async function joinWaitlist() {
     await $fetch("/api/waitlist", { method: "POST", body: { email: email.value } });
     submitted.value = true;
     email.value = "";
+
+    // Vercel Analytics — custom conversion event (module is already installed/registered)
+    track("waitlist_signup");
+
+    // GA4 — only fires if a gtag() is already loaded on the page (e.g. via GTM
+    // or a manually-added GA script). No GA4 script was found in the project
+    // files reviewed, so this is a safe no-op until GA4 is actually wired up.
+    if (typeof window !== "undefined" && typeof (window as any).gtag === "function") {
+      (window as any).gtag("event", "waitlist_signup", {
+        method: "email",
+      });
+    }
   } catch (error: unknown) {
     const fetchError = error as { data?: { statusMessage?: string } };
     errorMessage.value =
@@ -102,26 +119,56 @@ async function joinWaitlist() {
   }
 }
 
+const faqs = [
+  {
+    q: "Is this a phone app or an actual device?",
+    a: "It's a physical, standalone device — not an app you install on a phone or tablet you already own. It runs a custom Android 13 build internally, but you interact with it as dedicated mixer hardware.",
+  },
+  {
+    q: "When does the beta ship?",
+    a: "We're finishing development now. Waitlist members get first access and will hear about the exact ship date before anyone else.",
+  },
+  {
+    q: "How much will it cost?",
+    a: "Final pricing isn't locked yet, but we're targeting a price below buying a comparable rack mixer plus a separate USB audio interface. Joining the waitlist is free, and pricing will be sent to the list before public launch.",
+  },
+  {
+    q: "What do I need to use it?",
+    a: "A USB audio interface for your mics and instruments. That's it — no laptop, no companion app, and no Google account required.",
+  },
+  {
+    q: "Does it work without internet?",
+    a: "Yes. DSP, mixing, and recording all run on-device and need zero internet connection. Streaming and internet radio are opt-in features for when you do want to go online.",
+  },
+];
+
+const openFaq = ref<number | null>(0);
+function toggleFaq(index: number) {
+  openFaq.value = openFaq.value === index ? null : index;
+}
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: f.a,
+    },
+  })),
+};
+
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
+  "@type": "Product",
   name: "MixDroid",
-  operatingSystem: "Android",
-  applicationCategory: "MusicApplication",
-  featureList: [
-    "Real-time parametric EQ with FFT spectrum analyser",
-    "Stereo compressor with sidechain support",
-    "Brick-wall limiter",
-    "Algorithmic reverb and stereo delay",
-    "Live streaming output",
-    "Multi-channel recording",
-    "Internet radio",
-    "No Google dependencies",
-  ],
+  category: "Standalone audio mixer hardware",
   description:
-    "Standalone Android mixer with real-time DSP, streaming, and recording. No laptop required. USB audio interface required.",
+    "Standalone hardware mixer running a custom Android 13 build, with real-time DSP, streaming, and recording built in. No laptop or companion app required. Requires a USB audio interface.",
   url: "https://mixdroid-web.vercel.app",
-  author: {
+  brand: {
     "@type": "Person",
     name: "Joe Kaikaty",
     url: "https://mixdroid-web.vercel.app/about",
@@ -139,13 +186,15 @@ const jsonLd = {
 };
 
 useSeoMeta({
-  title: "MixDroid | Android Mixer for Podcasters & Streamers [Beta]",
+  title: "MixDroid | Standalone Hardware Mixer for Podcasters & Streamers [Beta]",
   description:
-    "Join the MixDroid beta: a standalone Android mixer with real-time DSP, streaming, and recording. No laptop or subscriptions. USB audio interface required.",
-  ogTitle: "MixDroid | Android Mixer for Podcasters & Streamers",
+    "Join the MixDroid beta: a standalone hardware mixer with real-time DSP, streaming, and recording built in. No laptop, no companion app. USB audio interface required.",
+  ogTitle: "MixDroid | Standalone Hardware Mixer for Podcasters & Streamers",
   ogDescription:
-    "Real-time DSP, streaming, recording, and radio — all on Android. No laptop required. Built solo over 7 years.",
+    "Real-time DSP, streaming, recording, and radio — all inside the mixer itself. No laptop required. Built solo over 7 years.",
+  ogImage: "https://mixdroid-web.vercel.app/images/Mixer.jpg",
   twitterCard: "summary_large_image",
+  twitterImage: "https://mixdroid-web.vercel.app/images/Mixer.jpg",
   robots: "index,follow",
 });
 
@@ -156,6 +205,7 @@ useHead({
   ],
   script: [
     { type: "application/ld+json", innerHTML: JSON.stringify(jsonLd) },
+    { type: "application/ld+json", innerHTML: JSON.stringify(faqJsonLd) },
   ],
 });
 </script>
@@ -177,12 +227,15 @@ useHead({
                 id="hero-heading"
                 class="text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl"
               >
-                The Android mixer for podcasters and streamers.
+                A standalone hardware mixer.
+                <span class="text-[var(--accent-cyan)]">It just happens to run Android.</span>
               </h1>
 
               <p class="max-w-prose text-base leading-7 text-[var(--text-muted)] sm:text-lg sm:leading-8">
-                Go live without a laptop. Near-zero latency DSP and recording
-                that runs entirely offline on Android.
+                Plug in your mics with a USB audio interface, hit go — you're
+                live in two minutes. No laptop, no phone app, no separate
+                computer anywhere in the signal chain. DSP, streaming, and
+                recording all run inside the mixer itself.
               </p>
 
               <div class="flex flex-wrap gap-2 font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]">
@@ -201,15 +254,19 @@ useHead({
               <ul class="space-y-1.5 text-sm text-[var(--text-muted)]" role="list">
                 <li class="flex items-start gap-2">
                   <span class="mt-0.5 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
-                  <span>Works on <span class="text-[var(--text-secondary)]">Android 13+</span> with any USB OTG audio interface</span>
+                  <span>A <span class="text-[var(--text-secondary)]">physical mixer</span> — not an app you install on a phone or tablet you already own</span>
                 </li>
                 <li class="flex items-start gap-2">
                   <span class="mt-0.5 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
-                  <span>Beta ships <span class="text-[var(--text-secondary)]">[actual quarter/year]</span> — waitlist gets first access</span>
+                  <span>Connects to <span class="text-[var(--text-secondary)]">any USB audio interface</span> for your mics and instruments</span>
                 </li>
                 <li class="flex items-start gap-2">
                   <span class="mt-0.5 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
-                  <span>Joining is free — pricing details sent to the list before public launch</span>
+                  <span>Beta shipping soon — waitlist gets first access</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="mt-0.5 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
+                  <span>Expected priced below a comparable rack mixer + interface setup — joining is free, pricing sent to the list before launch</span>
                 </li>
               </ul>
             </div>
@@ -244,7 +301,7 @@ useHead({
                     autocomplete="email"
                     size="xl"
                     variant="outline"
-                    placeholder="you@example.com"
+                    placeholder="you@yourshow.com"
                     class="w-full"
                     :ui="{
                       base: 'rounded-md bg-black/30 border-white/12 text-white placeholder:text-slate-500 min-h-[44px] text-base',
@@ -276,7 +333,7 @@ useHead({
               >
                 {{ errorMessage }}
               </p>
-              <div v-else class="flex flex-wrap items-center gap-x-4 gap-y-1">
+              <div v-else class="flex flex-wrap items-center gap-x-4 gap-y-2">
                 <p class="text-sm text-[var(--text-dim)]">
                   Free to join. No payment required.
                   <NuxtLink to="/privacy" class="underline underline-offset-2 transition hover:text-[var(--text-muted)]">Privacy policy</NuxtLink>.
@@ -289,12 +346,26 @@ useHead({
                   Watch the demo ↓
                 </a>
               </div>
+
+              <!-- Social proof / community -->
+              <a
+                :href="DISCORD_URL"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex min-h-[44px] w-fit items-center gap-2 rounded-md border border-[var(--panel-line)] bg-[var(--panel-bg)] px-3 font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-secondary)] transition hover:border-[var(--accent-cyan)]/40 hover:text-[var(--accent-cyan)]"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3c-.2.4-.5 1-.7 1.4a18.3 18.3 0 0 0-5.4 0A9 9 0 0 0 8.6 3a19.7 19.7 0 0 0-4.9 1.5C1 8.9.3 13.3.6 17.6a19.9 19.9 0 0 0 6 3c.5-.6.9-1.3 1.3-2a13 13 0 0 1-2-1c.2-.1.3-.3.5-.4a14.2 14.2 0 0 0 12 0l.5.4a13 13 0 0 1-2 1c.4.7.8 1.4 1.3 2a19.8 19.8 0 0 0 6-3c.4-5-.9-9.4-3.9-13.2ZM8.7 14.8c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Zm6.6 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Z"/>
+                </svg>
+                Join the community on Discord
+              </a>
             </div>
 
           </div>
 
-          <!-- Right: hardware render — desktop only, no anxiety-inducing caption -->
-          <div class="hidden lg:block">
+          <!-- Hardware render — shown on all breakpoints; ordered first on mobile so
+               visitors see it's a physical device before reading any copy -->
+          <div class="order-first lg:order-none">
             <button
               type="button"
               aria-label="Open full-size MixDroid concept render"
@@ -333,7 +404,7 @@ useHead({
             </h2>
             <p class="max-w-prose text-base leading-7 text-[var(--text-muted)]">
               Real-time EQ, compression, and streaming — running standalone on
-              Android. No laptop anywhere in the signal chain.
+              dedicated hardware. No laptop anywhere in the signal chain.
             </p>
           </div>
 
@@ -367,12 +438,13 @@ useHead({
                 </div>
                 <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">What is it?</p>
               </div>
-              <h3 class="text-xl font-semibold text-white">A real mixer. On Android.</h3>
+              <h3 class="text-xl font-semibold text-white">A real mixer. Standalone hardware.</h3>
               <p class="max-w-prose text-sm leading-7 text-[var(--text-muted)]">
-                Not an app that approximates mixing. Not a companion controller.
-                MixDroid is a full digital mixing console — EQ, compression,
-                reverb, delay — running natively on a standalone Android device.
-                Plug in a USB audio interface and you're mixing.
+                Not an app that approximates mixing. Not a companion controller
+                for a phone you already own. MixDroid is a physical digital
+                mixing console — EQ, compression, reverb, delay — running
+                natively on its own dedicated device. Plug in a USB audio
+                interface and you're mixing.
               </p>
             </div>
 
@@ -391,8 +463,9 @@ useHead({
                 Podcasters can walk into any room and be live in two minutes.
                 Streamers get a hardware mixer without the hardware price tag.
                 Musicians get real DSP — not a mobile app pretending to be one.
-                Because it runs Android, you can install apps and manage your
-                content workflow from the same screen you're mixing on.
+                Because it runs on a custom Android build under the hood, you
+                can install apps and manage your content workflow from the
+                same screen you're mixing on.
               </p>
             </div>
 
@@ -414,7 +487,7 @@ useHead({
                 </li>
                 <li class="flex items-start gap-3 text-sm leading-6 text-[var(--text-muted)]">
                   <span class="mt-1 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
-                  <span><span class="font-medium text-[var(--text-secondary)]">Truly standalone.</span> No laptop, no cloud. DSP runs on-device with near-zero latency whether you're online or not.</span>
+                  <span><span class="font-medium text-[var(--text-secondary)]">Truly standalone.</span> No laptop, no phone app, no cloud. DSP runs on-device with near-zero latency whether you're online or not.</span>
                 </li>
                 <li class="flex items-start gap-3 text-sm leading-6 text-[var(--text-muted)]">
                   <span class="mt-1 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
@@ -492,9 +565,9 @@ useHead({
               Purpose-built. Not ported.
             </h2>
             <p class="max-w-prose text-base leading-8 text-[var(--text-muted)]">
-              Every DSP module written from scratch for Android — the same
-              parametric EQ and compression you'd expect from a desktop DAW,
-              without the desktop.
+              Every DSP module written from scratch — the same parametric EQ
+              and compression you'd expect from a desktop DAW, without the
+              desktop.
             </p>
           </div>
 
@@ -535,6 +608,49 @@ useHead({
         </div>
       </section>
 
+      <!-- ── FAQ -->
+      <section class="border-b border-white/8" aria-labelledby="faq-heading">
+        <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
+          <div class="mb-8 max-w-2xl space-y-3">
+            <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">Questions</p>
+            <h2 id="faq-heading" class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+              Before you ask on Discord.
+            </h2>
+          </div>
+
+          <div class="mx-auto max-w-3xl space-y-3">
+            <div v-for="(item, i) in faqs" :key="item.q" class="console-panel rounded-xl">
+              <button
+                type="button"
+                class="flex w-full min-h-[44px] items-center justify-between gap-4 px-5 py-4 text-left"
+                :aria-expanded="openFaq === i"
+                @click="toggleFaq(i)"
+              >
+                <span class="text-base font-medium text-white">{{ item.q }}</span>
+                <span
+                  class="shrink-0 text-xl text-[var(--accent-cyan)] transition-transform duration-200"
+                  :class="openFaq === i ? 'rotate-45' : ''"
+                  aria-hidden="true"
+                >+</span>
+              </button>
+              <div v-if="openFaq === i" class="px-5 pb-4 text-sm leading-7 text-[var(--text-muted)]">
+                {{ item.a }}
+              </div>
+            </div>
+          </div>
+
+          <p class="mt-6 text-center text-sm text-[var(--text-dim)]">
+            Still have questions?
+            <a
+              :href="DISCORD_URL"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="underline underline-offset-2 text-[var(--accent-cyan)] hover:opacity-80"
+            >Ask on Discord ↗</a>
+          </p>
+        </div>
+      </section>
+
       <!-- ── Story -->
       <section class="border-b border-white/8" aria-labelledby="story-heading">
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
@@ -547,9 +663,9 @@ useHead({
               <p class="max-w-prose text-base leading-8 text-[var(--text-muted)]">
                 MixDroid started because I couldn't find a mixer that worked
                 without a laptop in the room. After 7 years of solo development,
-                the result is an Android-native mixer covering the full workflow:
-                DSP, live streaming, recording, and internet radio — completely
-                offline if needed.
+                the result is a standalone hardware mixer covering the full
+                workflow: DSP, live streaming, recording, and internet radio —
+                completely offline if needed.
               </p>
               <p class="max-w-prose text-base leading-8 text-[var(--text-muted)]">
                 No VC money, no team, no shortcuts. Every DSP algorithm, every

@@ -31,6 +31,14 @@ useSeoMeta({
   title: "About — MixDroid",
   description:
     "The story behind MixDroid — built solo over 7 years from Lebanon by one developer who wanted professional audio mixing without a laptop.",
+  ogImage: "https://mixdroid-web.vercel.app/images/joe.jpg",
+  twitterCard: "summary_large_image",
+  twitterImage: "https://mixdroid-web.vercel.app/images/joe.jpg",
+  robots: "index,follow",
+});
+
+useHead({
+  link: [{ rel: "canonical", href: "https://mixdroid-web.vercel.app/about" }],
 });
 </script>
 

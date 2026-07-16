@@ -257,6 +257,14 @@ useSeoMeta({
   title: "Features — MixDroid",
   description:
     "Every screen and DSP module in MixDroid — parametric EQ, compressor, limiter, reverb, delay, spectrum analyser, and more.",
+  ogImage: "https://mixdroid-web.vercel.app/images/studio.png",
+  twitterCard: "summary_large_image",
+  twitterImage: "https://mixdroid-web.vercel.app/images/studio.png",
+  robots: "index,follow",
+});
+
+useHead({
+  link: [{ rel: "canonical", href: "https://mixdroid-web.vercel.app/features" }],
 });
 </script>
 
