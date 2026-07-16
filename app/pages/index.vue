@@ -301,7 +301,7 @@ useHead({
                     autocomplete="email"
                     size="xl"
                     variant="outline"
-                    placeholder="you@yourshow.com"
+                    placeholder="you@yourmail.com"
                     class="w-full"
                     :ui="{
                       base: 'rounded-md bg-black/30 border-white/12 text-white placeholder:text-slate-500 min-h-[44px] text-base',
