@@ -46,9 +46,9 @@ const features = [
   },
   {
     id: "04",
-    title: "Dedicated hardware — no laptop",
+    title: "Dedicated hardware",
     description:
-      "A standalone device running a custom Android 13 build. No MacBook, no Windows rig, no subscription. Requires a USB audio interface. Works completely offline.",
+      "A custom Android 13 build powers the engine, but you're using a standalone mixer, not a phone app. Requires a USB audio interface.",
   },
 ];
 
@@ -121,8 +121,8 @@ async function joinWaitlist() {
 
 const faqs = [
   {
-    q: "Is this a phone app or an actual device?",
-    a: "It's a physical, standalone device — not an app you install on a phone or tablet you already own. It runs a custom Android 13 build internally, but you interact with it as dedicated mixer hardware.",
+    q: "What exactly is this?",
+    a: "A hardware digital mixer with an Android-based engine. 8-channel I/O, 5 effects per channel, real-time DSP. Connect a USB audio interface and you're mixing.",
   },
   {
     q: "When does the beta ship?",
@@ -133,12 +133,16 @@ const faqs = [
     a: "Final pricing isn't locked yet, but we're targeting a price below buying a comparable rack mixer plus a separate USB audio interface. Joining the waitlist is free, and pricing will be sent to the list before public launch.",
   },
   {
-    q: "What do I need to use it?",
-    a: "A USB audio interface for your mics and instruments. That's it — no laptop, no companion app, and no Google account required.",
+    q: "What's the sample rate and bit depth?",
+    a: "Internal mixing runs at 32-bit. The codec sample rate is user-selectable, defaulting to 48 kHz — audio is resampled internally to whatever rate you choose.",
   },
   {
-    q: "Does it work without internet?",
-    a: "Yes. DSP, mixing, and recording all run on-device and need zero internet connection. Streaming and internet radio are opt-in features for when you do want to go online.",
+    q: "What's the latency?",
+    a: "Around 6 ms with a standard kernel at a 300-sample buffer. We're working on real-time kernel support for lower, user-selectable latency, but that hasn't been verified on Android hardware yet — treat it as in-development, not a shipping number.",
+  },
+  {
+    q: "Can I use my own USB interface, or is one included?",
+    a: "MixDroid works with external USB audio interfaces you already own. The onboard codec also provides 8 in / 8 out directly, for cases where you don't want to add outboard gear.",
   },
 ];
 
@@ -232,10 +236,9 @@ useHead({
               </h1>
 
               <p class="max-w-prose text-base leading-7 text-[var(--text-muted)] sm:text-lg sm:leading-8">
-                Plug in your mics with a USB audio interface, hit go — you're
-                live in two minutes. No laptop, no phone app, no separate
-                computer anywhere in the signal chain. DSP, streaming, and
-                recording all run inside the mixer itself.
+                8 channels of I/O, five effects per channel, real-time DSP with
+                near-zero latency. Plug in a USB audio interface, hit go —
+                you're live in two minutes.
               </p>
 
               <div class="flex flex-wrap gap-2 font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]">
@@ -254,7 +257,7 @@ useHead({
               <ul class="space-y-1.5 text-sm text-[var(--text-muted)]" role="list">
                 <li class="flex items-start gap-2">
                   <span class="mt-0.5 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
-                  <span>A <span class="text-[var(--text-secondary)]">physical mixer</span> — not an app you install on a phone or tablet you already own</span>
+                  <span><span class="text-[var(--text-secondary)]">8-in / 8-out</span> onboard codec, EQ + compression + limiting per channel</span>
                 </li>
                 <li class="flex items-start gap-2">
                   <span class="mt-0.5 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
@@ -301,7 +304,7 @@ useHead({
                     autocomplete="email"
                     size="xl"
                     variant="outline"
-                    placeholder="you@yourmail.com"
+                    placeholder="you@yourshow.com"
                     class="w-full"
                     :ui="{
                       base: 'rounded-md bg-black/30 border-white/12 text-white placeholder:text-slate-500 min-h-[44px] text-base',
@@ -403,8 +406,8 @@ useHead({
               Watch the mixer run.
             </h2>
             <p class="max-w-prose text-base leading-7 text-[var(--text-muted)]">
-              Real-time EQ, compression, and streaming — running standalone on
-              dedicated hardware. No laptop anywhere in the signal chain.
+              Real-time EQ, compression, and streaming running on the mixer
+              itself.
             </p>
           </div>
 
@@ -422,85 +425,82 @@ useHead({
         </div>
       </section>
 
-      <!-- ── Explainer -->
-      <section class="border-b border-white/8" aria-labelledby="explainer-heading">
+      <!-- ── Specs -->
+      <section class="border-b border-white/8" aria-labelledby="specs-heading">
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
-          <h2 id="explainer-heading" class="sr-only">What is MixDroid</h2>
-          <div class="grid gap-5 md:grid-cols-3">
+          <div class="mb-8 max-w-2xl space-y-3">
+            <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">Specs</p>
+            <h2 id="specs-heading" class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+              A hardware digital mixer with an Android-based engine.
+            </h2>
+            <p class="max-w-prose text-base leading-7 text-[var(--text-muted)]">
+              Everything below runs on-device, no laptop or phone required.
+              Here's what's actually inside.
+            </p>
+          </div>
 
-            <!-- What is it -->
-            <div class="console-panel rounded-xl p-6 space-y-4">
-              <div class="flex items-center gap-3">
-                <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-[var(--panel-line)] bg-[var(--panel-bg-strong)]" aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="2" stroke-linecap="round">
-                    <circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/>
-                  </svg>
-                </div>
-                <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">What is it?</p>
-              </div>
-              <h3 class="text-xl font-semibold text-white">A real mixer. Standalone hardware.</h3>
-              <p class="max-w-prose text-sm leading-7 text-[var(--text-muted)]">
-                Not an app that approximates mixing. Not a companion controller
-                for a phone you already own. MixDroid is a physical digital
-                mixing console — EQ, compression, reverb, delay — running
-                natively on its own dedicated device. Plug in a USB audio
-                interface and you're mixing.
-              </p>
+          <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+
+            <div class="console-panel rounded-xl p-5 space-y-3">
+              <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]">Audio engine</p>
+              <ul class="space-y-2 text-sm leading-6 text-[var(--text-muted)]" role="list">
+                <li>32-bit internal mixing</li>
+                <li>User-selectable codec sample rate, 48 kHz default (resampled internally to the selected rate)</li>
+                <li>~6 ms latency (300-sample buffer, standard kernel)</li>
+                <li>Lower latency via real-time kernel — in development, not yet verified on Android</li>
+              </ul>
             </div>
 
-            <!-- Why it's interesting -->
-            <div class="console-panel rounded-xl p-6 space-y-4">
-              <div class="flex items-center gap-3">
-                <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-[var(--panel-line)] bg-[var(--panel-bg-strong)]" aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="2" stroke-linecap="round">
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-                  </svg>
-                </div>
-                <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">Why it's interesting</p>
-              </div>
-              <h3 class="text-xl font-semibold text-white">Your whole studio in one device.</h3>
-              <p class="max-w-prose text-sm leading-7 text-[var(--text-muted)]">
-                Podcasters can walk into any room and be live in two minutes.
-                Streamers get a hardware mixer without the hardware price tag.
-                Musicians get real DSP — not a mobile app pretending to be one.
-                Because it runs on a custom Android build under the hood, you
-                can install apps and manage your content workflow from the
-                same screen you're mixing on.
-              </p>
+            <div class="console-panel rounded-xl p-5 space-y-3">
+              <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]">I/O</p>
+              <ul class="space-y-2 text-sm leading-6 text-[var(--text-muted)]" role="list">
+                <li>8-channel input / 8-channel output onboard codec</li>
+                <li>USB-C 3.0 — usable as external audio interface or MIDI controller</li>
+                <li>External USB audio interfaces supported</li>
+                <li>USB 3.0 × 1 + USB 2.0 × 3</li>
+              </ul>
             </div>
 
-            <!-- Why it's different -->
-            <div class="console-panel rounded-xl p-6 space-y-4">
-              <div class="flex items-center gap-3">
-                <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-[var(--panel-line)] bg-[var(--panel-bg-strong)]" aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="2" stroke-linecap="round">
-                    <path d="M12 2l3.1 6.3L22 9.3l-5 4.9 1.2 6.9L12 18l-6.2 3.1L7 14.2 2 9.3l6.9-1L12 2z"/>
-                  </svg>
-                </div>
-                <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">Why it's different</p>
-              </div>
-              <h3 class="text-xl font-semibold text-white">Built to run without the internet.</h3>
-              <ul class="space-y-3" role="list">
-                <li class="flex items-start gap-3 text-sm leading-6 text-[var(--text-muted)]">
-                  <span class="mt-1 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
-                  <span><span class="font-medium text-[var(--text-secondary)]">Android ecosystem inside.</span> Install F-Droid, NewPipe, Kodi, or request custom tools for your workflow.</span>
-                </li>
-                <li class="flex items-start gap-3 text-sm leading-6 text-[var(--text-muted)]">
-                  <span class="mt-1 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
-                  <span><span class="font-medium text-[var(--text-secondary)]">Truly standalone.</span> No laptop, no phone app, no cloud. DSP runs on-device with near-zero latency whether you're online or not.</span>
-                </li>
-                <li class="flex items-start gap-3 text-sm leading-6 text-[var(--text-muted)]">
-                  <span class="mt-1 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
-                  <span><span class="font-medium text-[var(--text-secondary)]">No Google, anywhere.</span> No account, no Play Store, no Firebase, no telemetry. Distributed outside Google's ecosystem entirely.</span>
-                </li>
-                <li class="flex items-start gap-3 text-sm leading-6 text-[var(--text-muted)]">
-                  <span class="mt-1 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
-                  <span><span class="font-medium text-[var(--text-secondary)]">No subscriptions, ever.</span> One device. Everything included. No feature gated behind a plan.</span>
-                </li>
+            <div class="console-panel rounded-xl p-5 space-y-3">
+              <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]">DSP / effects</p>
+              <ul class="space-y-2 text-sm leading-6 text-[var(--text-muted)]" role="list">
+                <li>5 effects per channel, adjustable PDC</li>
+                <li>5-band parametric EQ — ±24 dB, Q 0.707–1.8, 8 filter types</li>
+                <li>Stereo compressor — up to 20:1, sidechain input</li>
+                <li>Lookahead limiter — Live / Standard / Mastering modes</li>
+                <li>Algorithmic reverb, 4-mode stereo delay</li>
+              </ul>
+            </div>
+
+            <div class="console-panel rounded-xl p-5 space-y-3">
+              <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]">Monitoring</p>
+              <ul class="space-y-2 text-sm leading-6 text-[var(--text-muted)]" role="list">
+                <li>8192-bin FFT spectrum analyser</li>
+                <li>Peak, RMS, PPM, VU, K12, K14, K20</li>
+                <li>LUFS Short &amp; Momentary, scrolling waveform</li>
+                <li>Phase response curve, vectorscope</li>
+              </ul>
+            </div>
+
+            <div class="console-panel rounded-xl p-5 space-y-3">
+              <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]">Hardware</p>
+              <ul class="space-y-2 text-sm leading-6 text-[var(--text-muted)]" role="list">
+                <li>8-core 64-bit processor, up to 32 GB RAM</li>
+                <li>Up to 256 GB storage</li>
+                <li>7″ multitouch display</li>
+                <li>Wi-Fi 5 + Bluetooth 5.0 / BLE</li>
+                <li>MIDI-controlled faders, mute/solo</li>
               </ul>
             </div>
 
           </div>
+
+          <p class="mt-5 max-w-prose text-sm leading-7 text-[var(--text-muted)]">
+            Latency figures above are from current standard-kernel testing and
+            will be refined as development continues. See the
+            <NuxtLink to="/features" class="underline underline-offset-2 text-[var(--accent-cyan)] hover:opacity-80">features page</NuxtLink>
+            for every module and screenshot in detail.
+          </p>
         </div>
       </section>
 
@@ -510,7 +510,7 @@ useHead({
           <div class="mb-10 space-y-3">
             <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">What's inside</p>
             <h2 id="features-heading" class="max-w-3xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-              No companion app. No cloud processing. No driver setup.
+              What you can do with it.
             </h2>
             <p class="max-w-prose text-base leading-7 text-[var(--text-muted)]">
               Everything runs on the device — DSP engine, streaming stack, and
