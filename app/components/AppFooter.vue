@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Social links live here now — out of the nav, focused footer placement
 // TODO: replace with your real invite link (also used in index.vue hero)
-const DISCORD_URL = "https://discord.gg/3HFtyBgRv";
+const DISCORD_URL = "https://discord.gg/BEZwpMcFb";
 
 const socials = [
   {

@@ -17,7 +17,7 @@ const isImageModalOpen = ref(false);
 const modalZoomed = ref(false);
 
 // TODO: replace with your real invite link
-const DISCORD_URL = "https://discord.gg/3HFtyBgRv";
+const DISCORD_URL = "https://discord.gg/BEZwpMcFb";
 
 const heroImage: ShowcaseImage = {
   src: "/images/Mixer.jpg",
@@ -48,7 +48,7 @@ const features = [
     id: "04",
     title: "Dedicated hardware",
     description:
-      "A custom Android 13 build powers the engine, but you're using a standalone mixer, not a phone app. Requires a USB audio interface.",
+      "A custom Android 13 build powers the engine, but you're using a standalone mixer, not a phone app. Mics plug in directly — USB interfaces are optional for expansion.",
   },
 ];
 
@@ -122,7 +122,7 @@ async function joinWaitlist() {
 const faqs = [
   {
     q: "What exactly is this?",
-    a: "A hardware digital mixer with an Android-based engine. 8-channel I/O, 5 effects per channel, real-time DSP. Connect a USB audio interface and you're mixing.",
+    a: "A hardware digital mixer with an Android-based engine. 8-channel I/O, 5 effects per channel, real-time DSP. Plug your mics in directly and you're mixing.",
   },
   {
     q: "When does the beta ship?",
@@ -138,11 +138,11 @@ const faqs = [
   },
   {
     q: "What's the latency?",
-    a: "Around 6 ms with a standard kernel at a 300-sample buffer. We're working on real-time kernel support for lower, user-selectable latency, but that hasn't been verified on Android hardware yet — treat it as in-development, not a shipping number.",
+    a: "Latency is user-selectable via buffer size. ~6 ms is typical at a 300-sample buffer on a standard kernel. We're also working on real-time kernel support for even lower latency, but that hasn't been verified on Android hardware yet — treat it as in-development, not a shipping number.",
   },
   {
-    q: "Can I use my own USB interface, or is one included?",
-    a: "MixDroid works with external USB audio interfaces you already own. The onboard codec also provides 8 in / 8 out directly, for cases where you don't want to add outboard gear.",
+    q: "Do I need a USB audio interface?",
+    a: "No. Mics plug directly into the onboard 8-in / 8-out codec. A USB audio interface is optional, for when you want to expand beyond the built-in I/O.",
   },
 ];
 
@@ -170,7 +170,7 @@ const jsonLd = {
   name: "MixDroid",
   category: "Standalone audio mixer hardware",
   description:
-    "Standalone hardware mixer running a custom Android 13 build, with real-time DSP, streaming, and recording built in. No laptop or companion app required. Requires a USB audio interface.",
+    "Standalone hardware mixer running a custom Android 13 build, with real-time DSP, streaming, and recording built in. Mics plug in directly — no laptop, companion app, or USB interface required.",
   url: "https://mixdroid-web.vercel.app",
   brand: {
     "@type": "Person",
@@ -192,7 +192,7 @@ const jsonLd = {
 useSeoMeta({
   title: "MixDroid | Standalone Hardware Mixer for Podcasters & Streamers [Beta]",
   description:
-    "Join the MixDroid beta: a standalone hardware mixer with real-time DSP, streaming, and recording built in. No laptop, no companion app. USB audio interface required.",
+    "Join the MixDroid beta: a standalone hardware mixer with real-time DSP, streaming, and recording built in. Mics plug in directly, no laptop or companion app.",
   ogTitle: "MixDroid | Standalone Hardware Mixer for Podcasters & Streamers",
   ogDescription:
     "Real-time DSP, streaming, recording, and radio — all inside the mixer itself. No laptop required. Built solo over 7 years.",
@@ -231,47 +231,92 @@ useHead({
                 id="hero-heading"
                 class="text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl"
               >
-                A standalone hardware mixer.
-                <span class="text-[var(--accent-cyan)]">It just happens to run Android.</span>
+                Replace the laptop + mixer stack
+                <span class="text-[var(--accent-cyan)]">with one dedicated box.</span>
               </h1>
 
               <p class="max-w-prose text-base leading-7 text-[var(--text-muted)] sm:text-lg sm:leading-8">
-                8 channels of I/O, five effects per channel, real-time DSP with
-                near-zero latency. Plug in a USB audio interface, hit go —
-                you're live in two minutes.
+                MixDroid is a standalone hardware mixer — 8 channels of I/O,
+                five effects per channel, real-time DSP with near-zero
+                latency. Plug your mics in directly, hit go — you're live in
+                two minutes.
               </p>
 
-              <div class="flex flex-wrap gap-2 font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]">
-                <span class="panel-chip">Podcasters</span>
-                <span class="panel-chip">Streamers</span>
-                <span class="panel-chip">Musicians</span>
-                <span class="panel-chip">Content creators</span>
+              <div class="flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]">
+                <span class="panel-chip text-[var(--accent-cyan)]">Podcasters</span>
+                <span class="panel-chip text-[var(--accent-cyan)]">Streamers</span>
+                <span class="text-[10px] normal-case tracking-normal text-[var(--text-dim)]">— also works well for musicians &amp; content creators</span>
               </div>
             </div>
 
             <!-- What you're signing up for — objection handling before the form -->
-            <div class="console-panel rounded-xl p-4 space-y-2">
-              <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">
-                What you're signing up for
-              </p>
-              <ul class="space-y-1.5 text-sm text-[var(--text-muted)]" role="list">
-                <li class="flex items-start gap-2">
-                  <span class="mt-0.5 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
-                  <span><span class="text-[var(--text-secondary)]">8-in / 8-out</span> onboard codec, EQ + compression + limiting per channel</span>
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="mt-0.5 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
-                  <span>Connects to <span class="text-[var(--text-secondary)]">any USB audio interface</span> for your mics and instruments</span>
-                </li>
-                <li class="flex items-start gap-2">
+            <div class="console-panel rounded-xl p-4 space-y-4">
+              <div class="space-y-2">
+                <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">
+                  In the box
+                </p>
+                <ul class="space-y-1.5 text-sm text-[var(--text-muted)]" role="list">
+                  <li class="flex items-start gap-2">
+                    <span class="mt-0.5 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
+                    <span>The MixDroid unit — <span class="text-[var(--text-secondary)]">8-in / 8-out</span> onboard codec, mic or XLR inputs plug in directly</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="mt-0.5 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
+                    <span>Real-time DSP — EQ, compression, and limiting on every channel</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="space-y-2">
+                <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--warning-pink)]">
+                  You provide (optional)
+                </p>
+                <ul class="space-y-1.5 text-sm text-[var(--text-muted)]" role="list">
+                  <li class="flex items-start gap-2">
+                    <span class="mt-0.5 shrink-0 text-[var(--warning-pink)]" aria-hidden="true">→</span>
+                    <span>A <span class="text-[var(--text-secondary)]">USB audio interface</span> — only needed if you want to expand past the built-in 8 channels</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="space-y-1.5 border-t border-[var(--panel-line)] pt-3 text-sm text-[var(--text-muted)]">
+                <p class="flex items-start gap-2">
                   <span class="mt-0.5 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
                   <span>Beta shipping soon — waitlist gets first access</span>
-                </li>
-                <li class="flex items-start gap-2">
+                </p>
+                <p class="flex items-start gap-2">
                   <span class="mt-0.5 shrink-0 text-[var(--accent-cyan)]" aria-hidden="true">→</span>
                   <span>Expected priced below a comparable rack mixer + interface setup — joining is free, pricing sent to the list before launch</span>
-                </li>
-              </ul>
+                </p>
+              </div>
+            </div>
+
+            <!-- Signal flow -->
+            <div class="console-panel rounded-xl p-4">
+              <p class="mb-3 font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">
+                Signal flow
+              </p>
+              <div class="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center">
+                <div class="rounded-lg border border-[var(--panel-line)] bg-[var(--panel-bg-strong)] px-3 py-3 flex-1 text-center">
+                  <p class="text-sm font-semibold text-white">Mics / XLR</p>
+                  <p class="mt-1 text-xs text-[var(--text-secondary)]">plug in directly</p>
+                </div>
+                <span class="hidden shrink-0 text-[var(--accent-cyan)] sm:block" aria-hidden="true">→</span>
+                <span class="block text-center text-[var(--accent-cyan)] sm:hidden" aria-hidden="true">↓</span>
+                <div class="rounded-lg border border-[var(--accent-cyan)]/40 bg-[var(--panel-bg-strong)] px-3 py-3 flex-1 text-center">
+                  <p class="text-sm font-semibold text-[var(--accent-cyan)]">MixDroid</p>
+                  <p class="mt-1 text-xs text-[var(--text-secondary)]">DSP · mixing</p>
+                </div>
+                <span class="hidden shrink-0 text-[var(--accent-cyan)] sm:block" aria-hidden="true">→</span>
+                <span class="block text-center text-[var(--accent-cyan)] sm:hidden" aria-hidden="true">↓</span>
+                <div class="rounded-lg border border-[var(--panel-line)] bg-[var(--panel-bg-strong)] px-3 py-3 flex-1 text-center">
+                  <p class="text-sm font-semibold text-white">Stream / recording</p>
+                  <p class="mt-1 text-xs text-[var(--text-secondary)]">output</p>
+                </div>
+              </div>
+              <p class="mt-3 text-xs text-[var(--text-muted)]">
+                Need more than 8 channels? A USB audio interface plugs into MixDroid the same way, for expansion.
+              </p>
             </div>
 
             <!-- Single waitlist form -->
@@ -446,17 +491,17 @@ useHead({
               <ul class="space-y-2 text-sm leading-6 text-[var(--text-muted)]" role="list">
                 <li>32-bit internal mixing</li>
                 <li>User-selectable codec sample rate, 48 kHz default (resampled internally to the selected rate)</li>
-                <li>~6 ms latency (300-sample buffer, standard kernel)</li>
-                <li>Lower latency via real-time kernel — in development, not yet verified on Android</li>
+                <li>User-selectable latency — ~6 ms typical (300-sample buffer, standard kernel)</li>
+                <li>Real-time kernel support for even lower latency — in development, not yet verified on Android</li>
               </ul>
             </div>
 
             <div class="console-panel rounded-xl p-5 space-y-3">
               <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]">I/O</p>
               <ul class="space-y-2 text-sm leading-6 text-[var(--text-muted)]" role="list">
-                <li>8-channel input / 8-channel output onboard codec</li>
+                <li>8-channel input / 8-channel output onboard codec — mic or XLR, plug in directly</li>
+                <li>External USB audio interfaces supported for expansion (optional)</li>
                 <li>USB-C 3.0 — usable as external audio interface or MIDI controller</li>
-                <li>External USB audio interfaces supported</li>
                 <li>USB 3.0 × 1 + USB 2.0 × 3</li>
               </ul>
             </div>
