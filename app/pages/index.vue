@@ -170,7 +170,7 @@ const jsonLd = {
   name: "MixDroid",
   category: "Portable pro audio mixer hardware",
   description:
-    "Portable pro audio mixer for creators and podcasters. Dedicated hardware with low-latency DSP, flexible routing, recording, and streaming output — replaces the laptop, mixer, audio interface, and recorder stack with one device. Also suited to live sound and small-venue workflows.",
+    "Portable pro audio mixer for creators and podcasters, with live sound as a secondary use case. Dedicated hardware with low-latency DSP, flexible routing, recording, and streaming output — replaces the laptop, mixer, audio interface, and recorder stack with one device.",
   url: "https://mixdroid-web.vercel.app",
   brand: {
     "@type": "Person",
@@ -190,9 +190,9 @@ const jsonLd = {
 };
 
 useSeoMeta({
-  title: "MixDroid | Portable Pro Audio Mixer for Creators & Podcasters [Beta]",
+  title: "MixDroid | Standalone Hardware Mixer for Creators, Podcasters & Live Sound",
   description:
-    "MixDroid is a standalone hardware mixer for creators and podcasters. Mix, record, and stream with low-latency DSP, flexible routing, and no laptop.",
+    "MixDroid is a standalone hardware mixer for creators and podcasters, with live sound as a secondary use case. Mix, record, stream, and route audio with low-latency DSP and no laptop.",
   ogTitle: "MixDroid | Portable Pro Audio Mixer for Creators & Podcasters",
   ogDescription:
     "Replace the laptop, mixer, audio interface, and recorder stack with one dedicated device. Low-latency DSP, flexible routing, recording, and streaming — built solo over 7 years.",
@@ -486,10 +486,9 @@ useHead({
                 setup is simpler and routing is easier to reason about.
               </p>
               <p class="max-w-prose text-base leading-8 text-[var(--text-muted)]">
-                Built with creators and podcasters in mind first, but the
-                same one-device workflow holds up for live sound engineers,
-                small venues, and other pro-audio setups that want fewer
-                boxes in the chain.
+                Built with creators and podcasters in mind first — though the
+                same one-device workflow extends to live sound and small
+                venues too, more on that below.
               </p>
             </div>
 
@@ -552,6 +551,66 @@ useHead({
               <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]">Step 3</p>
               <p class="mt-2 text-base font-medium text-white">Straight to stream or record</p>
               <p class="mt-2 text-sm leading-6 text-[var(--text-muted)]">Output routes directly — no laptop relaying the signal in between.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Also works for live sound (secondary use case) -->
+      <section class="border-b border-white/8" aria-labelledby="live-sound-heading">
+        <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
+          <div class="console-panel rounded-xl p-6 sm:p-8">
+            <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+              <div class="space-y-4">
+                <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--warning-pink)]">Also useful for live sound</p>
+                <h2 id="live-sound-heading" class="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                  Built for creators first — the same architecture holds up for small live setups.
+                </h2>
+                <p class="max-w-prose text-base leading-7 text-[var(--text-muted)]">
+                  MixDroid's core design — direct mic inputs, on-device DSP,
+                  flexible routing, and fully standalone operation — is what
+                  makes it work well for recording and streaming. It's the
+                  same reasons it holds up for small live setups: mobile
+                  engineers, compact venues, and spoken-word events that need
+                  a real mixer without hauling a rack.
+                </p>
+                <p class="max-w-prose text-sm leading-7 text-[var(--text-dim)]">
+                  This isn't a separate product — it's the same mixer, the
+                  same DSP engine, and the same one-device workflow, just
+                  pointed at a PA instead of a stream.
+                </p>
+              </div>
+
+              <div class="grid gap-3 sm:grid-cols-2 lg:w-72 lg:grid-cols-1">
+                <div class="mini-panel">
+                  <p class="mini-panel__title flex items-center gap-2">
+                    <span class="text-[var(--accent-cyan)]">→</span>
+                    Direct mic inputs
+                  </p>
+                  <p class="mini-panel__value text-sm font-normal text-[var(--text-muted)]">No separate interface needed to get sound in.</p>
+                </div>
+                <div class="mini-panel">
+                  <p class="mini-panel__title flex items-center gap-2">
+                    <span class="text-[var(--accent-cyan)]">→</span>
+                    On-device DSP
+                  </p>
+                  <p class="mini-panel__value text-sm font-normal text-[var(--text-muted)]">Low-latency EQ, compression, and limiting for live monitoring.</p>
+                </div>
+                <div class="mini-panel">
+                  <p class="mini-panel__title flex items-center gap-2">
+                    <span class="text-[var(--accent-cyan)]">→</span>
+                    Flexible routing
+                  </p>
+                  <p class="mini-panel__value text-sm font-normal text-[var(--text-muted)]">Route channels to a PA, a stream, or both at once.</p>
+                </div>
+                <div class="mini-panel">
+                  <p class="mini-panel__title flex items-center gap-2">
+                    <span class="text-[var(--accent-cyan)]">→</span>
+                    Standalone operation
+                  </p>
+                  <p class="mini-panel__value text-sm font-normal text-[var(--text-muted)]">No laptop, no extra rack gear to set up or strike.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
