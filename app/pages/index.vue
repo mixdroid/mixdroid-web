@@ -170,7 +170,7 @@ const jsonLd = {
   name: "MixDroid",
   category: "Portable pro audio mixer hardware",
   description:
-    "Portable pro audio mixer for live sound, creators, and small venues. Dedicated hardware with low-latency DSP, flexible routing, recording, and streaming output — replaces the laptop, mixer, audio interface, and recorder stack with one device.",
+    "Portable pro audio mixer for creators and podcasters. Dedicated hardware with low-latency DSP, flexible routing, recording, and streaming output — replaces the laptop, mixer, audio interface, and recorder stack with one device. Also suited to live sound and small-venue workflows.",
   url: "https://mixdroid-web.vercel.app",
   brand: {
     "@type": "Person",
@@ -190,10 +190,10 @@ const jsonLd = {
 };
 
 useSeoMeta({
-  title: "MixDroid | Portable Pro Audio Mixer for Live Sound & Creators [Beta]",
+  title: "MixDroid | Portable Pro Audio Mixer for Creators & Podcasters [Beta]",
   description:
-    "MixDroid is a standalone hardware mixer with low-latency DSP, flexible routing, recording, and streaming output — for live sound, creators, and small venues. No laptop required.",
-  ogTitle: "MixDroid | Portable Pro Audio Mixer for Live Sound & Creators",
+    "MixDroid is a standalone hardware mixer for creators and podcasters. Mix, record, and stream with low-latency DSP, flexible routing, and no laptop.",
+  ogTitle: "MixDroid | Portable Pro Audio Mixer for Creators & Podcasters",
   ogDescription:
     "Replace the laptop, mixer, audio interface, and recorder stack with one dedicated device. Low-latency DSP, flexible routing, recording, and streaming — built solo over 7 years.",
   ogImage: "https://mixdroid-web.vercel.app/images/Mixer.jpg",
@@ -231,21 +231,20 @@ useHead({
                 id="hero-heading"
                 class="text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl"
               >
-                Portable pro audio for live sound,
-                <span class="text-[var(--accent-cyan)]">creators, and small venues.</span>
+                Portable pro audio for
+                <span class="text-[var(--accent-cyan)]">creators and podcasters.</span>
               </h1>
 
               <p class="max-w-prose text-base leading-7 text-[var(--text-muted)] sm:text-lg sm:leading-8">
-                MixDroid is a standalone hardware mixer with low-latency DSP,
-                flexible routing, and a touch-first workflow — so you can mix,
-                record, and stream without a laptop in the signal chain.
+                MixDroid replaces the laptop + mixer + interface stack with
+                one dedicated hardware mixer for low-latency recording,
+                streaming, and routing.
               </p>
 
               <div class="flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]">
-                <span class="panel-chip text-[var(--accent-cyan)]">Live sound</span>
                 <span class="panel-chip text-[var(--accent-cyan)]">Creators</span>
-                <span class="panel-chip text-[var(--accent-cyan)]">Small venues</span>
-                <span class="text-[10px] normal-case tracking-normal text-[var(--text-dim)]">— also great for podcasters &amp; streamers</span>
+                <span class="panel-chip text-[var(--accent-cyan)]">Podcasters</span>
+                <span class="panel-chip text-[var(--accent-cyan)]">Streamers</span>
               </div>
             </div>
 
@@ -485,6 +484,12 @@ useHead({
                 each with its own cables, drivers, and failure points.
                 MixDroid combines those jobs into one dedicated device, so
                 setup is simpler and routing is easier to reason about.
+              </p>
+              <p class="max-w-prose text-base leading-8 text-[var(--text-muted)]">
+                Built with creators and podcasters in mind first, but the
+                same one-device workflow holds up for live sound engineers,
+                small venues, and other pro-audio setups that want fewer
+                boxes in the chain.
               </p>
             </div>
 
@@ -791,8 +796,10 @@ useHead({
                 MixDroid started because I couldn't find a mixer that worked
                 without a laptop in the room. After 7 years of solo
                 development, the result is a portable pro audio mixer for
-                live sound, creators, and small venues — covering the full
-                workflow: DSP, routing, recording, and streaming, standalone.
+                creators and podcasters — with the same one-device workflow
+                also holding up for live sound and small venues — covering
+                the full workflow: DSP, routing, recording, and streaming,
+                standalone.
               </p>
               <p class="max-w-prose text-base leading-8 text-[var(--text-muted)]">
                 No VC money, no team, no shortcuts. Every DSP algorithm, every
