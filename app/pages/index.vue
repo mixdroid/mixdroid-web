@@ -170,7 +170,7 @@ const jsonLd = {
   name: "MixDroid",
   category: "Portable pro audio mixer hardware",
   description:
-    "Portable pro audio mixer for creators and podcasters, with live sound as a secondary use case. Dedicated hardware with low-latency DSP, flexible routing, recording, and streaming output — replaces the laptop, mixer, audio interface, and recorder stack with one device.",
+    "Portable pro audio mixer for creators and podcasters. Dedicated hardware with low-latency DSP, flexible routing, recording, and streaming output — replaces the laptop, mixer, audio interface, and recorder stack with one device.",
   url: "https://mixdroid-web.vercel.app",
   brand: {
     "@type": "Person",
@@ -190,9 +190,9 @@ const jsonLd = {
 };
 
 useSeoMeta({
-  title: "MixDroid | Standalone Hardware Mixer for Creators, Podcasters & Live Sound",
+  title: "MixDroid | Portable Pro Audio Mixer for Creators & Podcasters",
   description:
-    "MixDroid is a standalone hardware mixer for creators and podcasters, with live sound as a secondary use case. Mix, record, stream, and route audio with low-latency DSP and no laptop.",
+    "MixDroid is a standalone hardware mixer for creators and podcasters. Mix, record, and stream with low-latency DSP, flexible routing, and no laptop.",
   ogTitle: "MixDroid | Portable Pro Audio Mixer for Creators & Podcasters",
   ogDescription:
     "Replace the laptop, mixer, audio interface, and recorder stack with one dedicated device. Low-latency DSP, flexible routing, recording, and streaming — built solo over 7 years.",
@@ -241,11 +241,9 @@ useHead({
                 streaming, and routing.
               </p>
 
-              <div class="flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]">
-                <span class="panel-chip text-[var(--accent-cyan)]">Creators</span>
-                <span class="panel-chip text-[var(--accent-cyan)]">Podcasters</span>
-                <span class="panel-chip text-[var(--accent-cyan)]">Streamers</span>
-              </div>
+              <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--accent-cyan)]">
+                Creators · Podcasters · Streamers
+              </p>
             </div>
 
             <!-- What you're signing up for — objection handling before the form -->
