@@ -1,7 +1,8 @@
 <script setup lang="ts">
 // Social links live here now — out of the nav, focused footer placement
-// TODO: replace with your real invite link (also used in index.vue hero)
-const DISCORD_URL = "https://discord.gg/BEZwpMcFb";
+// NOTE: only one Discord invite URL was found across the project files
+// reviewed (index.vue). Using it here as the single, consistent invite.
+const DISCORD_URL = "https://discord.gg/3HFtyBgRv";
 
 const socials = [
   {
@@ -31,6 +32,9 @@ const socials = [
 <template>
   <footer class="border-t border-white/8">
     <div class="mx-auto max-w-7xl px-6 py-8 sm:px-8 lg:px-10">
+      <p class="mb-6 text-sm text-[var(--text-muted)]">
+        Professional audio mixing without the laptop.
+      </p>
       <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
 
         <!-- Left: brand + nav links -->

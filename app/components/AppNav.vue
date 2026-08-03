@@ -46,13 +46,12 @@ const links = [
 
           <div class="mx-2 h-4 w-px bg-white/10" aria-hidden="true" />
 
-          <UBadge
-            color="neutral"
-            variant="outline"
-            class="rounded-md border-[var(--panel-line)] bg-[var(--panel-bg)] px-3 py-1 text-[var(--accent-cyan)]"
+          <NuxtLink
+            to="/#hero-email"
+            class="flex min-h-[44px] items-center rounded-md bg-[var(--accent-cyan)] px-4 font-mono text-[11px] uppercase tracking-[0.28em] text-black transition hover:opacity-90"
           >
-            Early access
-          </UBadge>
+            Join the beta →
+          </NuxtLink>
         </div>
 
         <!-- Mobile hamburger -->
@@ -75,15 +74,14 @@ const links = [
 
       </nav>
 
-      <!-- Mobile: badge always visible -->
+      <!-- Mobile: primary CTA always visible -->
       <div class="flex items-center justify-end border-t border-white/5 pt-3 sm:hidden">
-        <UBadge
-          color="neutral"
-          variant="outline"
-          class="rounded-md border-[var(--panel-line)] bg-[var(--panel-bg)] px-3 py-1 text-[var(--accent-cyan)]"
+        <NuxtLink
+          to="/#hero-email"
+          class="flex min-h-[44px] items-center rounded-md bg-[var(--accent-cyan)] px-4 font-mono text-[11px] uppercase tracking-[0.28em] text-black transition hover:opacity-90"
         >
-          Early access
-        </UBadge>
+          Join the beta →
+        </NuxtLink>
       </div>
 
       <!-- Mobile dropdown -->
