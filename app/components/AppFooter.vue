@@ -39,13 +39,13 @@ const socials = [
 
         <!-- Left: brand + nav links -->
         <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
-          <NuxtLink to="/" class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--text-dim)] transition hover:text-[var(--text-secondary)]">
+          <NuxtLink to="/" class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--text-dim)] transition hover:text-[var(--text-secondary)]">
             MixDroid
           </NuxtLink>
           <div class="h-3 w-px bg-white/10" aria-hidden="true" />
-          <NuxtLink to="/features" class="font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)] transition hover:text-[var(--text-secondary)]">Features</NuxtLink>
-          <NuxtLink to="/about" class="font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)] transition hover:text-[var(--text-secondary)]">About</NuxtLink>
-          <NuxtLink to="/privacy" class="font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)] transition hover:text-[var(--text-secondary)]">Privacy</NuxtLink>
+          <NuxtLink to="/features" class="font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)] transition hover:text-[var(--text-secondary)]">Features</NuxtLink>
+          <NuxtLink to="/about" class="font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)] transition hover:text-[var(--text-secondary)]">About</NuxtLink>
+          <NuxtLink to="/privacy" class="font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)] transition hover:text-[var(--text-secondary)]">Privacy</NuxtLink>
         </div>
 
         <!-- Right: social icons + copyright -->
@@ -59,7 +59,7 @@ const socials = [
               :aria-label="social.label"
               target="_blank"
               rel="noopener noreferrer"
-              class="flex h-9 w-9 items-center justify-center rounded-md text-[var(--text-dim)] transition hover:bg-[var(--panel-bg)] hover:text-[var(--text-secondary)]"
+              class="flex h-11 w-11 items-center justify-center rounded-md text-[var(--text-dim)] transition hover:bg-[var(--panel-bg)] hover:text-[var(--text-secondary)]"
               v-html="social.icon"
             />
           </div>

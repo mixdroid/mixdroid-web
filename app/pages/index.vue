@@ -195,10 +195,12 @@ const faqJsonLd = {
   })),
 };
 
-// NOTE: no `offers` property here. MixDroid's hardware price hasn't been
-// announced, and the waitlist itself being free previously produced a
-// misleading $0 Offer on the Product entity. Omitting Offer entirely rather
-// than inventing a price.
+// NOTE: no `offers`, `review`, or `aggregateRating` here. An audit flagged
+// this Product schema as "not eligible for product rich snippets" because
+// those fields are missing — but MixDroid has no announced price and no
+// real reviews yet, so adding them would mean inventing data. Once real
+// pricing/reviews exist and are visible on the page, add them here (and
+// only then) to make the schema rich-result eligible.
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Product",
@@ -219,7 +221,7 @@ const jsonLd = {
 };
 
 useSeoMeta({
-  title: "MixDroid — Professional Audio Mixing Without the Laptop",
+  title: "Professional Audio Mixing Without a Laptop | MixDroid",
   description:
     "MixDroid combines a touchscreen mixer, real-time DSP, flexible routing, recording, and streaming into dedicated hardware. A working prototype currently in development — join the early-access list.",
   ogTitle: "MixDroid — Professional Audio Mixing Without the Laptop",
@@ -255,7 +257,7 @@ useHead({
           <div class="flex flex-col gap-6">
 
             <div class="space-y-4">
-              <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">
+              <p class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">
                 Standalone digital mixer
               </p>
 
@@ -268,13 +270,13 @@ useHead({
               </h1>
 
               <p class="max-w-prose text-base leading-7 text-[var(--text-muted)] sm:text-lg sm:leading-8">
-                MixDroid combines a touchscreen mixer, real-time DSP,
-                flexible routing, recording, and streaming into dedicated
-                hardware — so you can build a complete audio workflow
-                without carrying a computer.
+                Mix, record, and stream your production without booting up
+                a laptop or fighting with audio drivers. A touchscreen
+                mixer, real-time DSP, flexible routing, recording, and
+                streaming, built into dedicated hardware.
               </p>
 
-              <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--warning-pink)]">
+              <p class="font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--warning-pink)]">
                 Working prototype · Currently in development
               </p>
             </div>
@@ -282,19 +284,22 @@ useHead({
             <!-- Single waitlist form — the one primary action on the page -->
             <div class="space-y-3">
               <form
+                action="/api/waitlist"
+                method="post"
                 class="flex flex-col gap-3 sm:flex-row sm:items-end"
                 @submit.prevent="joinWaitlist"
               >
                 <div class="flex-1">
                   <label
                     for="hero-email"
-                    class="mb-1.5 block font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]"
+                    class="mb-1.5 block text-sm font-medium text-[var(--text-secondary)]"
                   >
                     Email address
                   </label>
                   <UInput
                     id="hero-email"
                     v-model="email"
+                    name="email"
                     type="email"
                     autocomplete="email"
                     size="xl"
@@ -338,7 +343,7 @@ useHead({
                 </p>
                 <a
                   href="#video"
-                  class="flex min-h-[44px] items-center font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--accent-cyan)] transition hover:opacity-80"
+                  class="flex min-h-[44px] items-center font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--accent-cyan)] transition hover:opacity-80"
                 >
                   Watch the prototype ↓
                 </a>
@@ -350,46 +355,29 @@ useHead({
           <!-- Hardware render — shown on all breakpoints; ordered first on mobile so
                visitors see it's a physical device before reading any copy -->
           <div class="order-first lg:order-none">
-            <button
-              type="button"
-              aria-label="Open full-size MixDroid prototype photo"
-              class="group w-full rounded-xl border border-[var(--panel-line)] bg-[var(--panel-bg)] p-4 text-left transition hover:border-[var(--accent-cyan)]/45 hover:shadow-[0_0_32px_rgba(0,229,255,0.08)]"
-              @click="openImage(heroImage)"
-            >
-              <div class="mb-3 flex items-center justify-between gap-4">
-                <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]">
-                  MixDroid
-                </p>
-                <span class="panel-chip font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--warning-pink)]">
-                  Working prototype
-                </span>
-              </div>
+            <div class="group relative w-full rounded-xl border border-[var(--panel-line)] bg-[var(--panel-bg)] p-4">
               <img
                 src="/images/Mixer.jpg"
                 alt="MixDroid — working hardware prototype, production design in progress"
                 width="1024"
                 height="600"
                 fetchpriority="high"
-                class="aspect-[1024/600] w-full rounded-lg border border-white/10 bg-black object-cover transition group-hover:scale-[1.01]"
+                class="aspect-[1024/600] w-full rounded-lg border border-white/10 bg-black object-cover"
               />
-            </button>
+              <!-- Single small icon-only affordance — not a second CTA, just an expand action -->
+              <button
+                type="button"
+                aria-label="Open full-size MixDroid prototype photo"
+                class="absolute right-6 top-6 flex h-11 w-11 items-center justify-center rounded-md border border-[var(--panel-line)] bg-black/60 text-[var(--text-secondary)] backdrop-blur-sm transition hover:border-[var(--accent-cyan)]/50 hover:text-[var(--accent-cyan)]"
+                @click="openImage(heroImage)"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                  <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3m11-5v3a2 2 0 0 1-2 2h-3"/>
+                </svg>
+              </button>
+            </div>
           </div>
 
-        </div>
-      </section>
-
-      <!-- ══ PROOF STRIP ═══════════════════════════════════════════════ -->
-      <section class="border-b border-white/8" aria-label="Technical proof">
-        <div class="mx-auto max-w-7xl px-6 py-6 sm:px-8 lg:px-10">
-          <div class="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
-            <span
-              v-for="item in proofItems"
-              :key="item"
-              class="panel-chip font-mono text-[11px] uppercase tracking-[0.24em] text-[var(--text-secondary)]"
-            >
-              {{ item }}
-            </span>
-          </div>
         </div>
       </section>
 
@@ -397,7 +385,7 @@ useHead({
       <section class="border-b border-white/8" aria-labelledby="problem-heading">
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div class="max-w-3xl space-y-4">
-            <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--warning-pink)]">The problem</p>
+            <p class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--warning-pink)]">The problem</p>
             <h2 id="problem-heading" class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
               Why is a laptop still in the middle of your audio setup?
             </h2>
@@ -434,16 +422,21 @@ useHead({
       <section class="border-b border-white/8" aria-labelledby="solution-heading">
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div class="mb-10 max-w-2xl space-y-3">
-            <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">The solution</p>
+            <p class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">The solution</p>
             <h2 id="solution-heading" class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
               One device. Complete audio workflow.
             </h2>
+            <p class="max-w-prose text-base leading-7 text-[var(--text-muted)]">
+              The processing power of a DAW with the reliability of
+              dedicated hardware — minus the boot-up time and driver
+              crashes.
+            </p>
           </div>
 
           <div class="console-panel grid gap-4 rounded-xl p-5 sm:p-6 lg:grid-cols-[1fr_auto_1fr_auto_1fr] lg:items-center lg:gap-3">
 
             <div class="space-y-2">
-              <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--text-dim)]">Inputs</p>
+              <p class="font-sans text-[11px] uppercase tracking-[0.3em] text-[var(--text-dim)]">Inputs</p>
               <div class="space-y-1.5">
                 <div class="mini-panel"><p class="text-sm text-[var(--text-secondary)]">Microphones</p></div>
                 <div class="mini-panel"><p class="text-sm text-[var(--text-secondary)]">Instruments</p></div>
@@ -458,7 +451,7 @@ useHead({
             </div>
 
             <div class="space-y-2">
-              <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]">MixDroid</p>
+              <p class="font-sans text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]">MixDroid</p>
               <div class="rounded-lg border border-[var(--accent-cyan)]/40 bg-[var(--panel-bg-strong)] p-3 space-y-1.5">
                 <p class="text-sm text-[var(--text-secondary)]">Mixing</p>
                 <p class="text-sm text-[var(--text-secondary)]">Parametric EQ</p>
@@ -475,7 +468,7 @@ useHead({
             </div>
 
             <div class="space-y-2">
-              <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--text-dim)]">Outputs</p>
+              <p class="font-sans text-[11px] uppercase tracking-[0.3em] text-[var(--text-dim)]">Outputs</p>
               <div class="space-y-1.5">
                 <div class="mini-panel"><p class="text-sm text-[var(--text-secondary)]">Speakers</p></div>
                 <div class="mini-panel"><p class="text-sm text-[var(--text-secondary)]">Headphones</p></div>
@@ -489,11 +482,26 @@ useHead({
         </div>
       </section>
 
+      <!-- ══ PROOF STRIP (moved here: specs support the solution) ═══════ -->
+      <section class="border-b border-white/8" aria-label="Technical proof">
+        <div class="mx-auto max-w-7xl px-6 py-6 sm:px-8 lg:px-10">
+          <div class="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+            <span
+              v-for="item in proofItems"
+              :key="item"
+              class="panel-chip font-sans text-[11px] uppercase tracking-[0.24em] text-[var(--text-secondary)]"
+            >
+              {{ item }}
+            </span>
+          </div>
+        </div>
+      </section>
+
       <!-- ══ PROTOTYPE VIDEO ═══════════════════════════════════════════ -->
       <section id="video" class="border-b border-white/8" aria-labelledby="video-heading">
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div class="mb-8 max-w-2xl space-y-3">
-            <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">See it running</p>
+            <p class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">See it running</p>
             <h2 id="video-heading" class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
               See it running.
             </h2>
@@ -502,7 +510,7 @@ useHead({
               working MixDroid prototype — real hardware running the mixer,
               DSP, and audio workflow.
             </p>
-            <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--warning-pink)]">
+            <p class="font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--warning-pink)]">
               Real hardware · Real DSP · Real-time audio
             </p>
           </div>
@@ -525,7 +533,7 @@ useHead({
       <section class="border-b border-white/8" aria-labelledby="audience-heading">
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div class="mb-8 max-w-2xl space-y-3">
-            <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">Who it's for</p>
+            <p class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">Who it's for</p>
             <h2 id="audience-heading" class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
               Built for anyone who wants audio without the laptop.
             </h2>
@@ -544,7 +552,7 @@ useHead({
       <section class="border-b border-white/8" aria-labelledby="features-heading">
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div class="mb-8 max-w-2xl space-y-3">
-            <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">Key features</p>
+            <p class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">Key features</p>
             <h2 id="features-heading" class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
               What it does.
             </h2>
@@ -563,7 +571,7 @@ useHead({
           </div>
 
           <div class="mt-6">
-            <NuxtLink to="/features" class="text-sm underline underline-offset-2 text-[var(--accent-cyan)] hover:opacity-80">
+            <NuxtLink to="/features" class="inline-flex min-h-[44px] items-center text-sm underline underline-offset-2 text-[var(--accent-cyan)] hover:opacity-80">
               Explore all features →
             </NuxtLink>
           </div>
@@ -574,7 +582,7 @@ useHead({
       <section class="border-b border-white/8" aria-labelledby="tech-heading">
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div class="mb-8 max-w-2xl space-y-3">
-            <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">Under the hood</p>
+            <p class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">Under the hood</p>
             <h2 id="tech-heading" class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
               It's a real audio system — not just an Android app.
             </h2>
@@ -588,7 +596,7 @@ useHead({
           </div>
 
           <div class="mt-6">
-            <NuxtLink to="/features" class="text-sm underline underline-offset-2 text-[var(--accent-cyan)] hover:opacity-80">
+            <NuxtLink to="/features" class="inline-flex min-h-[44px] items-center text-sm underline underline-offset-2 text-[var(--accent-cyan)] hover:opacity-80">
               Explore the technical features →
             </NuxtLink>
           </div>
@@ -600,7 +608,7 @@ useHead({
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
             <div class="space-y-4">
-              <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">The backstory</p>
+              <p class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">The backstory</p>
               <h2 id="story-heading" class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
                 Built because I needed it.
               </h2>
@@ -619,7 +627,7 @@ useHead({
               </div>
               <NuxtLink
                 to="/about"
-                class="inline-flex min-h-[44px] items-center font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--accent-cyan)] transition hover:opacity-80"
+                class="inline-flex min-h-[44px] items-center font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--accent-cyan)] transition hover:opacity-80"
               >
                 Read the full story →
               </NuxtLink>
@@ -648,13 +656,17 @@ useHead({
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div class="console-panel rounded-xl p-6 sm:p-10">
             <div class="mx-auto max-w-2xl space-y-4 text-center">
-              <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">Early access</p>
+              <p class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">Early access</p>
               <h2 id="early-access-heading" class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
                 Help shape the first release.
               </h2>
               <p class="text-base leading-7 text-[var(--text-muted)]">
                 MixDroid is still being developed, and the people who join
                 early can help influence what gets built next.
+              </p>
+              <p class="text-sm text-[var(--text-muted)]">
+                Estimated price: <span class="text-[var(--text-secondary)]">[estimated price range]</span> ·
+                Expected availability: <span class="text-[var(--text-secondary)]">[expected shipping window]</span>
               </p>
             </div>
 
@@ -690,7 +702,7 @@ useHead({
       <section class="border-b border-white/8" aria-labelledby="faq-heading">
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div class="mb-8 max-w-2xl space-y-3">
-            <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">Questions</p>
+            <p class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">Questions</p>
             <h2 id="faq-heading" class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
               Before you ask on Discord.
             </h2>
@@ -711,7 +723,7 @@ useHead({
                   aria-hidden="true"
                 >+</span>
               </button>
-              <div v-if="openFaq === i" class="px-5 pb-4 text-sm leading-7 text-[var(--text-muted)]">
+              <div v-if="openFaq === i" class="max-w-prose px-5 pb-4 text-sm leading-7 text-[var(--text-muted)]">
                 {{ item.a }}
               </div>
             </div>
@@ -749,7 +761,7 @@ useHead({
               >
                 Join the early-access list →
               </a>
-              <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]">
+              <p class="font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]">
                 Working prototype · Currently in development
               </p>
             </div>
@@ -814,7 +826,7 @@ useHead({
                   {{ selectedImage.caption }}
                 </p>
               </div>
-              <p class="shrink-0 font-mono text-[10px] uppercase tracking-[0.28em] text-[var(--text-dim)]">
+              <p class="shrink-0 font-sans text-[10px] uppercase tracking-[0.28em] text-[var(--text-dim)]">
                 {{ modalZoomed ? "Click to fit" : "Click to zoom" }}
               </p>
             </div>

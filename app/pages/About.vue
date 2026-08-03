@@ -82,7 +82,7 @@ useHead({
               <div class="flex flex-col items-center gap-2 lg:items-start">
                 <p class="text-base font-semibold text-white">Joe Kaikaty</p>
                 <p
-                  class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+                  class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
                 >
                   Solo developer
                 </p>
@@ -94,7 +94,7 @@ useHead({
             <div class="space-y-6">
               <div class="space-y-3">
                 <p
-                  class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+                  class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
                 >
                   About me
                 </p>
@@ -161,7 +161,7 @@ useHead({
           <div class="grid gap-10 lg:grid-cols-2 lg:items-start">
             <div class="space-y-4">
               <p
-                class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+                class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
               >
                 The motivation
               </p>
@@ -192,7 +192,7 @@ useHead({
 
             <div class="space-y-3">
               <p
-                class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+                class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
               >
                 What makes it different
               </p>
@@ -244,7 +244,7 @@ useHead({
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div class="mb-10 space-y-3">
             <p
-              class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+              class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
             >
               Development history
             </p>
@@ -269,7 +269,7 @@ useHead({
               <!-- Year bubble -->
               <div class="flex items-start gap-3 sm:justify-end sm:pt-1">
                 <span
-                  class="relative z-10 font-mono text-sm font-semibold text-[var(--accent-cyan)] sm:text-right"
+                  class="relative z-10 font-sans text-sm font-semibold text-[var(--accent-cyan)] sm:text-right"
                 >
                   {{ entry.year }}
                 </span>
@@ -307,7 +307,7 @@ useHead({
             >
               <div class="space-y-3">
                 <p
-                  class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+                  class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
                 >
                   Early access
                 </p>

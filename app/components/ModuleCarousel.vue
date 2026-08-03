@@ -102,7 +102,7 @@ function onKey(e: KeyboardEvent) {
       </button>
 
       <!-- Slide counter badge -->
-      <div class="absolute bottom-3 right-3 rounded-md border border-[var(--panel-line)] bg-black/70 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.28em] text-[var(--text-dim)] backdrop-blur-sm">
+      <div class="absolute bottom-3 right-3 rounded-md border border-[var(--panel-line)] bg-black/70 px-2.5 py-1 font-sans text-[10px] uppercase tracking-[0.28em] text-[var(--text-dim)] backdrop-blur-sm">
         {{ current + 1 }} / {{ screens.length }}
       </div>
     </div>
@@ -110,7 +110,7 @@ function onKey(e: KeyboardEvent) {
     <!-- Caption + dots row -->
     <div class="mt-4 flex items-start justify-between gap-4">
       <div class="min-w-0 space-y-1">
-        <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]">
+        <p class="font-sans text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]">
           {{ moduleTitle }} · Screen {{ current + 1 }}
         </p>
         <p class="text-sm font-medium text-white">
@@ -119,7 +119,7 @@ function onKey(e: KeyboardEvent) {
         <p class="whitespace-pre-line text-sm leading-6 text-[var(--text-muted)]">
           {{ screens[current].caption }}
         </p>
-        <p class="pt-1 font-mono text-[10px] uppercase tracking-[0.28em] text-[var(--text-dim)]">
+        <p class="pt-1 font-sans text-[10px] uppercase tracking-[0.28em] text-[var(--text-dim)]">
           Click image to expand ↗
         </p>
       </div>

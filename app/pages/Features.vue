@@ -281,7 +281,7 @@ useHead({
           >
             <div class="space-y-4">
               <p
-                class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+                class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
               >
                 All features
               </p>
@@ -302,7 +302,7 @@ useHead({
                 v-for="mod in modules"
                 :key="mod.id"
                 type="button"
-                class="panel-chip font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)] transition hover:border-[var(--accent-cyan)]/40 hover:text-[var(--accent-cyan)]"
+                class="panel-chip font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)] transition hover:border-[var(--accent-cyan)]/40 hover:text-[var(--accent-cyan)]"
                 @click="scrollTo(mod.id)"
               >
                 {{ mod.title }}
@@ -320,7 +320,7 @@ useHead({
             <div class="mb-8 space-y-3">
               <div class="flex items-center gap-3">
                 <span
-                  class="panel-chip font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--warning-pink)]"
+                  class="panel-chip font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--warning-pink)]"
                 >
                   {{ mod.label }}
                 </span>
@@ -375,7 +375,7 @@ useHead({
                   <!-- Caption -->
                   <div class="w-full space-y-3 lg:w-80 lg:shrink-0">
                     <p
-                      class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]"
+                      class="font-sans text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]"
                     >
                       {{ mod.title }}
                     </p>
@@ -388,7 +388,7 @@ useHead({
                       {{ screen.caption }}
                     </p>
                     <p
-                      class="font-mono text-[11px] uppercase tracking-[0.3em] text-[var(--text-dim)]"
+                      class="font-sans text-[11px] uppercase tracking-[0.3em] text-[var(--text-dim)]"
                     >
                       Click to expand ↗
                     </p>
@@ -409,7 +409,7 @@ useHead({
             >
               <div class="space-y-3">
                 <p
-                  class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+                  class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
                 >
                   The pipeline
                 </p>
@@ -429,19 +429,19 @@ useHead({
               </div>
               <div class="flex flex-wrap gap-2 lg:flex-col lg:items-end">
                 <span
-                  class="panel-chip font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]"
+                  class="panel-chip font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]"
                   >Chorus ✓</span
                 >
                 <span
-                  class="panel-chip font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]"
+                  class="panel-chip font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]"
                   >Flanger ✓</span
                 >
                 <span
-                  class="panel-chip font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]"
+                  class="panel-chip font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)]"
                   >Distortion ✓</span
                 >
                 <span
-                  class="panel-chip font-mono text-[11px] uppercase tracking-[0.28em] text-[var(--accent-cyan)]/60"
+                  class="panel-chip font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--accent-cyan)]/60"
                   >More in dev…</span
                 >
               </div>
@@ -459,7 +459,7 @@ useHead({
             >
               <div class="space-y-3">
                 <p
-                  class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+                  class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
                 >
                   Early access
                 </p>
@@ -542,7 +542,7 @@ useHead({
                 </p>
               </div>
               <p
-                class="shrink-0 font-mono text-[10px] uppercase tracking-[0.28em] text-[var(--text-dim)]"
+                class="shrink-0 font-sans text-[10px] uppercase tracking-[0.28em] text-[var(--text-dim)]"
               >
                 {{ isZoomed ? "Click to fit" : "Click to zoom" }}
               </p>

@@ -15,7 +15,7 @@ useHead({
     <main class="mx-auto max-w-3xl px-6 py-16 sm:px-8 lg:px-10">
 
       <div class="mb-10 space-y-3">
-        <p class="font-mono text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">Legal</p>
+        <p class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">Legal</p>
         <h1 class="text-4xl font-semibold tracking-tight text-white">Privacy Policy</h1>
         <p class="text-sm text-[var(--text-dim)]">Last updated: June 2025</p>
       </div>

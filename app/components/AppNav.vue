@@ -23,7 +23,7 @@ const links = [
           >
             MX
           </div>
-          <span class="font-mono text-[11px] uppercase tracking-[0.35em] text-[var(--accent-cyan)]">
+          <span class="font-sans text-[11px] uppercase tracking-[0.35em] text-[var(--accent-cyan)]">
             MixDroid
           </span>
         </NuxtLink>
@@ -34,7 +34,7 @@ const links = [
             v-for="link in links"
             :key="link.to"
             :to="link.to"
-            class="min-h-[44px] flex items-center rounded-md px-3 font-mono text-[11px] uppercase tracking-[0.28em] transition"
+            class="min-h-[44px] flex items-center rounded-md px-3 font-sans text-[11px] uppercase tracking-[0.28em] transition"
             :class="
               route.path === link.to
                 ? 'bg-[var(--panel-bg-strong)] text-[var(--accent-cyan)]'
@@ -48,7 +48,7 @@ const links = [
 
           <NuxtLink
             to="/#hero-email"
-            class="flex min-h-[44px] items-center rounded-md bg-[var(--accent-cyan)] px-4 font-mono text-[11px] uppercase tracking-[0.28em] text-black transition hover:opacity-90"
+            class="flex min-h-[44px] items-center rounded-md bg-[var(--accent-cyan)] px-4 font-sans text-[11px] uppercase tracking-[0.28em] text-black transition hover:opacity-90"
           >
             Join the beta →
           </NuxtLink>
@@ -57,7 +57,7 @@ const links = [
         <!-- Mobile hamburger -->
         <button
           type="button"
-          class="flex h-10 w-10 items-center justify-center rounded-md border border-[var(--panel-line)] bg-[var(--panel-bg)] text-[var(--text-secondary)] sm:hidden"
+          class="flex h-11 w-11 items-center justify-center rounded-md border border-[var(--panel-line)] bg-[var(--panel-bg)] text-[var(--text-secondary)] sm:hidden"
           :aria-expanded="menuOpen"
           aria-label="Toggle navigation menu"
           @click="menuOpen = !menuOpen"
@@ -78,7 +78,7 @@ const links = [
       <div class="flex items-center justify-end border-t border-white/5 pt-3 sm:hidden">
         <NuxtLink
           to="/#hero-email"
-          class="flex min-h-[44px] items-center rounded-md bg-[var(--accent-cyan)] px-4 font-mono text-[11px] uppercase tracking-[0.28em] text-black transition hover:opacity-90"
+          class="flex min-h-[44px] items-center rounded-md bg-[var(--accent-cyan)] px-4 font-sans text-[11px] uppercase tracking-[0.28em] text-black transition hover:opacity-90"
         >
           Join the beta →
         </NuxtLink>
@@ -98,7 +98,7 @@ const links = [
             v-for="link in links"
             :key="link.to"
             :to="link.to"
-            class="block min-h-[44px] flex items-center rounded-md px-3 font-mono text-[11px] uppercase tracking-[0.28em] transition"
+            class="block min-h-[44px] flex items-center rounded-md px-3 font-sans text-[11px] uppercase tracking-[0.28em] transition"
             :class="
               route.path === link.to
                 ? 'bg-[var(--panel-bg-strong)] text-[var(--accent-cyan)]'
