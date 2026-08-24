@@ -1,0 +1,13 @@
+# MixDroid
+
+> MixDroid is a standalone digital mixer — a working hardware prototype
+> currently in development — providing professional audio mixing,
+> real-time DSP, flexible routing, recording, and streaming without
+> requiring a laptop for the core workflow. Built solo by Joe Kaikaty.
+
+## Key pages
+
+- [Home](https://mixdroid-web.vercel.app/): Product overview, prototype demo video, and early-access signup
+- [Features](https://mixdroid-web.vercel.app/features): Full technical breakdown of every DSP module and screen
+- [About](https://mixdroid-web.vercel.app/about): The founder's story and development history
+- [Privacy](https://mixdroid-web.vercel.app/privacy): Privacy policy

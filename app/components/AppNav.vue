@@ -48,9 +48,9 @@ const links = [
 
           <NuxtLink
             to="/#hero-email"
-            class="flex min-h-[44px] items-center rounded-md bg-[var(--accent-cyan)] px-4 font-sans text-[11px] uppercase tracking-[0.28em] text-black transition hover:opacity-90"
+            class="flex min-h-[44px] shrink-0 items-center whitespace-nowrap rounded-md bg-[var(--accent-cyan)] px-3 font-sans text-[11px] uppercase tracking-[0.24em] text-black transition hover:opacity-90"
           >
-            Join the beta →
+            Join the early-access list →
           </NuxtLink>
         </div>
 
@@ -80,7 +80,7 @@ const links = [
           to="/#hero-email"
           class="flex min-h-[44px] items-center rounded-md bg-[var(--accent-cyan)] px-4 font-sans text-[11px] uppercase tracking-[0.28em] text-black transition hover:opacity-90"
         >
-          Join the beta →
+          Join the early-access list →
         </NuxtLink>
       </div>
 

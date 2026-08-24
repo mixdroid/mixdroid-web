@@ -14,12 +14,11 @@ const errorMessage = ref("");
 
 const selectedImage = ref<ShowcaseImage | null>(null);
 const isImageModalOpen = ref(false);
-const modalZoomed = ref(false);
 
 // Single source of truth for the Discord invite — only one URL was found
 // across the project files reviewed (previously duplicated in copy only,
 // never actually a second distinct invite). Reused in the footer too.
-const DISCORD_URL = "https://discord.gg/3HFtyBgRv";
+const DISCORD_URL = "https://discord.gg/K7n5EW6ev";
 
 const heroImage: ShowcaseImage = {
   src: "/images/Mixer.jpg",
@@ -29,7 +28,6 @@ const heroImage: ShowcaseImage = {
 
 function openImage(image: ShowcaseImage) {
   selectedImage.value = image;
-  modalZoomed.value = false;
   isImageModalOpen.value = true;
 }
 
@@ -45,20 +43,26 @@ async function joinWaitlist() {
     errorMessage.value = "Please enter your email address.";
     return;
   }
+
+  // Fires on every real submission attempt — distinct from the CTA click,
+  // which fires the moment the button is pressed regardless of outcome.
+  track("mixdroid_waitlist_submit");
+
   loading.value = true;
   try {
     await $fetch("/api/waitlist", { method: "POST", body: { email: email.value } });
     submitted.value = true;
     email.value = "";
 
-    // Vercel Analytics — custom conversion event (module is already installed/registered)
-    track("waitlist_signup");
+    // Fires only on a confirmed successful signup — distinguishes "clicked
+    // the CTA" / "attempted to submit" from "actually joined the list".
+    track("mixdroid_waitlist_success");
 
     // GA4 — only fires if a gtag() is already loaded on the page (e.g. via GTM
     // or a manually-added GA script). No GA4 script was found in the project
     // files reviewed, so this is a safe no-op until GA4 is actually wired up.
     if (typeof window !== "undefined" && typeof (window as any).gtag === "function") {
-      (window as any).gtag("event", "waitlist_signup", {
+      (window as any).gtag("event", "mixdroid_waitlist_success", {
         method: "email",
       });
     }
@@ -66,9 +70,15 @@ async function joinWaitlist() {
     const fetchError = error as { data?: { statusMessage?: string } };
     errorMessage.value =
       fetchError?.data?.statusMessage ?? "Something went wrong. Please try again.";
+    track("mixdroid_waitlist_error", { message: errorMessage.value });
   } finally {
     loading.value = false;
   }
+}
+
+// Small shared helper so every CTA/interaction click uses the same pattern.
+function trackEvent(name: string, props?: Record<string, string>) {
+  track(name, props);
 }
 
 // ── Proof strip ─────────────────────────────────────────────────────────
@@ -85,31 +95,33 @@ const proofItems = [
 const audiences = [
   {
     title: "Podcasters",
-    detail: "Mix multiple microphones, process voices, and record your production directly from the device.",
+    detail: "Get a clean, multi-mic recording without a separate mixer or interface cluttering your desk.",
   },
   {
     title: "Live sound",
-    detail: "Build and control a portable digital mixing workflow without bringing a computer to every setup.",
+    detail: "Run a real mixing workflow from a bag, not a road case — without a laptop tied to the console.",
   },
   {
     title: "Musicians",
-    detail: "Monitor, process, and record instruments with built-in mixing and DSP.",
+    detail: "Hear yourself clearly and capture a usable take without routing through a computer first.",
   },
   {
     title: "Streamers & creators",
-    detail: "Combine microphones, media, and external sources into a processed mix for live content.",
+    detail: "Blend mics, media, and outside sources into one clean feed without juggling separate software.",
   },
 ];
 
 // ── Key features (homepage subset — full catalog lives on /features) ────
-const keyFeatures = [
+const keyFeatures: { title: string; detail: string; href?: string }[] = [
   {
     title: "Real-time DSP",
-    detail: "EQ, compression, dynamics, and effects processing designed to run directly on the device.",
+    detail: "Shape and control your audio directly on the device with EQ, compression, dynamics, and effects.",
+    href: "/features#eq",
   },
   {
     title: "Flexible routing",
     detail: "Build the signal flow you need instead of being locked into a fixed mixer layout.",
+    href: "/features#studio",
   },
   {
     title: "Touchscreen control",
@@ -117,7 +129,8 @@ const keyFeatures = [
   },
   {
     title: "Recording",
-    detail: "Capture audio without requiring another computer in the recording chain.",
+    detail: "Record directly without putting another computer in the middle of the recording chain.",
+    href: "/features#wavey",
   },
   {
     title: "Streaming",
@@ -125,12 +138,12 @@ const keyFeatures = [
   },
   {
     title: "USB audio",
-    detail: "Use MixDroid as part of a larger computer-based setup when you actually want one.",
+    detail: "Use MixDroid standalone, or connect it to a computer when you actually want one.",
   },
 ];
 
 // ── Technical credibility ────────────────────────────────────────────────
-const techAreas = [
+const techAreas: { title: string; detail: string; href?: string }[] = [
   {
     title: "Real-time DSP",
     detail: "Native audio processing for predictable, low-latency operation.",
@@ -138,6 +151,7 @@ const techAreas = [
   {
     title: "Flexible signal routing",
     detail: "Channels, buses, and processing can be connected according to the workflow.",
+    href: "/features#mixer",
   },
   {
     title: "Dedicated audio architecture",
@@ -169,17 +183,21 @@ const faqs = [
   },
   {
     q: "How much will MixDroid cost?",
-    a: "Final pricing has not been announced yet.",
+    a: "Final pricing hasn't been locked in yet. Pricing and availability will be announced as development progresses.",
   },
   {
     q: "When can I get one?",
-    a: "Join the early-access list to receive beta and launch updates.",
+    a: "MixDroid is currently in development. Availability will be announced as development progresses — join the early-access list to hear first.",
   },
 ];
 
 const openFaq = ref<number | null>(0);
 function toggleFaq(index: number) {
-  openFaq.value = openFaq.value === index ? null : index;
+  const opening = openFaq.value !== index;
+  openFaq.value = opening ? index : null;
+  if (opening) {
+    trackEvent("mixdroid_faq_interaction", { question: faqs[index].q });
+  }
 }
 
 const faqJsonLd = {
@@ -223,7 +241,7 @@ const jsonLd = {
 useSeoMeta({
   title: "Professional Audio Mixing Without a Laptop | MixDroid",
   description:
-    "MixDroid combines a touchscreen mixer, real-time DSP, flexible routing, recording, and streaming into dedicated hardware. A working prototype currently in development — join the early-access list.",
+    "MixDroid is a standalone digital mixer with real-time DSP, flexible routing, recording, and streaming — professional audio without a laptop.",
   ogTitle: "MixDroid — Professional Audio Mixing Without the Laptop",
   ogDescription:
     "A standalone digital mixer combining real-time DSP, flexible routing, recording, and streaming into dedicated hardware. Working prototype, currently in development.",
@@ -317,6 +335,7 @@ useHead({
                   color="primary"
                   class="min-h-[44px] shrink-0 rounded-md px-6 font-semibold text-black"
                   :loading="loading"
+                  @click="trackEvent('mixdroid_hero_cta')"
                 >
                   Join the early-access list →
                 </UButton>
@@ -344,6 +363,7 @@ useHead({
                 <a
                   href="#video"
                   class="flex min-h-[44px] items-center font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--accent-cyan)] transition hover:opacity-80"
+                  @click="trackEvent('mixdroid_demo_click')"
                 >
                   Watch the prototype ↓
                 </a>
@@ -381,6 +401,37 @@ useHead({
         </div>
       </section>
 
+      <!-- ══ PROTOTYPE VIDEO (moved up: proof close to the hero) ═══════ -->
+      <section id="video" class="border-b border-white/8" aria-labelledby="video-heading">
+        <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
+          <div class="mb-8 max-w-2xl space-y-3">
+            <p class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">The prototype</p>
+            <h2 id="video-heading" class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+              This is a working prototype.
+            </h2>
+            <p class="max-w-prose text-base leading-7 text-[var(--text-muted)]">
+              Real hardware running the MixDroid mixer, DSP, routing, and
+              audio workflow — not a concept render or a software mockup.
+            </p>
+            <p class="font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--warning-pink)]">
+              Real hardware · Real DSP · Real-time audio
+            </p>
+          </div>
+
+          <div class="aspect-video w-full overflow-hidden rounded-xl border border-[var(--panel-line)]">
+            <iframe
+              class="h-full w-full"
+              src="https://www.youtube.com/embed/QNN6lykvKOQ"
+              title="MixDroid Demo #1 — Standalone Android Mixer with Real-Time DSP"
+              frameborder="0"
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            />
+          </div>
+        </div>
+      </section>
+
       <!-- ══ PROBLEM ═══════════════════════════════════════════════════ -->
       <section class="border-b border-white/8" aria-labelledby="problem-heading">
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
@@ -390,31 +441,41 @@ useHead({
               Why is a laptop still in the middle of your audio setup?
             </h2>
             <p class="max-w-prose text-base leading-8 text-[var(--text-muted)]">
-              A typical setup means a laptop, an audio interface, a mixer,
-              software, drivers, cables, and configuration — all before you
-              can get a sound out. Any one of those can go wrong right
-              before you need it to work.
+              A typical setup means stacking several separate pieces
+              together before you can get a sound out — and any one of
+              them can go wrong right before you need it to work.
             </p>
           </div>
 
-          <div class="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <div class="mini-panel text-center">
-              <p class="text-sm text-[var(--text-secondary)]">Laptop</p>
+          <div class="mt-8 grid items-center gap-4 lg:grid-cols-[1fr_auto_1fr]">
+            <div class="space-y-2">
+              <p class="font-sans text-[11px] uppercase tracking-[0.3em] text-[var(--text-dim)]">Typical setup</p>
+              <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-2">
+                <div class="mini-panel text-center"><p class="text-sm text-[var(--text-secondary)]">Laptop</p></div>
+                <div class="mini-panel text-center"><p class="text-sm text-[var(--text-secondary)]">Audio interface</p></div>
+                <div class="mini-panel text-center"><p class="text-sm text-[var(--text-secondary)]">Mixer</p></div>
+                <div class="mini-panel text-center"><p class="text-sm text-[var(--text-secondary)]">Software</p></div>
+                <div class="mini-panel text-center"><p class="text-sm text-[var(--text-secondary)]">Drivers</p></div>
+                <div class="mini-panel text-center"><p class="text-sm text-[var(--text-secondary)]">Cables</p></div>
+              </div>
             </div>
-            <div class="mini-panel text-center">
-              <p class="text-sm text-[var(--text-secondary)]">Audio interface</p>
+
+            <div class="flex items-center justify-center text-[var(--accent-cyan)]" aria-hidden="true">
+              <span class="lg:hidden">↓</span>
+              <span class="hidden lg:inline">→</span>
             </div>
-            <div class="mini-panel text-center">
-              <p class="text-sm text-[var(--text-secondary)]">Mixer</p>
-            </div>
-            <div class="mini-panel text-center">
-              <p class="text-sm text-[var(--text-secondary)]">Drivers &amp; cables</p>
+
+            <div class="space-y-2">
+              <p class="font-sans text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]">MixDroid</p>
+              <div class="rounded-lg border border-[var(--accent-cyan)]/40 bg-[var(--panel-bg-strong)] px-4 py-5 text-center">
+                <p class="text-lg font-semibold text-[var(--accent-cyan)]">One dedicated device.</p>
+                <p class="mt-2 text-sm leading-6 text-[var(--text-muted)]">
+                  Mix, process, route, record, and stream from one
+                  standalone audio system.
+                </p>
+              </div>
             </div>
           </div>
-
-          <p class="mt-8 max-w-prose text-lg font-medium leading-8 text-white">
-            MixDroid removes the computer from the core audio workflow.
-          </p>
         </div>
       </section>
 
@@ -422,9 +483,9 @@ useHead({
       <section class="border-b border-white/8" aria-labelledby="solution-heading">
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div class="mb-10 max-w-2xl space-y-3">
-            <p class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">The solution</p>
+            <p class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">How it works</p>
             <h2 id="solution-heading" class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-              One device. Complete audio workflow.
+              How the signal flows.
             </h2>
             <p class="max-w-prose text-base leading-7 text-[var(--text-muted)]">
               The processing power of a DAW with the reliability of
@@ -497,38 +558,6 @@ useHead({
         </div>
       </section>
 
-      <!-- ══ PROTOTYPE VIDEO ═══════════════════════════════════════════ -->
-      <section id="video" class="border-b border-white/8" aria-labelledby="video-heading">
-        <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
-          <div class="mb-8 max-w-2xl space-y-3">
-            <p class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">See it running</p>
-            <h2 id="video-heading" class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-              See it running.
-            </h2>
-            <p class="max-w-prose text-base leading-7 text-[var(--text-muted)]">
-              This isn't a concept render or a software mockup. This is the
-              working MixDroid prototype — real hardware running the mixer,
-              DSP, and audio workflow.
-            </p>
-            <p class="font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--warning-pink)]">
-              Real hardware · Real DSP · Real-time audio
-            </p>
-          </div>
-
-          <div class="aspect-video w-full overflow-hidden rounded-xl border border-[var(--panel-line)]">
-            <iframe
-              class="h-full w-full"
-              src="https://www.youtube.com/embed/QNN6lykvKOQ"
-              title="MixDroid Demo #1 — Standalone Android Mixer with Real-Time DSP"
-              frameborder="0"
-              loading="lazy"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            />
-          </div>
-        </div>
-      </section>
-
       <!-- ══ AUDIENCE ══════════════════════════════════════════════════ -->
       <section class="border-b border-white/8" aria-labelledby="audience-heading">
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
@@ -537,6 +566,10 @@ useHead({
             <h2 id="audience-heading" class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
               Built for anyone who wants audio without the laptop.
             </h2>
+            <p class="max-w-prose text-base leading-7 text-[var(--text-muted)]">
+              People who want professional audio without carrying a
+              computer into the core workflow.
+            </p>
           </div>
 
           <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -562,7 +595,8 @@ useHead({
             <div v-for="feature in keyFeatures" :key="feature.title" class="mini-panel">
               <p class="mini-panel__title flex items-start gap-2 normal-case tracking-normal text-base font-semibold text-white">
                 <span class="mt-0.5 shrink-0 text-[var(--accent-cyan)]">→</span>
-                {{ feature.title }}
+                <NuxtLink v-if="feature.href" :to="feature.href" class="underline-offset-2 hover:underline hover:text-[var(--accent-cyan)]">{{ feature.title }}</NuxtLink>
+                <span v-else>{{ feature.title }}</span>
               </p>
               <p class="mini-panel__value text-sm font-normal leading-6 text-[var(--text-muted)]">
                 {{ feature.detail }}
@@ -571,7 +605,7 @@ useHead({
           </div>
 
           <div class="mt-6">
-            <NuxtLink to="/features" class="inline-flex min-h-[44px] items-center text-sm underline underline-offset-2 text-[var(--accent-cyan)] hover:opacity-80">
+            <NuxtLink to="/features" class="inline-flex min-h-[44px] items-center text-sm underline underline-offset-2 text-[var(--accent-cyan)] hover:opacity-80" @click="trackEvent('mixdroid_features_click')">
               Explore all features →
             </NuxtLink>
           </div>
@@ -590,13 +624,16 @@ useHead({
 
           <div class="grid gap-4 sm:grid-cols-2">
             <div v-for="area in techAreas" :key="area.title" class="console-panel rounded-xl p-5">
-              <p class="text-base font-semibold text-white">{{ area.title }}</p>
+              <p class="text-base font-semibold text-white">
+                <NuxtLink v-if="area.href" :to="area.href" class="underline-offset-2 hover:underline hover:text-[var(--accent-cyan)]">{{ area.title }}</NuxtLink>
+                <span v-else>{{ area.title }}</span>
+              </p>
               <p class="mt-2 text-sm leading-6 text-[var(--text-muted)]">{{ area.detail }}</p>
             </div>
           </div>
 
           <div class="mt-6">
-            <NuxtLink to="/features" class="inline-flex min-h-[44px] items-center text-sm underline underline-offset-2 text-[var(--accent-cyan)] hover:opacity-80">
+            <NuxtLink to="/features" class="inline-flex min-h-[44px] items-center text-sm underline underline-offset-2 text-[var(--accent-cyan)] hover:opacity-80" @click="trackEvent('mixdroid_features_click')">
               Explore the technical features →
             </NuxtLink>
           </div>
@@ -615,8 +652,9 @@ useHead({
               <p class="max-w-prose text-base leading-8 text-[var(--text-muted)]">
                 MixDroid started in 2018, after I got frustrated needing a
                 laptop for serious audio work. What began as a personal
-                project became years of work on real-time DSP, Android
-                audio, hardware, and mixer architecture.
+                project became years of work on
+                <NuxtLink to="/features#eq" class="text-[var(--accent-cyan)] underline underline-offset-2 hover:opacity-80">real-time DSP</NuxtLink>,
+                Android audio, hardware, and mixer architecture.
               </p>
               <p class="max-w-prose text-base font-medium leading-8 text-white">
                 Professional audio shouldn't always require a computer.
@@ -634,17 +672,13 @@ useHead({
             </div>
 
             <div class="grid grid-cols-2 gap-4">
-              <div class="console-stat col-span-2">
-                <p class="console-stat__label">Development time</p>
-                <p class="console-stat__value">7 years solo</p>
-              </div>
               <div class="console-stat">
                 <p class="console-stat__label">Building since</p>
                 <p class="console-stat__value">2018</p>
               </div>
               <div class="console-stat">
-                <p class="console-stat__label">Team size</p>
-                <p class="console-stat__value">1</p>
+                <p class="console-stat__label">Role</p>
+                <p class="console-stat__value">Solo founder &amp; developer</p>
               </div>
             </div>
           </div>
@@ -665,8 +699,7 @@ useHead({
                 early can help influence what gets built next.
               </p>
               <p class="text-sm text-[var(--text-muted)]">
-                Estimated price: <span class="text-[var(--text-secondary)]">[estimated price range]</span> ·
-                Expected availability: <span class="text-[var(--text-secondary)]">[expected shipping window]</span>
+                Pricing and availability will be announced as development progresses.
               </p>
             </div>
 
@@ -689,6 +722,7 @@ useHead({
               <a
                 href="#hero-email"
                 class="inline-flex min-h-[44px] shrink-0 items-center justify-center rounded-md bg-[var(--accent-cyan)] px-8 text-sm font-semibold text-black transition hover:opacity-90"
+                @click="trackEvent('mixdroid_hero_cta', { location: 'early_access_section' })"
               >
                 Join the early-access list →
               </a>
@@ -750,14 +784,15 @@ useHead({
                 Leave the laptop behind.
               </h2>
               <p class="text-base leading-7 text-[var(--text-muted)]">
-                Build your audio workflow around the tools you actually
-                need — not around a computer you have to carry everywhere.
+                Build your audio workflow around a dedicated mixer instead
+                of a computer you have to carry everywhere.
               </p>
             </div>
             <div class="mt-6 flex flex-col items-center gap-3">
               <a
                 href="#hero-email"
                 class="inline-flex min-h-[44px] shrink-0 items-center justify-center rounded-md bg-[var(--accent-cyan)] px-8 text-sm font-semibold text-black transition hover:opacity-90"
+                @click="trackEvent('mixdroid_final_cta')"
               >
                 Join the early-access list →
               </a>
@@ -773,67 +808,14 @@ useHead({
 
     <AppFooter />
 
-    <!-- ── Image modal (hero render) -->
-    <Teleport to="body">
-      <Transition
-        enter-active-class="transition duration-200 ease-out"
-        enter-from-class="opacity-0"
-        enter-to-class="opacity-100"
-        leave-active-class="transition duration-150 ease-in"
-        leave-from-class="opacity-100"
-        leave-to-class="opacity-0"
-      >
-        <div
-          v-if="isImageModalOpen"
-          class="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 sm:items-center sm:p-8"
-          style="background: rgba(8, 8, 12, 0.96); backdrop-filter: blur(6px);"
-          role="dialog"
-          aria-modal="true"
-          :aria-label="selectedImage?.alt"
-          @click.self="isImageModalOpen = false"
-        >
-          <div
-            class="relative my-auto w-full max-w-4xl rounded-xl border border-[var(--panel-line)] bg-[var(--panel-bg)] shadow-[0_0_60px_rgba(0,0,0,0.6)]"
-            @click.stop
-          >
-            <div
-              class="overflow-auto rounded-t-xl"
-              style="max-height: 70vh;"
-              @click="modalZoomed = !modalZoomed"
-            >
-              <img
-                v-if="selectedImage"
-                :src="selectedImage.src"
-                :alt="selectedImage.alt"
-                :class="[
-                  'block rounded-t-xl transition-all duration-300 ease-in-out',
-                  modalZoomed
-                    ? 'w-[200%] max-w-none cursor-zoom-out'
-                    : 'w-full cursor-zoom-in object-contain',
-                ]"
-              />
-            </div>
-            <div
-              v-if="selectedImage"
-              class="flex flex-col gap-3 border-t border-[var(--panel-line)] px-4 py-4 sm:flex-row sm:items-start sm:justify-between sm:gap-4 sm:px-5"
-            >
-              <div class="min-w-0">
-                <p class="text-sm font-semibold text-white">{{ selectedImage.alt }}</p>
-                <p
-                  v-if="selectedImage.caption"
-                  class="mt-1 whitespace-pre-line text-sm leading-6 text-[var(--text-muted)]"
-                >
-                  {{ selectedImage.caption }}
-                </p>
-              </div>
-              <p class="shrink-0 font-sans text-[10px] uppercase tracking-[0.28em] text-[var(--text-dim)]">
-                {{ modalZoomed ? "Click to fit" : "Click to zoom" }}
-              </p>
-            </div>
-          </div>
-        </div>
-      </Transition>
-    </Teleport>
+    <!-- Lazy-loaded: this component's JS chunk isn't fetched until the
+         visitor actually opens an image, keeping it out of the critical
+         homepage bundle. -->
+    <LazyImageLightbox
+      :open="isImageModalOpen"
+      :image="selectedImage"
+      @close="isImageModalOpen = false"
+    />
 
   </div>
 </template>
