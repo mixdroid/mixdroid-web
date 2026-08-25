@@ -14,11 +14,12 @@ const errorMessage = ref("");
 
 const selectedImage = ref<ShowcaseImage | null>(null);
 const isImageModalOpen = ref(false);
+const modalZoomed = ref(false);
 
 // Single source of truth for the Discord invite — only one URL was found
 // across the project files reviewed (previously duplicated in copy only,
 // never actually a second distinct invite). Reused in the footer too.
-const DISCORD_URL = "https://discord.gg/K7n5EW6ev";
+const DISCORD_URL = "https://discord.gg/3HFtyBgRv";
 
 const heroImage: ShowcaseImage = {
   src: "/images/Mixer.jpg",
@@ -28,6 +29,7 @@ const heroImage: ShowcaseImage = {
 
 function openImage(image: ShowcaseImage) {
   selectedImage.value = image;
+  modalZoomed.value = false;
   isImageModalOpen.value = true;
 }
 
@@ -322,7 +324,7 @@ useHead({
                     autocomplete="email"
                     size="xl"
                     variant="outline"
-                    placeholder="you@example.com"
+                    placeholder="you@yourmail.com"
                     class="w-full"
                     :ui="{
                       base: 'rounded-md bg-black/30 border-white/12 text-white placeholder:text-slate-500 min-h-[44px] text-base',
@@ -375,27 +377,30 @@ useHead({
           <!-- Hardware render — shown on all breakpoints; ordered first on mobile so
                visitors see it's a physical device before reading any copy -->
           <div class="order-first lg:order-none">
-            <div class="group relative w-full rounded-xl border border-[var(--panel-line)] bg-[var(--panel-bg)] p-4">
+            <button
+              type="button"
+              aria-label="Open full-size MixDroid prototype photo"
+              class="group relative w-full rounded-xl border border-[var(--panel-line)] bg-[var(--panel-bg)] p-4 text-left transition hover:border-[var(--accent-cyan)]/40"
+              @click="openImage(heroImage)"
+            >
               <img
                 src="/images/Mixer.jpg"
                 alt="MixDroid — working hardware prototype, production design in progress"
                 width="1024"
                 height="600"
                 fetchpriority="high"
-                class="aspect-[1024/600] w-full rounded-lg border border-white/10 bg-black object-cover"
+                class="aspect-[1024/600] w-full rounded-lg border border-white/10 bg-black object-cover transition group-hover:scale-[1.01]"
               />
-              <!-- Single small icon-only affordance — not a second CTA, just an expand action -->
-              <button
-                type="button"
-                aria-label="Open full-size MixDroid prototype photo"
-                class="absolute right-6 top-6 flex h-11 w-11 items-center justify-center rounded-md border border-[var(--panel-line)] bg-black/60 text-[var(--text-secondary)] backdrop-blur-sm transition hover:border-[var(--accent-cyan)]/50 hover:text-[var(--accent-cyan)]"
-                @click="openImage(heroImage)"
+              <!-- Decorative expand hint only — the whole card above is the actual click target -->
+              <span
+                aria-hidden="true"
+                class="pointer-events-none absolute right-6 top-6 flex h-11 w-11 items-center justify-center rounded-md border border-[var(--panel-line)] bg-black/60 text-[var(--text-secondary)] backdrop-blur-sm transition group-hover:border-[var(--accent-cyan)]/50 group-hover:text-[var(--accent-cyan)]"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                   <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3m11-5v3a2 2 0 0 1-2 2h-3"/>
                 </svg>
-              </button>
-            </div>
+              </span>
+            </button>
           </div>
 
         </div>
@@ -808,14 +813,67 @@ useHead({
 
     <AppFooter />
 
-    <!-- Lazy-loaded: this component's JS chunk isn't fetched until the
-         visitor actually opens an image, keeping it out of the critical
-         homepage bundle. -->
-    <LazyImageLightbox
-      :open="isImageModalOpen"
-      :image="selectedImage"
-      @close="isImageModalOpen = false"
-    />
+    <!-- ── Image modal (hero render) -->
+    <Teleport to="body">
+      <Transition
+        enter-active-class="transition duration-200 ease-out"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-active-class="transition duration-150 ease-in"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+      >
+        <div
+          v-if="isImageModalOpen"
+          class="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 sm:items-center sm:p-8"
+          style="background: rgba(8, 8, 12, 0.96); backdrop-filter: blur(6px);"
+          role="dialog"
+          aria-modal="true"
+          :aria-label="selectedImage?.alt"
+          @click.self="isImageModalOpen = false"
+        >
+          <div
+            class="relative my-auto w-full max-w-4xl rounded-xl border border-[var(--panel-line)] bg-[var(--panel-bg)] shadow-[0_0_60px_rgba(0,0,0,0.6)]"
+            @click.stop
+          >
+            <div
+              class="overflow-auto rounded-t-xl"
+              style="max-height: 70vh;"
+              @click="modalZoomed = !modalZoomed"
+            >
+              <img
+                v-if="selectedImage"
+                :src="selectedImage.src"
+                :alt="selectedImage.alt"
+                :class="[
+                  'block rounded-t-xl transition-all duration-300 ease-in-out',
+                  modalZoomed
+                    ? 'w-[200%] max-w-none cursor-zoom-out'
+                    : 'w-full cursor-zoom-in object-contain',
+                ]"
+              />
+            </div>
+            <div
+              v-if="selectedImage"
+              class="flex flex-col gap-3 border-t border-[var(--panel-line)] px-4 py-4 sm:flex-row sm:items-start sm:justify-between sm:gap-4 sm:px-5"
+            >
+              <div class="min-w-0">
+                <p class="text-sm font-semibold text-white">{{ selectedImage.alt }}</p>
+                <p
+                  v-if="selectedImage.caption"
+                  class="mt-1 whitespace-pre-line text-sm leading-6 text-[var(--text-muted)]"
+                >
+                  {{ selectedImage.caption }}
+                </p>
+              </div>
+              <p class="shrink-0 font-sans text-[10px] uppercase tracking-[0.28em] text-[var(--text-dim)]">
+                {{ modalZoomed ? "Click to fit" : "Click to zoom" }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
 
   </div>
 </template>
