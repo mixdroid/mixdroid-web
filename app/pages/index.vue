@@ -19,7 +19,7 @@ const modalZoomed = ref(false);
 // Single source of truth for the Discord invite — only one URL was found
 // across the project files reviewed (previously duplicated in copy only,
 // never actually a second distinct invite). Reused in the footer too.
-const DISCORD_URL = "https://discord.gg/3HFtyBgRv";
+const DISCORD_URL = "https://discord.gg/K7n5EW6ev";
 
 const heroImage: ShowcaseImage = {
   src: "/images/Mixer.jpg",
