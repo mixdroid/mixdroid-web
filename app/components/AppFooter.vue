@@ -1,17 +1,6 @@
 <script setup lang="ts">
 // Social links live here now — out of the nav, focused footer placement
-// NOTE: only one Discord invite URL was found across the project files
-// reviewed (index.vue). Using it here as the single, consistent invite.
-const DISCORD_URL = "https://discord.gg/3HFtyBgRv";
-
 const socials = [
-  {
-    label: "Discord",
-    href: DISCORD_URL,
-    icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3c-.2.4-.5 1-.7 1.4a18.3 18.3 0 0 0-5.4 0A9 9 0 0 0 8.6 3a19.7 19.7 0 0 0-4.9 1.5C1 8.9.3 13.3.6 17.6a19.9 19.9 0 0 0 6 3c.5-.6.9-1.3 1.3-2a13 13 0 0 1-2-1c.2-.1.3-.3.5-.4a14.2 14.2 0 0 0 12 0l.5.4a13 13 0 0 1-2 1c.4.7.8 1.4 1.3 2a19.8 19.8 0 0 0 6-3c.4-5-.9-9.4-3.9-13.2ZM8.7 14.8c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Zm6.6 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Z"/>
-    </svg>`,
-  },
   {
     label: "YouTube",
     href: "https://www.youtube.com/@MixDroidAudio",
@@ -32,9 +21,6 @@ const socials = [
 <template>
   <footer class="border-t border-white/8">
     <div class="mx-auto max-w-7xl px-6 py-8 sm:px-8 lg:px-10">
-      <p class="mb-6 text-sm text-[var(--text-muted)]">
-        Professional audio mixing without the laptop.
-      </p>
       <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
 
         <!-- Left: brand + nav links -->
@@ -59,7 +45,7 @@ const socials = [
               :aria-label="social.label"
               target="_blank"
               rel="noopener noreferrer"
-              class="flex h-11 w-11 items-center justify-center rounded-md text-[var(--text-dim)] transition hover:bg-[var(--panel-bg)] hover:text-[var(--text-secondary)]"
+              class="flex h-9 w-9 items-center justify-center rounded-md text-[var(--text-dim)] transition hover:bg-[var(--panel-bg)] hover:text-[var(--text-secondary)]"
               v-html="social.icon"
             />
           </div>

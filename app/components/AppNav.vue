@@ -19,11 +19,11 @@ const links = [
         <!-- Logo -->
         <NuxtLink to="/" class="group flex items-center gap-3">
           <div
-            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-[var(--panel-line)] bg-[var(--panel-bg-strong)] text-xs font-semibold text-[var(--accent-cyan)] shadow-[0_0_24px_rgba(0,229,255,0.08)] transition group-hover:shadow-[0_0_28px_rgba(0,229,255,0.18)]"
+            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-[var(--panel-line)] bg-[var(--panel-bg-strong)] text-xs font-semibold text-[var(--accent)] shadow-[0_0_24px_rgba(245, 158, 11,0.08)] transition group-hover:shadow-[0_0_28px_rgba(245, 158, 11,0.18)]"
           >
             MX
           </div>
-          <span class="font-sans text-[11px] uppercase tracking-[0.35em] text-[var(--accent-cyan)]">
+          <span class="font-sans text-[11px] uppercase tracking-[0.35em] text-[var(--accent)]">
             MixDroid
           </span>
         </NuxtLink>
@@ -37,7 +37,7 @@ const links = [
             class="min-h-[44px] flex items-center rounded-md px-3 font-sans text-[11px] uppercase tracking-[0.28em] transition"
             :class="
               route.path === link.to
-                ? 'bg-[var(--panel-bg-strong)] text-[var(--accent-cyan)]'
+                ? 'bg-[var(--panel-bg-strong)] text-[var(--accent)]'
                 : 'text-[var(--text-dim)] hover:bg-[var(--panel-bg)] hover:text-[var(--text-secondary)]'
             "
           >
@@ -46,18 +46,19 @@ const links = [
 
           <div class="mx-2 h-4 w-px bg-white/10" aria-hidden="true" />
 
-          <NuxtLink
-            to="/#hero-email"
-            class="flex min-h-[44px] shrink-0 items-center whitespace-nowrap rounded-md bg-[var(--accent-cyan)] px-3 font-sans text-[11px] uppercase tracking-[0.24em] text-black transition hover:opacity-90"
+          <UBadge
+            color="neutral"
+            variant="outline"
+            class="rounded-md border-[var(--panel-line)] bg-[var(--panel-bg)] px-3 py-1 text-[var(--accent)]"
           >
-            Join the early-access list →
-          </NuxtLink>
+            Early access
+          </UBadge>
         </div>
 
         <!-- Mobile hamburger -->
         <button
           type="button"
-          class="flex h-11 w-11 items-center justify-center rounded-md border border-[var(--panel-line)] bg-[var(--panel-bg)] text-[var(--text-secondary)] sm:hidden"
+          class="flex h-10 w-10 items-center justify-center rounded-md border border-[var(--panel-line)] bg-[var(--panel-bg)] text-[var(--text-secondary)] sm:hidden"
           :aria-expanded="menuOpen"
           aria-label="Toggle navigation menu"
           @click="menuOpen = !menuOpen"
@@ -74,14 +75,15 @@ const links = [
 
       </nav>
 
-      <!-- Mobile: primary CTA always visible -->
+      <!-- Mobile: badge always visible -->
       <div class="flex items-center justify-end border-t border-white/5 pt-3 sm:hidden">
-        <NuxtLink
-          to="/#hero-email"
-          class="flex min-h-[44px] items-center rounded-md bg-[var(--accent-cyan)] px-4 font-sans text-[11px] uppercase tracking-[0.28em] text-black transition hover:opacity-90"
+        <UBadge
+          color="neutral"
+          variant="outline"
+          class="rounded-md border-[var(--panel-line)] bg-[var(--panel-bg)] px-3 py-1 text-[var(--accent)]"
         >
-          Join the early-access list →
-        </NuxtLink>
+          Early access
+        </UBadge>
       </div>
 
       <!-- Mobile dropdown -->
@@ -101,7 +103,7 @@ const links = [
             class="block min-h-[44px] flex items-center rounded-md px-3 font-sans text-[11px] uppercase tracking-[0.28em] transition"
             :class="
               route.path === link.to
-                ? 'bg-[var(--panel-bg-strong)] text-[var(--accent-cyan)]'
+                ? 'bg-[var(--panel-bg-strong)] text-[var(--accent)]'
                 : 'text-[var(--text-dim)] hover:bg-[var(--panel-bg)] hover:text-[var(--text-secondary)]'
             "
           >

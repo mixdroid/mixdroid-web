@@ -87,7 +87,7 @@ function onKey(e: KeyboardEvent) {
       <button
         type="button"
         aria-label="Previous"
-        class="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-md border border-[var(--panel-line)] bg-black/60 text-[var(--text-secondary)] backdrop-blur-sm transition hover:border-[var(--accent-cyan)]/50 hover:text-[var(--accent-cyan)]"
+        class="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-md border border-[var(--panel-line)] bg-black/60 text-[var(--text-secondary)] backdrop-blur-sm transition hover:border-[var(--accent)]/50 hover:text-[var(--accent)]"
         @click.stop="prev"
       >
         ‹
@@ -95,7 +95,7 @@ function onKey(e: KeyboardEvent) {
       <button
         type="button"
         aria-label="Next"
-        class="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-md border border-[var(--panel-line)] bg-black/60 text-[var(--text-secondary)] backdrop-blur-sm transition hover:border-[var(--accent-cyan)]/50 hover:text-[var(--accent-cyan)]"
+        class="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-md border border-[var(--panel-line)] bg-black/60 text-[var(--text-secondary)] backdrop-blur-sm transition hover:border-[var(--accent)]/50 hover:text-[var(--accent)]"
         @click.stop="next"
       >
         ›
@@ -110,7 +110,7 @@ function onKey(e: KeyboardEvent) {
     <!-- Caption + dots row -->
     <div class="mt-4 flex items-start justify-between gap-4">
       <div class="min-w-0 space-y-1">
-        <p class="font-sans text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]">
+        <p class="font-sans text-[11px] uppercase tracking-[0.3em] text-[var(--accent)]">
           {{ moduleTitle }} · Screen {{ current + 1 }}
         </p>
         <p class="text-sm font-medium text-white">
@@ -134,7 +134,7 @@ function onKey(e: KeyboardEvent) {
           class="h-1.5 rounded-full transition-all duration-300"
           :class="
             i === current
-              ? 'w-5 bg-[var(--accent-cyan)]'
+              ? 'w-5 bg-[var(--accent)]'
               : 'w-1.5 bg-white/20 hover:bg-white/40'
           "
           @click.stop="go(i)"
@@ -145,7 +145,7 @@ function onKey(e: KeyboardEvent) {
     <!-- Autoplay progress bar -->
     <div class="mt-3 h-px w-full overflow-hidden rounded-full bg-white/8">
       <div
-        class="h-full rounded-full bg-[var(--accent-cyan)]/50 transition-none"
+        class="h-full rounded-full bg-[var(--accent)]/50 transition-none"
         :class="isHovered ? 'w-0' : 'animate-progress'"
         :key="`${current}-${isHovered}`"
       />

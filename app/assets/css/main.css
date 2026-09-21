@@ -1,23 +1,48 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+/* ============================================================
+   MixDroid Design System — "Signal" (dark studio / warm signal)
+   Full visual refresh: indigo-black studio surface, warm signal-
+   orange accent (record/live cue), Space Grotesk + DM Sans.
+   ============================================================ */
 
 :root {
-  --ui-primary: #00e5ff;
-  --ui-secondary: #00e5ff;
-  --ui-success: #00e5ff;
-  --ui-info: #00e5ff;
-  --ui-warning: #ff2a6d;
-  --ui-error: #ff2a6d;
-  --page-bg: #0b0b0f;
-  --panel-bg: #14141b;
-  --panel-bg-strong: #1a1a22;
-  --panel-line: rgba(255, 255, 255, 0.08);
-  --accent-cyan: #00e5ff;
-  --warning-pink: #ff2a6d;
-  --text-primary: #f3f7fb;
-  --text-secondary: #d6dbe4;
-  --text-muted: #9aa4b2;
-  --text-dim: #7d8794;
+  /* Brand */
+  --ui-primary: #f59e0b;
+  --ui-secondary: #8b5cf6;
+  --ui-success: #22c55e;
+  --ui-info: #8b5cf6;
+  --ui-warning: #f59e0b;
+  --ui-error: #f87171;
+
+  /* Surfaces */
+  --page-bg: #0f172a;
+  --panel-bg: #222735;
+  --panel-bg-strong: #2a3145;
+  --panel-line: rgba(255, 255, 255, 0.14);
+
+  /* Accents */
+  --accent: #f59e0b;
+  /* amber signal — primary CTA / live cue */
+  --accent-soft: rgba(245, 158, 11, 0.14);
+  --accent-secondary: #a78bfa;
+  /* violet — DSP/data chips, secondary highlight */
+  --accent-secondary-soft: rgba(167, 139, 250, 0.16);
+  --on-accent: #0f172a;
+  /* dark text for use on amber backgrounds */
+  --error: #f87171;
+
+  /* Text */
+  --text-primary: #f8fafc;
+  --text-secondary: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-dim: #8798a8;
+
+  /* Type */
+  --font-heading: "IBM Plex Sans", "Segoe UI", sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", sans-serif;
 }
 
 html {
@@ -26,34 +51,72 @@ html {
 
 body {
   background:
-    radial-gradient(circle at top, rgba(0, 229, 255, 0.08), transparent 24%),
-    linear-gradient(180deg, #0b0b0f 0%, #08080c 100%);
+    radial-gradient(circle at 15% 0%, rgba(245, 158, 11, 0.14), transparent 38%),
+    radial-gradient(circle at 85% 12%, rgba(139, 92, 246, 0.18), transparent 42%),
+    radial-gradient(circle at 30% 70%, rgba(167, 139, 250, 0.08), transparent 45%),
+    linear-gradient(180deg, #0f172a 0%, #0b1220 100%);
   color: var(--text-primary);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: var(--font-body);
+  min-height: 100vh;
+  background-attachment: fixed;
 }
 
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-heading);
+  letter-spacing: -0.01em;
+}
+
+/* Studio backdrop grid — used behind hero / key sections */
 .console-shell {
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
   background-size: 40px 40px;
 }
 
+/* Card / panel primitive */
+/* Card / panel primitive — glassmorphism */
 .console-panel {
-  border: 1px solid var(--panel-line);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0)),
-    var(--panel-bg);
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.03),
-    0 14px 40px rgba(0, 0, 0, 0.24);
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 8px 32px rgba(0, 0, 0, 0.28);
+}
+
+/* Faint top-edge sheen — classic glass highlight, kept subtle */
+.console-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.16), transparent 40%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Fallback for browsers without backdrop-filter support */
+@supports not (backdrop-filter: blur(1px)) {
+  .console-panel {
+    background: var(--panel-bg);
+  }
 }
 
 .panel-chip {
   border: 1px solid var(--panel-line);
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 0.45rem;
-  padding: 0.45rem 0.7rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 999px;
+  padding: 0.45rem 0.85rem;
 }
 
 .console-stat {
@@ -65,19 +128,23 @@ body {
 
 .console-stat__label {
   color: var(--text-dim);
-  font-family: "Consolas", "Liberation Mono", monospace;
+  font-family: var(--font-body);
   font-size: 0.68rem;
-  letter-spacing: 0.24em;
+  font-weight: 600;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
 }
 
 .console-stat__value {
   color: var(--text-secondary);
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
   margin-top: 0.6rem;
 }
 
+/* Level-meter motif — signal orange fading to indigo, on-brand nod
+   to an audio mixer without leaning on neon/HUD cliches */
 .meter-stack {
   display: grid;
   gap: 0.3rem;
@@ -88,7 +155,7 @@ body {
   display: block;
   height: 0.35rem;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--accent-cyan), rgba(255, 42, 109, 0.75));
+  background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
 }
 
 .meter-stack span:nth-child(1) {
@@ -111,24 +178,25 @@ body {
   width: 7rem;
   height: 2rem;
   background:
-    radial-gradient(circle at 10% 75%, transparent 0.55rem, rgba(0, 229, 255, 0.4) 0.56rem, transparent 0.65rem),
-    linear-gradient(135deg, transparent 0%, transparent 18%, rgba(0, 229, 255, 0.2) 18%, rgba(0, 229, 255, 0.75) 52%, rgba(255, 42, 109, 0.85) 76%, transparent 76%);
+    radial-gradient(circle at 10% 75%, transparent 0.55rem, rgba(249, 115, 22, 0.4) 0.56rem, transparent 0.65rem),
+    linear-gradient(135deg, transparent 0%, transparent 18%, rgba(129, 140, 248, 0.25) 18%, rgba(249, 115, 22, 0.75) 52%, rgba(129, 140, 248, 0.85) 76%, transparent 76%);
   border-radius: 999px;
   opacity: 0.95;
 }
 
 .mini-panel {
   border: 1px solid var(--panel-line);
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.025);
   border-radius: 0.75rem;
   padding: 0.85rem 0.95rem;
 }
 
 .mini-panel__title {
   color: var(--text-dim);
-  font-family: "Consolas", "Liberation Mono", monospace;
+  font-family: var(--font-body);
   font-size: 0.68rem;
-  letter-spacing: 0.24em;
+  font-weight: 600;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
 }
 
@@ -137,4 +205,20 @@ body {
   font-size: 0.95rem;
   font-weight: 600;
   margin-top: 0.55rem;
+}
+
+/* Reduced motion — respected globally per UX accessibility guidance */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

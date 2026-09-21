@@ -15,7 +15,7 @@ useHead({
     <main class="mx-auto max-w-3xl px-6 py-16 sm:px-8 lg:px-10">
 
       <div class="mb-10 space-y-3">
-        <p class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]">Legal</p>
+        <p class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent)]">Legal</p>
         <h1 class="text-4xl font-semibold tracking-tight text-white">Privacy Policy</h1>
         <p class="text-sm text-[var(--text-dim)]">Last updated: June 2025</p>
       </div>
@@ -45,27 +45,27 @@ useHead({
           <h2 class="mb-3 text-lg font-semibold text-white">Third-party services</h2>
           <ul class="mt-3 space-y-2">
             <li class="flex items-start gap-3">
-              <span class="mt-1 shrink-0 text-[var(--accent-cyan)]">→</span>
+              <span class="mt-1 shrink-0 text-[var(--accent)]">→</span>
               <span>
                 <span class="font-medium text-[var(--text-secondary)]">Brevo</span>
                 — email delivery and contact management.
-                <a href="https://www.brevo.com/legal/privacypolicy/" target="_blank" rel="noopener noreferrer" class="text-[var(--accent-cyan)] hover:opacity-80">Brevo privacy policy ↗</a>
+                <a href="https://www.brevo.com/legal/privacypolicy/" target="_blank" rel="noopener noreferrer" class="text-[var(--accent)] hover:opacity-80">Brevo privacy policy ↗</a>
               </span>
             </li>
             <li class="flex items-start gap-3">
-              <span class="mt-1 shrink-0 text-[var(--accent-cyan)]">→</span>
+              <span class="mt-1 shrink-0 text-[var(--accent)]">→</span>
               <span>
                 <span class="font-medium text-[var(--text-secondary)]">Google Analytics (GA4)</span>
                 — anonymous page-view analytics. IP addresses are anonymised.
-                <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" class="text-[var(--accent-cyan)] hover:opacity-80">Google privacy policy ↗</a>
+                <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" class="text-[var(--accent)] hover:opacity-80">Google privacy policy ↗</a>
               </span>
             </li>
             <li class="flex items-start gap-3">
-              <span class="mt-1 shrink-0 text-[var(--accent-cyan)]">→</span>
+              <span class="mt-1 shrink-0 text-[var(--accent)]">→</span>
               <span>
                 <span class="font-medium text-[var(--text-secondary)]">Vercel</span>
                 — website hosting. Standard server logs apply.
-                <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" class="text-[var(--accent-cyan)] hover:opacity-80">Vercel privacy policy ↗</a>
+                <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" class="text-[var(--accent)] hover:opacity-80">Vercel privacy policy ↗</a>
               </span>
             </li>
           </ul>
@@ -76,7 +76,7 @@ useHead({
           <p>
             You can request deletion of your email from the waitlist at any time
             by emailing
-            <a href="mailto:joe.kaikaty@gmail.com" class="text-[var(--accent-cyan)] hover:opacity-80">joe.kaikaty@gmail.com</a>.
+            <a href="mailto:joe.kaikaty@gmail.com" class="text-[var(--accent)] hover:opacity-80">joe.kaikaty@gmail.com</a>.
             We will remove your data within 7 days.
           </p>
         </section>
@@ -85,7 +85,7 @@ useHead({
           <h2 class="mb-3 text-lg font-semibold text-white">Contact</h2>
           <p>
             For any privacy-related questions, contact
-            <a href="mailto:joe.kaikaty@gmail.com" class="text-[var(--accent-cyan)] hover:opacity-80">joe.kaikaty@gmail.com</a>.
+            <a href="mailto:joe.kaikaty@gmail.com" class="text-[var(--accent)] hover:opacity-80">joe.kaikaty@gmail.com</a>.
           </p>
         </section>
 

@@ -281,7 +281,7 @@ useHead({
           >
             <div class="space-y-4">
               <p
-                class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+                class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent)]"
               >
                 All features
               </p>
@@ -302,7 +302,7 @@ useHead({
                 v-for="mod in modules"
                 :key="mod.id"
                 type="button"
-                class="panel-chip font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)] transition hover:border-[var(--accent-cyan)]/40 hover:text-[var(--accent-cyan)]"
+                class="panel-chip font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--text-dim)] transition hover:border-[var(--accent)]/40 hover:text-[var(--accent)]"
                 @click="scrollTo(mod.id)"
               >
                 {{ mod.title }}
@@ -320,7 +320,7 @@ useHead({
             <div class="mb-8 space-y-3">
               <div class="flex items-center gap-3">
                 <span
-                  class="panel-chip font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--warning-pink)]"
+                  class="panel-chip font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--error)]"
                 >
                   {{ mod.label }}
                 </span>
@@ -349,7 +349,7 @@ useHead({
                 v-for="(screen, screenIndex) in mod.screens"
                 :key="screen.src"
                 type="button"
-                class="console-panel group w-full rounded-xl p-4 text-left transition hover:border-[var(--accent-cyan)]/45 hover:shadow-[0_0_26px_rgba(0,229,255,0.07)]"
+                class="console-panel group w-full rounded-xl p-4 text-left transition hover:border-[var(--accent)]/45 hover:shadow-[0_0_26px_rgba(245, 158, 11,0.07)]"
                 @click="openImage(screen)"
               >
                 <!-- Stack on mobile, side-by-side on lg+ -->
@@ -375,7 +375,7 @@ useHead({
                   <!-- Caption -->
                   <div class="w-full space-y-3 lg:w-80 lg:shrink-0">
                     <p
-                      class="font-sans text-[11px] uppercase tracking-[0.3em] text-[var(--accent-cyan)]"
+                      class="font-sans text-[11px] uppercase tracking-[0.3em] text-[var(--accent)]"
                     >
                       {{ mod.title }}
                     </p>
@@ -409,7 +409,7 @@ useHead({
             >
               <div class="space-y-3">
                 <p
-                  class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+                  class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent)]"
                 >
                   The pipeline
                 </p>
@@ -441,7 +441,7 @@ useHead({
                   >Distortion ✓</span
                 >
                 <span
-                  class="panel-chip font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--accent-cyan)]/60"
+                  class="panel-chip font-sans text-[11px] uppercase tracking-[0.28em] text-[var(--accent)]/60"
                   >More in dev…</span
                 >
               </div>
@@ -459,7 +459,7 @@ useHead({
             >
               <div class="space-y-3">
                 <p
-                  class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+                  class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent)]"
                 >
                   Early access
                 </p>
@@ -475,7 +475,7 @@ useHead({
               </div>
               <NuxtLink
                 to="/"
-                class="shrink-0 rounded-md bg-[var(--accent-cyan)] px-6 py-3 text-sm font-semibold text-black transition hover:opacity-90"
+                class="shrink-0 rounded-md bg-[var(--accent)] px-6 py-3 text-sm font-semibold text-[var(--on-accent)] transition hover:opacity-90"
               >
                 Join the waitlist →
               </NuxtLink>

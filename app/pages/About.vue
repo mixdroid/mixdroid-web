@@ -59,7 +59,7 @@ useHead({
                 <!-- Glow ring -->
                 <!-- <div
                   class="absolute -inset-1 rounded-full opacity-40"
-                  style="background: conic-gradient(from 180deg, var(--accent-cyan), transparent 60%, var(--warning-pink), transparent 80%, var(--accent-cyan));"
+                  style="background: conic-gradient(from 180deg, var(--accent), transparent 60%, var(--error), transparent 80%, var(--accent));"
                 /> -->
                 <img
                   src="/images/joe.jpg"
@@ -71,7 +71,7 @@ useHead({
                 />
                 <!-- Fallback monogram if image is missing -->
                 <div
-                  class="relative hidden h-40 w-40 items-center justify-center rounded-full border-2 border-[var(--panel-line)] bg-[var(--panel-bg-strong)] text-4xl font-semibold text-[var(--accent-cyan)]"
+                  class="relative hidden h-40 w-40 items-center justify-center rounded-full border-2 border-[var(--panel-line)] bg-[var(--panel-bg-strong)] text-4xl font-semibold text-[var(--accent)]"
                   style="display: none"
                 >
                   MX
@@ -82,7 +82,7 @@ useHead({
               <div class="flex flex-col items-center gap-2 lg:items-start">
                 <p class="text-base font-semibold text-white">Joe Kaikaty</p>
                 <p
-                  class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+                  class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent)]"
                 >
                   Solo developer
                 </p>
@@ -94,7 +94,7 @@ useHead({
             <div class="space-y-6">
               <div class="space-y-3">
                 <p
-                  class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+                  class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent)]"
                 >
                   About me
                 </p>
@@ -161,7 +161,7 @@ useHead({
           <div class="grid gap-10 lg:grid-cols-2 lg:items-start">
             <div class="space-y-4">
               <p
-                class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+                class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent)]"
               >
                 The motivation
               </p>
@@ -192,7 +192,7 @@ useHead({
 
             <div class="space-y-3">
               <p
-                class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+                class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent)]"
               >
                 What makes it different
               </p>
@@ -224,7 +224,7 @@ useHead({
                   class="mini-panel"
                 >
                   <p class="mini-panel__title flex items-center gap-2">
-                    <span class="text-[var(--accent-cyan)]">→</span>
+                    <span class="text-[var(--accent)]">→</span>
                     {{ point.label }}
                   </p>
                   <p
@@ -244,7 +244,7 @@ useHead({
         <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
           <div class="mb-10 space-y-3">
             <p
-              class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+              class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent)]"
             >
               Development history
             </p>
@@ -269,13 +269,13 @@ useHead({
               <!-- Year bubble -->
               <div class="flex items-start gap-3 sm:justify-end sm:pt-1">
                 <span
-                  class="relative z-10 font-sans text-sm font-semibold text-[var(--accent-cyan)] sm:text-right"
+                  class="relative z-10 font-sans text-sm font-semibold text-[var(--accent)] sm:text-right"
                 >
                   {{ entry.year }}
                 </span>
                 <!-- Dot on the line -->
                 <div
-                  class="relative z-10 mt-1.5 hidden h-2.5 w-2.5 shrink-0 rounded-full border border-[var(--accent-cyan)] bg-[var(--page-bg)] sm:block"
+                  class="relative z-10 mt-1.5 hidden h-2.5 w-2.5 shrink-0 rounded-full border border-[var(--accent)] bg-[var(--page-bg)] sm:block"
                 />
               </div>
 
@@ -284,7 +284,7 @@ useHead({
                 class="console-panel rounded-xl p-4"
                 :class="
                   i === timeline.length - 1
-                    ? 'border-[var(--accent-cyan)]/30'
+                    ? 'border-[var(--accent)]/30'
                     : ''
                 "
               >
@@ -307,7 +307,7 @@ useHead({
             >
               <div class="space-y-3">
                 <p
-                  class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent-cyan)]"
+                  class="font-sans text-[11px] uppercase tracking-[0.32em] text-[var(--accent)]"
                 >
                   Early access
                 </p>
@@ -324,7 +324,7 @@ useHead({
               </div>
               <NuxtLink
                 to="/"
-                class="shrink-0 rounded-md bg-[var(--accent-cyan)] px-6 py-3 text-sm font-semibold text-black transition hover:opacity-90"
+                class="shrink-0 rounded-md bg-[var(--accent)] px-6 py-3 text-sm font-semibold text-[var(--on-accent)] transition hover:opacity-90"
               >
                 Join the waitlist →
               </NuxtLink>
