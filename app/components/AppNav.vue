@@ -44,6 +44,13 @@ const links = [
             {{ link.label }}
           </NuxtLink>
 
+          <NuxtLink
+            to="/#help-shape"
+            class="ml-1 flex min-h-[44px] items-center rounded-md border border-[var(--accent)]/50 px-3 text-sm font-semibold text-[var(--accent)] transition hover:bg-[var(--accent-soft)]"
+          >
+            Become a tester
+          </NuxtLink>
+
           <div class="mx-2 h-4 w-px bg-white/10" aria-hidden="true" />
 
           <UBadge
@@ -108,6 +115,13 @@ const links = [
             "
           >
             {{ link.label }}
+          </NuxtLink>
+          <NuxtLink
+            to="/#help-shape"
+            class="flex min-h-[44px] items-center rounded-md border border-[var(--accent)]/50 px-3 text-sm font-semibold text-[var(--accent)] transition hover:bg-[var(--accent-soft)]"
+            @click="menuOpen = false"
+          >
+            Become a tester
           </NuxtLink>
         </div>
       </Transition>

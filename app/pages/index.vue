@@ -19,6 +19,11 @@ const modalZoomed = ref(false);
 // TODO: replace with your real invite link
 const DISCORD_URL = "https://discord.gg/Gr629QXYd";
 
+// Google Form embed URL for the "Help shape MixDroid" section.
+// Paste the URL from Google Forms > Send > Embed (the one ending in ?embedded=true).
+// While this is empty, the form and its fallback link are not rendered.
+const TESTER_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdKHZgXm7GHbqL3dv2eVEqlAo1oWIBn-9diSGFq7B42HB4cwQ/viewform?embedded=true";
+
 const heroImage: ShowcaseImage = {
   src: "/images/Mixer.jpg",
   alt: "MixDroid — hardware concept render, production design in progress",
@@ -327,6 +332,15 @@ useHead({
                   Watch the demo ↓
                 </a>
               </div>
+
+              <!-- Become a tester: scrolls to the Help shape MixDroid section -->
+              <a
+                href="#help-shape"
+                class="flex min-h-[44px] w-fit items-center gap-2 rounded-md border border-[var(--accent)]/50 px-4 text-sm font-semibold text-[var(--accent)] transition hover:bg-[var(--accent-soft)]"
+              >
+                Become a tester
+                <span aria-hidden="true">↓</span>
+              </a>
 
               <!-- Social proof / community -->
               <a
@@ -819,6 +833,40 @@ useHead({
               class="underline underline-offset-2 text-[var(--accent)] hover:opacity-80"
             >Ask on Discord ↗</a>
           </p>
+        </div>
+      </section>
+
+      <!-- ── Help shape MixDroid (tester form) -->
+      <section id="help-shape" class="scroll-mt-24 border-b border-white/8" aria-labelledby="help-shape-heading">
+        <div class="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-18">
+          <div class="mx-auto max-w-[700px] space-y-4 text-center">
+            <h2 id="help-shape-heading" class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+              Help shape MixDroid
+            </h2>
+            <p class="text-base leading-8 text-[var(--text-muted)]">
+              I'm building a standalone mixer and speaker processor that runs without a laptop. I'm picking my first testers from people with a real setup. Answer 6 short questions and I'll reply personally.
+            </p>
+          </div>
+
+          <div v-if="TESTER_FORM_URL" class="mx-auto mt-8 w-full max-w-[700px]">
+            <div class="console-panel overflow-hidden rounded-xl p-2">
+              <iframe
+                :src="TESTER_FORM_URL"
+                title="Help shape MixDroid tester form"
+                class="block h-[900px] min-h-[900px] w-full rounded-lg border-0"
+                loading="lazy"
+              >Loading…</iframe>
+            </div>
+            <p class="mt-4 text-center text-sm text-[var(--text-dim)]">
+              Form not loading?
+              <a
+                :href="TESTER_FORM_URL"
+                target="_blank"
+                rel="noopener"
+                class="underline underline-offset-2 text-[var(--accent)] hover:opacity-80"
+              >Open it in a new tab.</a>
+            </p>
+          </div>
         </div>
       </section>
 

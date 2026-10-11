@@ -32,7 +32,7 @@ export default defineNuxtConfig({
           "default-src 'self'",
           "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com",
           "connect-src 'self' https://vitals.vercel-insights.com https://api.brevo.com",
-          "frame-src https://www.youtube.com",
+          "frame-src https://www.youtube.com https://docs.google.com",
           "img-src 'self' data:",
           "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
           "font-src 'self' https://fonts.gstatic.com",
